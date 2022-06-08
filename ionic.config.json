@@ -1,0 +1,7 @@
+{
+  "name": "NovoCapture",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
