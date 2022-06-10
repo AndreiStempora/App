@@ -1,0 +1,11 @@
+ion-app{
+    .ion-page{
+        ion-content{
+            &::part(background){
+                background: url(../../assets/img/Background.png) no-repeat fixed;
+                background-size: cover;
+            }
+
+        }
+    }
+}
