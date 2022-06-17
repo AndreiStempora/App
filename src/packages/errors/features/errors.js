@@ -9,7 +9,7 @@ const error = {
                 setTimeout(()=>{
                     set(error.showToastAtom,false);
                     set(error.errorAtom,"")
-                }, 2000)
+                }, 2600)
             }
         }
     ),
@@ -17,4 +17,5 @@ const error = {
     showToastAtom : atom(false)
 }
 
-export {error};
+export { error };
+

@@ -1,0 +1,30 @@
+.error{
+    --ion-safe-area-bottom:20px;
+    --start:30px;
+    --end:30px;
+    --background:black;
+    --border-width: 1;
+    --border-style: solid;
+    --border-color: #FF4646;
+
+    &::part(message){
+        color:#FF4646;
+        padding-left:28px;
+        line-height: 18px;
+        font-size: 13px;
+        &::before{
+            content:"";
+            width:18px;
+            height: 18px;
+            position: absolute;
+            top: 15px;
+            left:15px;
+            background-color: transparent;
+            background-image: url('../../../../public/assets/icon/alert-icon.svg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
+}
+
+

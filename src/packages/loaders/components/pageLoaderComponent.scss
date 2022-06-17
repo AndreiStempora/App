@@ -1,0 +1,14 @@
+ion-loading{
+    transition:opacity 0.3s linear ;
+    opacity:0;
+    --backdrop-opacity:1!important;
+    ion-backdrop{
+        background-color: transparent;
+        background-image: url('../../../../public/assets/img/background.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    &.darken{
+        opacity:1;
+    }
+}

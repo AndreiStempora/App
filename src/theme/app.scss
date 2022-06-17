@@ -1,11 +1,16 @@
-ion-app{
-    .ion-page{
-        ion-content{
-            &::part(background){
-                background: url(../../assets/img/Background.png) no-repeat fixed;
-                background-size: cover;
-            }
+@mixin context($old-context, $new-context) {
+	$parent : &;
 
-        }
-    }
+	@at-root #{selector-replace($parent, $old-context, $new-context)} {
+		@content;
+	}
 }
+
+@mixin variant($selector) {
+	$parent : &;
+	@at-root #{$selector}#{$parent} {
+		@content;
+	}
+}
+
+$inactive-grey:#F8F9FA;

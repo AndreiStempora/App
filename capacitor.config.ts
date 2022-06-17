@@ -20,7 +20,6 @@ const config: CapacitorConfig = {
       "splashImmersive": false,
       "layoutName": "launch_screen",
       "useDialog": false,
-      
     }
   }
 };

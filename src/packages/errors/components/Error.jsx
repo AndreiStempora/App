@@ -1,13 +1,14 @@
-import React from 'react';
 import { IonToast } from "@ionic/react";
 import { useAtom } from "jotai";
-import { error } from '../features/errors';
+import { error } from "../features/errors";
+import "./error.scss";
 
 const ErrorComponent = () => {
 	const [toast] = useAtom(error.showToastAtom);
-    const [errorMessage] = useAtom(error.errorAtom);
+	const [err] = useAtom(error.errorAtom);
+
 	return (
-		<IonToast isOpen={toast} message={errorMessage} position="bottom"></IonToast>
+		<IonToast cssClass="error" isOpen={toast} message={err} position="bottom"></IonToast>
 	)
 }
 

@@ -1,13 +1,17 @@
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
+import { SplashScreen } from '@capacitor/splash-screen';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-import { SplashScreen } from '@capacitor/splash-screen';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 
 window.addEventListener("DOMContentLoaded", async () => {
-	SplashScreen.hide();
+	setTimeout(()=>{
+		SplashScreen.hide();
+	},3000)
+	ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT)
 })
 
 ReactDOM.render(
