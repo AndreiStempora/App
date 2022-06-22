@@ -1,9 +1,12 @@
+import { IonContent } from '@ionic/react';
 import Page from '../../components/page/Page';
 
 const DashboardPage = () => {
 	return (
 		<Page>
-			<div>DashboardPage</div>
+			<IonContent>
+				<div>DashboardPage</div>
+			</IonContent>
 		</Page>
 	)
 }

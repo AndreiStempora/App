@@ -15,17 +15,13 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/typography.css';
 import { Provider } from "jotai";
 import { Suspense } from "react";
-import { Redirect, Route, Switch } from 'react-router-dom';
-import RestrictedRouting from './components/page/restrictedPages/RestrictedRouting';
+import { Redirect, Route } from 'react-router-dom';
+// import RestrictedRouting from './components/page/restrictedPages/RestrictedRouting';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import LoginPage from './pages/login/LoginPage';
 /* Theme variables */
 import './theme/variables.css';
-
-
-
-
-
+import ProtectedRoute from "./components/page/restrictedPages/ProtectedRoute"
 setupIonicReact();
 
 const App = () => {
@@ -37,17 +33,18 @@ const App = () => {
 					<IonReactRouter>
 						<IonRouterOutlet animated={false}>
 							
+								<Route path="*">
+									<Redirect from="*" to="/login"></Redirect>
+								</Route>
+
 								<Route exact path="/login">
 									<LoginPage />
 								</Route>
-								<RestrictedRouting>
-									<Route exact path="/dashboard">
-										<DashboardPage />
-									</Route>
-								</RestrictedRouting>
-								<Route render={()=> <Redirect from="/" to="/login"></Redirect>}>
-									
-								</Route>
+						
+								<ProtectedRoute exact path="/dashboard">
+									<DashboardPage />
+								</ProtectedRoute>
+
 								
 							
 						</IonRouterOutlet>

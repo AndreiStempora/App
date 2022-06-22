@@ -1,4 +1,4 @@
-@import "../../../../src/theme/app.scss";
+@import "../../../theme/app.scss";
 
 ion-item{
     &.item{
@@ -21,6 +21,31 @@ ion-item{
                     }
                 }
             }
+        }
+        &::part(native){
+            --padding-start:0px;
+        }
+        ion-label{
+            span{
+                font-weight: 600;
+                font-size: 17px;
+            }
+            &.label-stacked{
+                transform:translateY(50%) scale(1);
+            }
+        }
+        ion-input{
+            &.has-value{
+                --color:#F8F9FA;
+            }
+            &.has-focus{
+                &.has-value{
+                    --color:#fff;
+                }
+            }
+        }
+        + ion-item{
+            padding-top:30px;
         }
     }
 }

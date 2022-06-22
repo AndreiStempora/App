@@ -9,12 +9,12 @@ const Page = ({ children }) => {
 		<IonPage>
 			<NetworkConnectionComponent />
             <PageLoaderComponent />
-			<IonContent>
+			{/* <IonContent> */}
 				{children}
-			</IonContent>
+			{/* </IonContent> */}
             <ErrorComponent />
 		</IonPage>
 	)
 }
 
-export default Page
+export default Page;

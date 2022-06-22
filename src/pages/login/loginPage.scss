@@ -1,6 +1,7 @@
 .logo{
     width:226px;
     height: 46px;
+    margin-bottom:55px;
 }
 
 .full-height{
@@ -13,7 +14,7 @@
 .login-btn{
     
     position: relative;
-    margin:20px 0 0 0;
+    margin:60px 0 0 0;
     padding: 2px;
     width:100%;
     border-radius: 23px;
@@ -38,23 +39,24 @@
         left:-2px;
         width:100vw;
         border-radius: 50%;
-        transform: translate(-28px, -50%) rotate(120deg);
         height:100vw;
         transform-origin: center;
         background: rgb(60,64,67);
+        border-color:green;
+        z-index: -10;
+        animation: 5s rotate linear infinite;
         background: conic-gradient(
             rgba(60,64,67,1)0 30%,
             rgba(248,249,250,1)38% 40%,
             rgba(0,123,255,1) 48% 70%,
             rgba(60,64,67,1)) 90% 100%;
-        border-color:green;
-        z-index: -10;
-        animation: 5s rotate linear infinite;
-    }
+        transform: translate(-28px, -50%) rotate(120deg);
+        animation: 7s rotate reverse linear infinite;
+
     @keyframes rotate {
         0%{
-            transform:translate(-28px, -50%) rotate(120deg);
-        }
+                transform:translate(-28px, -50%) rotate(120deg);
+            }
         10%{
             transform:translate(-28px, -50%) rotate(140deg);
         }
@@ -62,10 +64,23 @@
             transform:translate(-28px, -50%) rotate(300deg);
         }
         60%{
-            transform:translate(-28px, -50%) rotate(320deg);
-        }
+                transform:translate(-28px, -50%) rotate(320deg);
+            }
         100%{
-            transform:translate(-28px, -50%) rotate(480deg);
+                transform:translate(-28px, -50%) rotate(480deg);
+            }
         }
     }
 }
+           // @keyframes rotate {
+    //     from{
+    //         transform: translate(-28px, -50%) rotate(10deg);
+    //     }
+    //     to{
+    //         transform: translate(-28px, -50%) rotate(370deg);
+    //     }
+    // }
+    
+   
+            // background:linear-gradient( #007bff 40%, #272a2e 58%,#707173 62%, #272a2e 65%,#007bff 100%);
+            // transform: translate(-28px, -50%) rotate(10deg);

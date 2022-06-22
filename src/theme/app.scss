@@ -1,3 +1,7 @@
+::selection{
+	color:#fff;
+	background: #54a6ff;
+}
 @mixin context($old-context, $new-context) {
 	$parent : &;
 
