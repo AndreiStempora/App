@@ -10,13 +10,13 @@ const TwoFaElements = ({services}) => {
 
     const click = (service)=>{
         setService(service);
-        history.push("/2FA/service");
+        history.push("/2fa/service");
     }
 
     return (
         <IonList>
             <div>TwoFaElement</div>
-            {services.map((service,index)=>(
+            {services?.map((service,index)=>(
                 <IonItem key={index} onClick={()=>click(service)}>
                     {service.icon &&
                         <IonIcon icon={services.icon}></IonIcon>

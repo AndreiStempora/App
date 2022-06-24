@@ -56,9 +56,11 @@ const LoginPage = () => {
         if (response?.status === "ok") {
             setLoggedIn(true);
             requestSetters.push('/dashboard')
-        }
-        if (response?.module === "users-addon-2fa") {
-            requestSetters.push("/2FA");
+        } else {
+            if (response?.module === "users-addon-2fa") {
+                console.log("xx")
+                requestSetters.push("/2fa");
+            }
         }
     }
 

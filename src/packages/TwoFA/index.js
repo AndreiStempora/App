@@ -1,6 +1,6 @@
 import { TwoFA } from "./features/TwoFA";
 import TwoFaElements from "./components/TwoFaElements";
-import TwoFAPage from "../../pages/twoFA/TwoFAPage";
-import TwoFaSelectorPage from "./components/TwoFaSelectorPage";
+import TwoFaCode from "./components/TwoFaCode";
+import TwoFaSelector from "./components/TwoFaSelector";
 
-export { TwoFA, TwoFaElements, TwoFAPage, TwoFaSelectorPage };
+export { TwoFA, TwoFaElements, TwoFaCode, TwoFaSelector };

@@ -9,8 +9,8 @@ const ProtectedRoute = ({children, ...props}) => {
         <>
         {
             isLoggedIn?
-                <Route {...props}>{children}</Route>:
-                <Redirect to="/login"></Redirect>
+                <Route {...props}></Route>:
+                <Route render={() => <Redirect to="/login" />} />
         }
         </>
     )

@@ -5,7 +5,7 @@ import TwoFaElements from './TwoFaElements';
 import { TwoFA } from '../features/TwoFA';
 import { useAtom } from 'jotai';
 
-const TwoFaSelectorPage = () => {
+const TwoFaSelector = () => {
 
     const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
@@ -16,18 +16,18 @@ const TwoFaSelectorPage = () => {
         requestSetters.setUrl(requestSetters.data?.call);
         requestSetters.setRequestBody();
         const response = await requestSetters.fetch();
-        console.log('raaaaaaaaaaaa',response.services);
 
         if(response?.services.length === 1){
             setSelectedOption(response?.services);
-            requestSetters.push("/2FA/service");
+            requestSetters.push("/2fa/code");
         } else {
             setServices(response?.services);
         }
+        console.log("request done",response?.services,response?.services.length)
     }
 
     useEffect(()=>{
-        pageRequest(twoFAPageRequest);
+        pageRequest.requestFunction(twoFAPageRequest);
     },[])
 
     return (
@@ -35,4 +35,4 @@ const TwoFaSelectorPage = () => {
     )
 }
 
-export default TwoFaSelectorPage
+export default TwoFaSelector;

@@ -1,10 +1,10 @@
-import useDigitInput from 'react-digit-input';
+// import useDigitInput from 'react-digit-input';
 import { useState, useEffect } from 'react';
 import usePageRequest from '../../../services/customHooks/pageRequestHook';
 import usePageSetters from '../../../services/customHooks/pageRequestSettersHook';
 import parser from 'html-react-parser';
 
-const TwoFaSendCodePage = () => {
+const TwoFaCode = () => {
 	const pageRequest = usePageRequest();
 	const requestSetters = usePageSetters();
 	const [value, onChange] = useState('');
@@ -22,37 +22,38 @@ const TwoFaSendCodePage = () => {
 	}
 
 	useEffect(() => {
-		pageRequest(requestFormFields)
+		pageRequest.requestFunction(requestFormFields)
 	},[])
 
-	const digitForm = (fields) => {
-		let inputs = [];
-        for (let i = 0; i < fields; i++) {
-			inputs.push(
-				<input inputMode="decimal" autoFocus={i === 0? true : false} {...digits[i]} />
-			)
-		}
-		return inputs;
-	}
+	// const digitForm = (fields) => {
+	// 	let inputs = [];
+    //     for (let i = 0; i < fields; i++) {
+	// 		inputs.push(
+	// 			<input inputMode="decimal" autoFocus={i === 0? true : false} {...digits[i]} />
+	// 		)
+	// 	}
+	// 	return inputs;
+	// }
 
-	const digits = useDigitInput({
-		acceptedCharacters: /^[0-9]$/,
-		length: fields,
-		value,
-		onChange,
-	});
+	// const digits = useDigitInput({
+	// 	acceptedCharacters: /^[0-9]$/,
+	// 	length: fields,
+	// 	value,
+	// 	onChange,
+	// });
 	
 	return (
 		<div>
 				{ pageInfo && parser(pageInfo)}
 			<div className="input-group">
-				{digitForm(fields)}
+				{/* {digitForm(fields)} */}
+				CODE
 			</div>
-			<pre>
+			{/* <pre>
 				<code>"{value}"</code>
-			</pre>
+			</pre> */}
 		</div>
 	)
 }
 
-export default TwoFaSendCodePage;
+export default TwoFaCode;

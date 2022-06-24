@@ -16,11 +16,11 @@ const usePageSetters = ()=>{
     const [,isLoggedIn]         = useAtom(user.getLoggedIn)
 
     const push = (str)=>{
-        if(isLoggedIn()){
+        // if(isLoggedIn()){
             history.push(str)
-        } else {
-            history.push('/login')
-        }
+        // } else {
+        //     history.push('/login')
+        // }
     }
 
 

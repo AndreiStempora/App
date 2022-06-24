@@ -1,8 +1,8 @@
 import Page from '../../components/page/Page';
 import { IonContent, IonHeader, IonToolbar,IonButtons,IonBackButton } from '@ionic/react';
-import { TwoFaSelector } from '../../packages/TwoFA';
+import { TwoFaCode } from '../../packages/TwoFA';
 
-const TwoFAPage = () => {
+const TwoFACodePage = () => {
     return (
         <Page>
             <IonHeader>
@@ -12,12 +12,12 @@ const TwoFAPage = () => {
                     </IonButtons>
                 </IonToolbar>
             </IonHeader>
-            <h1>2 FA</h1>
+            <h1>2 FA code</h1>
             <IonContent>
-                <TwoFaSelector></TwoFaSelector>
+                <TwoFaCode></TwoFaCode>
             </IonContent>
         </Page>
     )
 }
 
-export default TwoFAPage;
+export default TwoFACodePage
