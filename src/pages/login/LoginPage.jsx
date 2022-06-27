@@ -14,14 +14,14 @@ const LoginPage = () => {
     const requestSetters = usePageSetters();
     const [logInUrl] = useAtom(URL.login);
     const [summary] = useAtom(URL.dealership);
-    const [, setToken] = useAtom(user.tokenAtom);
-    const [, setLoggedIn] = useAtom(user.loggedIn);
+    // const [, setToken] = useAtom(user.tokenAtom);
+    // const [, setLoggedIn] = useAtom(user.loggedIn);
     const [, setLogInFields] = useAtom(formAtoms.logInFormSetter);
     const [logInFields] = useAtom(formAtoms.logInForm);
 
     const getFieldsRequest = async () => {
-        setToken("");                   //if you are here you should never have token
-        setLoggedIn(false);
+        requestSetters.setToken("");                   //if you are here you should never have token
+        requestSetters.setLoggedIn(false);
         requestSetters.setUrl(logInUrl);
         await requestSetters.fetch();
         setLogInFields();
@@ -38,27 +38,24 @@ const LoginPage = () => {
         requestSetters.setRequestBody();                   //add form fields to request
 
         let response = await requestSetters.fetch();       //make request
-        setToken(response?.token);
+        requestSetters.setToken(response?.token);
         
-        console.log(response, '--')
         requestSetters.setFormData('RESET');                //reset body
 
-        if (response.status === "error") {    //if error
-            requestSetters.setError(response.message);     //show error message
-            return;                         //exit
+        if (response.status === "error") {                  //if error
+            requestSetters.setError(response.message);      //show error message
+            return;                                         //exit
         }
 
         requestSetters.setRequestBody();                   //add token to body 
         requestSetters.setUrl(summary);                    //set new URL
         response = await requestSetters.fetch();           //make request
-        console.log(response, "rrr");
 
         if (response?.status === "ok") {
-            setLoggedIn(true);
+            requestSetters.setLoggedIn(true);
             requestSetters.push('/dashboard')
         } else {
             if (response?.module === "users-addon-2fa") {
-                console.log("xx")
                 requestSetters.push("/2fa");
             }
         }
@@ -67,21 +64,21 @@ const LoginPage = () => {
     return (
         <Page>
             <IonContent>
-            <IonGrid className="ion-align-self-center full-height">
-                <IonRow >
-                    <IonCol class="ion-text-center">
-                        <IonIcon
-                            className="logo"
-                            icon="assets/svgs/logo.svg"
-                        ></IonIcon>
-                    </IonCol>
-                </IonRow>
-                <IonRow>
-                    <IonCol class="ion-text-center">
-                        <CustomForm submitForm={submitLogin} autofocus={true} />
-                    </IonCol>
-                </IonRow>
-            </IonGrid>
+                <IonGrid className="ion-align-self-center full-height">
+                    <IonRow >
+                        <IonCol class="ion-text-center">
+                            <IonIcon
+                                className="logo"
+                                icon="assets/svgs/logo.svg"
+                            ></IonIcon>
+                        </IonCol>
+                    </IonRow>
+                    <IonRow>
+                        <IonCol class="ion-text-center">
+                            <CustomForm submitForm={submitLogin} autofocus={true} />
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
             </IonContent>
         </Page>
     )

@@ -13,16 +13,12 @@ const usePageSetters = ()=>{
     const [,setError]           = useAtom(error.errorAtom);
     const [,setFormData]        = useAtom(formAtoms.formDataAtom);
     const history               = useHistory();
-    const [,isLoggedIn]         = useAtom(user.getLoggedIn)
+    const [,isLoggedIn]         = useAtom(user.getLoggedIn);
+    const [, setToken]          = useAtom(user.tokenAtom);
 
     const push = (str)=>{
-        // if(isLoggedIn()){
-            history.push(str)
-        // } else {
-        //     history.push('/login')
-        // }
+        history.push(str)
     }
-
 
     return{
         url:url,
@@ -32,7 +28,9 @@ const usePageSetters = ()=>{
         setRequestBody:setRequestBody,
         setError:setError,
         setFormData:setFormData,
-        push:push
+        push:push,
+        isLoggedIn:isLoggedIn,
+        setToken:setToken
     }
 }
 

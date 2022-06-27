@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { IonInput,IonIcon } from "@ionic/react";
 import "./password.scss";
-// import { eye } from "ionicons/icons";
 
 const Password = ({field})=>{
     const [toggleIcon, setToggleIcon] = useState("visibility");

@@ -5,16 +5,12 @@ import { formAtoms } from "../features/formAtoms";
 import Password from "./Password";
 import "./customForm.scss";
 
-
-
 const CustomForm = ({submitForm,autofocus}) => {
     const [logInFields] = useAtom(formAtoms.logInForm);
     const [fields,setFields] = useState(logInFields?.fields);
     const [buttons,setButtons] = useState(logInFields?.buttons);
     const [,setData] = useAtom(formAtoms.formDataAtom);
-
-
-    
+  
     useEffect(()=>{
         setFields(logInFields?.fields)
         setButtons(logInFields?.buttons)
@@ -35,8 +31,6 @@ const CustomForm = ({submitForm,autofocus}) => {
             }
         }              
     }
-
-
 
     const inputTypes = [
         "button",

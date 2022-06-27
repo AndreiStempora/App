@@ -36,32 +36,11 @@ const App = () => {
 					<IonReactRouter>
 						<IonRouterOutlet animated={false}>
 							
-						<Route path="/login" component={LoginPage} />
-						<Route path="/2fa" exact={true} component={TwoFAPage} />
-						<Route path="/2fa/code" exact={true} component={TwoFACodePage} />
-						<ProtectedRoute exact={true} path="/dashboard" component={DashboardPage} />
-						<Route render={() => <Redirect to="/login" />} />
-
-{/* 
-								<Route  path="/" element={<LoginPage />} />
-									
-								</Route>
-								<IonRoute path="*">
-									<IonRedirect from="*" to="/login"></IonRedirect>
-								</IonRoute> 
-
-								<Route exact path="/2fa">
-									<TwoFAPage />
-								</Route>
-
-								<Route exact path="/2fa/code">
-									<TwoFACodePage />
-								</Route>
-
-								<ProtectedRoute exact path="/dashboard">
-									<DashboardPage />
-								</ProtectedRoute> */}
-
+							<Route path="/login" component={LoginPage} />
+							<Route path="/2fa" exact={true} component={TwoFAPage} />
+							<Route path="/2fa/code" exact={true} component={TwoFACodePage} />
+							<ProtectedRoute exact={true} path="/dashboard" component={DashboardPage} />
+							<Route render={() => <Redirect to="/login" />} />
 							
 						</IonRouterOutlet>
 					</IonReactRouter>

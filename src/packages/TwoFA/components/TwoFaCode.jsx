@@ -1,11 +1,10 @@
-import useDigitInput from 'react-digit-input';
 import { useState, useEffect } from 'react';
+import { useAtom } from 'jotai';
+import { TwoFA } from '../features/TwoFA';
+import useDigitInput from 'react-digit-input';
 import usePageRequest from '../../../services/customHooks/pageRequestHook';
 import usePageSetters from '../../../services/customHooks/pageRequestSettersHook';
 import parser from 'html-react-parser';
-import { useAtom } from 'jotai';
-import { TwoFA } from '../features/TwoFA';
-import { user } from '../../../services/user/user';
 
 const TwoFaCode = () => {
 	const pageRequest = usePageRequest();
@@ -14,7 +13,6 @@ const TwoFaCode = () => {
 	const [fields, setFields] = useState();
 	const [pageInfo, setPageInfo] = useState();
 	const [selectedOption] = useAtom(TwoFA.selectedOption);
-	const [,setLoggedIn] = useAtom(user.loggedIn);
 
 	const requestFormFields = async ()=>{
 		if(requestSetters.data?.services !== undefined){
@@ -63,7 +61,7 @@ const TwoFaCode = () => {
 		} 
 
 		if(response.status === "ok"){
-			setLoggedIn(true);
+			requestSetters.setLoggedIn(true);
 			requestSetters.push('/dashboard');
 		}
 	}
@@ -78,13 +76,11 @@ const TwoFaCode = () => {
 				pageRequest.requestFunction(sendDigitsForValidation);
 			})()
 		}
-
-
 	},[value])
 	
 	return (
 		<div>
-				{ pageInfo && parser(pageInfo)}
+			{ pageInfo && parser(pageInfo)}
 			<div className="input-group">
 				{digitForm(fields)}
 			</div>
