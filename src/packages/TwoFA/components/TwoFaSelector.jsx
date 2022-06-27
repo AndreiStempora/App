@@ -23,7 +23,6 @@ const TwoFaSelector = () => {
         } else {
             setServices(response?.services);
         }
-        console.log("request done",response?.services,response?.services.length)
     }
 
     useEffect(()=>{

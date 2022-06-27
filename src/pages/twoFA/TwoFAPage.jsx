@@ -8,7 +8,7 @@ const TwoFAPage = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start" >
-                        <IonBackButton defaultHref="/login" text="beck" />
+                        <IonBackButton defaultHref="/login" text="" />
                     </IonButtons>
                 </IonToolbar>
             </IonHeader>

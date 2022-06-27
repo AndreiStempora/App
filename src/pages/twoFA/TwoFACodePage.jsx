@@ -1,6 +1,7 @@
 import Page from '../../components/page/Page';
-import { IonContent, IonHeader, IonToolbar,IonButtons,IonBackButton } from '@ionic/react';
+import { IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, IonGrid, IonTitle } from '@ionic/react';
 import { TwoFaCode } from '../../packages/TwoFA';
+import "./twoFACodePage.scss";
 
 const TwoFACodePage = () => {
     return (
@@ -8,13 +9,15 @@ const TwoFACodePage = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start" >
-                        <IonBackButton defaultHref="/login" text="beck" />
+                        <IonBackButton defaultHref="/login" text="" icon="assets/svgs/previous.svg" />
                     </IonButtons>
+                    <IonTitle class="ion-text-center">Header</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <h1>2 FA code</h1>
             <IonContent>
-                <TwoFaCode></TwoFaCode>
+                <IonGrid className="ion-align-self-center full-height">
+                    <TwoFaCode></TwoFaCode>
+                </IonGrid>
             </IonContent>
         </Page>
     )
