@@ -5,13 +5,16 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { DB, tableStrings } from "./packages/database"
+
 
 
 window.addEventListener("DOMContentLoaded", async () => {
+	ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT)
+	DB.databaseCreateWithListener();
 	setTimeout(()=>{
 		SplashScreen.hide();
 	},3000)
-	ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT)
 })
 
 ReactDOM.render(

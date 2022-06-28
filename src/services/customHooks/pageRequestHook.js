@@ -20,7 +20,9 @@ const usePageRequest = ()=>{
         }catch(e){
             setError(await e.toString());
         }finally{
-            setLoading(false); 
+            setTimeout(()=>{
+                setLoading(false); 
+            },500)
         }
     }
 

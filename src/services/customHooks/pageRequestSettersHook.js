@@ -12,13 +12,23 @@ const usePageSetters = ()=>{
     const [,setRequestBody]     = useAtom(reqBody.requestBodyAtom);
     const [,setError]           = useAtom(error.errorAtom);
     const [,setFormData]        = useAtom(formAtoms.formDataAtom);
-    const history               = useHistory();
     const [,isLoggedIn]         = useAtom(user.getLoggedIn);
     const [, setToken]          = useAtom(user.tokenAtom);
+    const [thisPath,setThisPath]= useAtom(user.currentPath);
+    const history               = useHistory();
 
     const push = (str)=>{
         history.push(str)
     }
+
+    (()=>{
+        setTimeout(()=>{
+            setThisPath(
+                window.location.pathname
+            )
+        },1000)
+    })()
+    
 
     return{
         url:url,
@@ -30,7 +40,8 @@ const usePageSetters = ()=>{
         setFormData:setFormData,
         push:push,
         isLoggedIn:isLoggedIn,
-        setToken:setToken
+        setToken:setToken,
+        lastVisitedPath:thisPath
     }
 }
 

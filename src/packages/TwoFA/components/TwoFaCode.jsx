@@ -50,7 +50,6 @@ const TwoFaCode = () => {
 	});
 
 	const sendDigitsForValidation = async ()=>{
-		console.log(requestSetters.url);
 		requestSetters.setUrl(requestSetters.url)
 		requestSetters.setFormData({code:parseInt(value)});
 		requestSetters.setRequestBody();
@@ -61,8 +60,8 @@ const TwoFaCode = () => {
 		} 
 
 		if(response.status === "ok"){
-			requestSetters.setLoggedIn(true);
-			requestSetters.push('/dashboard');
+			requestSetters.isLoggedIn(true);
+			requestSetters.push('/dealerships');
 		}
 	}
 
@@ -70,7 +69,7 @@ const TwoFaCode = () => {
 		let sendCode = false;
 		let chars = value.split('');
 		sendCode = chars.every(char => char !== " " || null);
-		console.log(value.length,sendCode,"wtf dude?")
+		
 		if(sendCode && value.length !== 0){
 			(async()=>{
 				pageRequest.requestFunction(sendDigitsForValidation);

@@ -10,6 +10,14 @@
         ]
         },
       {
+          "id": "cordova-sqlite-storage.SQLitePlugin",
+          "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+          "pluginId": "cordova-sqlite-storage",
+        "clobbers": [
+          "SQLitePlugin"
+        ]
+        },
+      {
           "id": "es6-promise-plugin.Promise",
           "file": "plugins/es6-promise-plugin/www/promise.js",
           "pluginId": "es6-promise-plugin",
@@ -20,6 +28,7 @@
     // TOP OF METADATA
     {
       "cordova-plugin-screen-orientation": "3.0.2",
+      "cordova-sqlite-storage": "6.0.0",
       "es6-promise-plugin": "4.2.2"
     };
     // BOTTOM OF METADATA

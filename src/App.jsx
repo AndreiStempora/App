@@ -17,7 +17,7 @@ import { Provider } from "jotai";
 import { Suspense } from "react";
 import { Redirect, Route } from 'react-router-dom';
 // import RestrictedRouting from './components/page/restrictedPages/RestrictedRouting';
-import DashboardPage from './pages/dashboard/DashboardPage';
+import DealershipsPage from './pages/dealerships/DealershipsPage';
 import LoginPage from './pages/login/LoginPage';
 /* Theme variables */
 import './theme/variables.css';
@@ -39,7 +39,7 @@ const App = () => {
 							<Route path="/login" component={LoginPage} />
 							<Route path="/2fa" exact={true} component={TwoFAPage} />
 							<Route path="/2fa/code" exact={true} component={TwoFACodePage} />
-							<ProtectedRoute exact={true} path="/dashboard" component={DashboardPage} />
+							<ProtectedRoute exact={true} path="/dealerships" component={DealershipsPage} />
 							<Route render={() => <Redirect to="/login" />} />
 							
 						</IonRouterOutlet>

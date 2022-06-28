@@ -4,7 +4,6 @@ import usePageSetters from '../../services/customHooks/pageRequestSettersHook';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { URL } from '../../services/Requests/importantUrls';
-import { user } from "../../services/user/user";
 import { IonGrid, IonRow, IonCol, IonIcon, IonContent } from '@ionic/react';
 import { CustomForm, formAtoms } from '../../packages/form';
 import "./loginPage.scss";
@@ -14,14 +13,12 @@ const LoginPage = () => {
     const requestSetters = usePageSetters();
     const [logInUrl] = useAtom(URL.login);
     const [summary] = useAtom(URL.dealership);
-    // const [, setToken] = useAtom(user.tokenAtom);
-    // const [, setLoggedIn] = useAtom(user.loggedIn);
     const [, setLogInFields] = useAtom(formAtoms.logInFormSetter);
     const [logInFields] = useAtom(formAtoms.logInForm);
 
     const getFieldsRequest = async () => {
         requestSetters.setToken("");                   //if you are here you should never have token
-        requestSetters.setLoggedIn(false);
+        requestSetters.isLoggedIn(false);
         requestSetters.setUrl(logInUrl);
         await requestSetters.fetch();
         setLogInFields();
@@ -52,8 +49,8 @@ const LoginPage = () => {
         response = await requestSetters.fetch();           //make request
 
         if (response?.status === "ok") {
-            requestSetters.setLoggedIn(true);
-            requestSetters.push('/dashboard')
+            requestSetters.isLoggedIn(true);
+            requestSetters.push('/dealerships')
         } else {
             if (response?.module === "users-addon-2fa") {
                 requestSetters.push("/2fa");
