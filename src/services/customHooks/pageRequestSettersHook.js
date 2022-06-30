@@ -14,20 +14,20 @@ const usePageSetters = ()=>{
     const [,setFormData]        = useAtom(formAtoms.formDataAtom);
     const [,isLoggedIn]         = useAtom(user.getLoggedIn);
     const [, setToken]          = useAtom(user.tokenAtom);
-    const [thisPath,setThisPath]= useAtom(user.currentPath);
+    // const [thisPath,setThisPath]= useAtom(user.currentPath);
     const history               = useHistory();
 
     const push = (str)=>{
         history.push(str)
     }
 
-    (()=>{
-        setTimeout(()=>{
-            setThisPath(
-                window.location.pathname
-            )
-        },1000)
-    })()
+    // (()=>{
+    //     setTimeout(()=>{
+    //         setThisPath(
+    //             window.location.pathname
+    //         )
+    //     },1000)
+    // })()
     
 
     return{
@@ -41,7 +41,7 @@ const usePageSetters = ()=>{
         push:push,
         isLoggedIn:isLoggedIn,
         setToken:setToken,
-        lastVisitedPath:thisPath
+        // lastVisitedPath:thisPath
     }
 }
 

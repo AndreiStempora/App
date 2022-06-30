@@ -1,5 +1,4 @@
 import { useAtom } from "jotai";
-// import { useState } from "react";
 import { useHistory } from "react-router";
 import { error } from "../../packages/errors/index";
 import { loader } from "../../packages/loaders";

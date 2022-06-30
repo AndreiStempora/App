@@ -3,7 +3,7 @@ const tableStrings = {
                     dealership_id	INTEGER,
                     dealership_name	TEXT,
                     dealership_logo	BLOB,
-                    PRIMARY KEY(dealership_id AUTOINCREMENT)
+                    PRIMARY KEY (dealership_id)
                 )`,
 
     images:     `CREATE TABLE IF NOT EXISTS images (

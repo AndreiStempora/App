@@ -1,4 +1,4 @@
 import DB from "./features/database";
-import { tableStrings } from "./features/createTableStrings";
+import { dealershipsService } from "./features/services/dealershipsService";
 
-export { DB, tableStrings }
+export { DB, dealershipsService };

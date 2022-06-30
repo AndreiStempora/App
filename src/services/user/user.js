@@ -5,6 +5,7 @@ const user = {
     loggedIn:   atomWithStorage("user",false),
     tokenAtom : atomWithStorage("token",""),
     getLoggedIn: atom(null,(get,set,update)=>{
+        set(user.loggedIn,update);
         return get(user.loggedIn)
     }),
     currentPath: atomWithStorage("lastPage",[])
