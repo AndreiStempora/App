@@ -7,7 +7,7 @@ import { IonContent } from '@ionic/react';
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import "./dealershipsPage.scss"
-import { DB, dealershipsService } from '../../packages/database';
+import { DB, dealershipsService, logService } from '../../packages/database';
 
 const DealershipsPage = () => {
 	const pageRequest = usePageRequest();
@@ -30,6 +30,7 @@ const DealershipsPage = () => {
 		dealershipsService.getDealershipById(['111']);
 		// dealershipsService.deleteDealership(['111']);
 		dealershipsService.getAllDealerships();
+		logService.getAllLogs();
 	}
 
 	useEffect(() => {

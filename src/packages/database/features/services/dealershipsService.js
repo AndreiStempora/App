@@ -9,7 +9,7 @@ const dealershipsService = {
 
     //get all dealerships
     getAllDealerships:() =>{
-       dealershipsRepository.getAllDealerships();
+        dealershipsRepository.getAllDealerships();
     },
 
     //get a dealership by id
