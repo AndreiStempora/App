@@ -8,8 +8,8 @@ const dealershipsService = {
     },
 
     //get all dealerships
-    getAllDealerships:() =>{
-        dealershipsRepository.getAllDealerships();
+    getAllDealerships:async() =>{
+        return dealershipsRepository.getAllDealerships();
     },
 
     //get a dealership by id

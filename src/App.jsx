@@ -40,7 +40,7 @@ const App = () => {
 							<Route path="/2fa" exact={true} component={TwoFAPage} />
 							<Route path="/2fa/code" exact={true} component={TwoFACodePage} />
 							<ProtectedRoute exact={true} path="/dealerships" component={DealershipsPage} />
-							<Route render={() => <Redirect to="/login" />} />
+							<Route render={() => <Redirect to="/dealerships" />} />
 							
 						</IonRouterOutlet>
 					</IonReactRouter>

@@ -2,7 +2,6 @@ import DB from "../database";
 import { logService } from "../services/logService";
 
 const dealershipsRepository = {
-
     //insert a new dealership
     insertDealership:([dealership_id, dealership_name, dealership_logo]) =>{
         DB.db.transaction((tx)=>{
@@ -18,16 +17,38 @@ const dealershipsRepository = {
 
     //get all dealerships
     getAllDealerships:() =>{
-        DB.db.transaction((tx)=>{
-            tx.executeSql(`SELECT * FROM dealerships`, [], (tx, results)=>{
-                console.log(results.rows.item(0));
-                logService.insertLog([new Date(), "", "Dealerships retrieved successfully"]);
+        return new Promise(async (resolve, reject)=>{
+            (await DB.dbInstance()).transaction((tx)=>{
+                tx.executeSql(`SELECT * FROM dealerships`, [], (tx, results)=>{
+                    let arr=[];
+                    for(let i = 0; i < results.rows.length; i++){
+                        arr.push(results.rows.item(i));
+                    }
+                    resolve(arr);
+                    // resolve(results.rows);
+                });
             }, (error)=>{
                 console.log(error);
                 logService.insertLog([new Date(), "", error]);
-            }
-            );
+                reject(error);
+            });
         });
+
+        // const arr = [];
+        // DB.db.transaction((tx)=>{
+        //     tx.executeSql(`SELECT * FROM dealerships`, [], async (tx, results)=>{
+        //         // console.log(results.rows.item(0));
+        //         for(let i = 0; i < results.rows.length; i++){
+        //             arr.push(results.rows.item(i));
+        //         }
+        //         logService.insertLog([new Date(), "", "Dealerships retrieved successfully"]);
+        //     }, (error)=>{
+        //         console.log(error);
+        //         logService.insertLog([new Date(), "", error]);
+        //     }
+        //     );
+        // });
+        // return arr;
     },
 
     //get a dealership by id
