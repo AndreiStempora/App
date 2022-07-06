@@ -12,7 +12,6 @@ const dealershipsRepository = {
                         `INSERT OR REPLACE INTO dealerships (dealership_id, dealership_name, dealership_logo) VALUES (?, ?, ?)`,
                         [dealership_id, dealership_name, dealership_logo], 
                         (tx, res)=>{
-                            logService.insertLog([new Date(), dealership_id, "Dealership inserted successfully"]);
                             resolve(res);
                         },
                         (tx, error)=>{
@@ -45,7 +44,6 @@ const dealershipsRepository = {
                         `SELECT * FROM dealerships`, 
                         [], 
                         (tx, results)=>{
-
                             let arr=[];
                             for(let i = 0; i < results.rows.length; i++){
                                 arr.push(results.rows.item(i));

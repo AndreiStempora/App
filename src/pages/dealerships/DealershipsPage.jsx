@@ -28,9 +28,9 @@ const DealershipsPage = () => {
 
 	const dbCalls = async()=>{
 			// DB.dropAllTables();
-			// await tests.testDealerships();
-			// await tests.testLogs();
-			await tests.testVehicles();
+		await tests.testDealerships();
+		await tests.testLogs();
+		await tests.testVehicles();
 		
 		// await DB.dropAllTables();
 		// // await dealershipsService.insertDealership([555,"name","a logo"]);

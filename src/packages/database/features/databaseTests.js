@@ -47,31 +47,31 @@ const tests = {
     testVehicles : async () => {
         //insert a new vehicle
         console.log("insertVehicle");
-        // await vehiclesService.insertVehicle([1, "vin_abc", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
-        // await vehiclesService.insertVehicle([1, "vin_abd", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
-        // await vehiclesService.insertVehicle([1, "vin_abe", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
-        // await vehiclesService.insertVehicle([1, "vin_bc", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
+        await vehiclesService.insertVehicle([1, "vin_abc", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
+        await vehiclesService.insertVehicle([1, "vin_abd", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
+        await vehiclesService.insertVehicle([1, "vin_abe", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
+        await vehiclesService.insertVehicle([1, "vin_bc", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
 
         //get all vehicles
-        // const vehicles = await vehiclesService.getAllVehicles();
-        // console.log(vehicles, "ALL vehicles");
-        // //get all vehicles by vin
-        // const vehicles2 = await vehiclesService.getAllVehiclesByVin(['vin']);
-        // console.log(vehicles2, "ALL vehicles by vin");
-        // //get all vehicles by vin
-        // const vehicles3 = await vehiclesService.getAllVehiclesByVin(['a']);
-        // console.log(vehicles3, "ALL vehicles by a");
-        // //get all vehicles by vin
-        // const vehicles4 = await vehiclesService.getAllVehiclesByVin(['bc']);
-        // console.log(vehicles4, "ALL vehicles by bc");
+        const vehicles = await vehiclesService.getAllVehicles();
+        console.log(vehicles, "ALL vehicles");
+        //get all vehicles by vin
+        const vehicles2 = await vehiclesService.getAllVehiclesByVin(['vin']);
+        console.log(vehicles2, "ALL vehicles by vin");
+        //get all vehicles by vin
+        const vehicles3 = await vehiclesService.getAllVehiclesByVin(['a']);
+        console.log(vehicles3, "ALL vehicles by a");
+        //get all vehicles by vin
+        const vehicles4 = await vehiclesService.getAllVehiclesByVin(['bc']);
+        console.log(vehicles4, "ALL vehicles by bc");
 
-        // //get all vehicles by vin
-        // const vehicles5 = await vehiclesService.getAllVehiclesByVin(['e']);
-        // console.log(vehicles5, "ALL vehicles by e");
+        //get all vehicles by vin
+        const vehicles5 = await vehiclesService.getAllVehiclesByVin(['e']);
+        console.log(vehicles5, "ALL vehicles by e");
 
-        // //get all vehicles by vin
-        // const vehicles6 = await vehiclesService.getAllVehiclesByVin(["ab"]);
-        // console.log(vehicles6, "ALL vehicles by ab");
+        //get all vehicles by vin
+        const vehicles6 = await vehiclesService.getAllVehiclesByVin(["ab"]);
+        console.log(vehicles6, "ALL vehicles by ab");
 
     },
 }
