@@ -7,7 +7,7 @@ import { IonButton, IonContent } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import "./dealershipsPage.scss"
-import { DB, dealershipsService, logService } from '../../packages/database';
+import { DB, dealershipsService, logService, tests } from '../../packages/database';
 
 const DealershipsPage = () => {
 	const pageRequest = usePageRequest();
@@ -24,11 +24,21 @@ const DealershipsPage = () => {
 		return response;
 	}
 
+
+
 	const dbCalls = async()=>{
-		let x = await dealershipsService.getAllDealerships();
+			// DB.dropAllTables();
+			// await tests.testDealerships();
+			// await tests.testLogs();
+			await tests.testVehicles();
 		
-		setData(x);
-		return x;
+		// await DB.dropAllTables();
+		// // await dealershipsService.insertDealership([555,"name","a logo"]);
+		// let x = await dealershipsService.getAllDealerships();
+		
+		// // setData(x);
+		// // return x;
+
 		// console.log(x,"uga")
 		// dealershipsService.updateDealership(['111', '666', '999']);
 		// dealershipsService.getDealershipById(['111']);
@@ -47,6 +57,7 @@ const DealershipsPage = () => {
 	useEffect(() => {
 		(async()=>{
 			await dbRequest.requestFunction(dbCalls);
+			// console.log(await dbRequest.requestFunction(dbCalls))
 			// setData(x);
 			// console.log(data,"auuuuuuuuuga")
 		})()

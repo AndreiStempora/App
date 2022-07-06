@@ -8,7 +8,7 @@ const DB = {
     //get a db instance
     dbInstance:async ()=>{
         if(!DB.dbinitialized){
-            return DB.init();
+            return await DB.init();
         }else{
             return DB.db;
         }
@@ -49,6 +49,7 @@ const DB = {
             dealership_name	TEXT,
             dealership_logo	BLOB,
             PRIMARY KEY (dealership_id)
+            UNIQUE (dealership_id)
         )`);
         await DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
             image_id	INTEGER,
@@ -145,8 +146,8 @@ const DB = {
     },
     
     //drop a table
-    dropTable:(tableName) =>{
-        DB.db.transaction((tx)=>{
+    dropTable:async(tableName) =>{
+        (await DB.dbInstance()).transaction((tx)=>{
             tx.executeSql("DROP TABLE IF EXISTS " + tableName, [], function(tx, res){
                 console.log("Table " + tableName + " dropped successfully");
             }, function(tx, error){
@@ -156,13 +157,13 @@ const DB = {
     },
 
     //drop all tables
-    dropAllTables:() =>{
-        DB.dropTable("dealerships");
-        DB.dropTable("images");
-        DB.dropTable("log");
-        DB.dropTable("settings");
-        DB.dropTable("vehicles");
-        DB.dropTable("hotspots");
+    dropAllTables:async () =>{
+        await DB.dropTable("dealerships");
+        await DB.dropTable("images");
+        await DB.dropTable("log");
+        await DB.dropTable("settings");
+        await DB.dropTable("vehicles");
+        await DB.dropTable("hotspots");
     }
 }
 

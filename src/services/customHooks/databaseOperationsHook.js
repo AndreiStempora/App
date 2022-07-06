@@ -21,7 +21,7 @@ const useDbRequest = ()=>{
             // console.log(data,"data from hook");
         }catch(e){
             setError("There was a problem with the database!");
-            console.error(e)
+            console.log(e)
         }finally{
             
             setLoading(false); 

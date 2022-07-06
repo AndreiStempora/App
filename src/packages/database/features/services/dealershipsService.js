@@ -3,28 +3,28 @@ import { dealershipsRepository } from "../repositories/dealershipsRepository";
 const dealershipsService = {
 
     //insert a new dealership
-    insertDealership:([dealership_id, dealership_name, dealership_logo]) =>{
-        dealershipsRepository.insertDealership([dealership_id, dealership_name, dealership_logo]);
+    insertDealership:async ([dealership_id, dealership_name, dealership_logo]) =>{
+        await dealershipsRepository.insertDealership([dealership_id, dealership_name, dealership_logo]);
     },
 
     //get all dealerships
     getAllDealerships:async() =>{
-        return dealershipsRepository.getAllDealerships();
+        return await dealershipsRepository.getAllDealerships();
     },
 
     //get a dealership by id
-    getDealershipById:([dealership_id]) =>{
-        dealershipsRepository.getDealershipById([dealership_id]);
+    getDealershipById:async ([dealership_id]) =>{
+        return await dealershipsRepository.getDealershipById([dealership_id]);
     },
 
     //delete a dealership
-    deleteDealership:([dealership_id]) =>{
-        dealershipsRepository.deleteDealership([dealership_id]);
+    deleteDealership:async ([dealership_id]) =>{
+        await dealershipsRepository.deleteDealership([dealership_id]);
     },
 
     //update a dealership
-    updateDealership:([dealership_id, dealership_name, dealership_logo]) =>{
-        dealershipsRepository.updateDealership([dealership_id, dealership_name, dealership_logo]);
+    updateDealership:async ([dealership_id, dealership_name, dealership_logo]) =>{
+        await dealershipsRepository.updateDealership([dealership_id, dealership_name, dealership_logo]);
     }
 }
 
