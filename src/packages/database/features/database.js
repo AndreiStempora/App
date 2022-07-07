@@ -53,7 +53,7 @@ const DB = {
         )`);
         await DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
             image_id	INTEGER,
-            image_status	INTEGER,
+            image_status	INTEGER, 
             image_type	INTEGER,
             hotspot_id	INTEGER,
             vehicle_id	INTEGER REFERENCES vehicles (vehicle_id) ON DELETE CASCADE,
@@ -61,9 +61,9 @@ const DB = {
             PRIMARY KEY(image_id AUTOINCREMENT)
         )`);
         await DB.createTable(db,"log", `CREATE TABLE IF NOT EXISTS log (
-            log_id	INTEGER,
+            log_id	    INTEGER,
             log_date	INTEGER,
-            dealership_id	INTEGER REFERENCES dealerships (dealership_id) ON DELETE CASCADE,
+            log_body    TEXT,
             log_event	INTEGER,
             PRIMARY KEY(log_id AUTOINCREMENT)
         )`);
@@ -81,6 +81,7 @@ const DB = {
             vehicle_make	TEXT,
             vehicle_model	TEXT,
             vehicle_trim	TEXT,
+            vehicle_year    INTEGER,
             vehicle_exterior	INTEGER,
             vehicle_interior	INTEGER,
             vehicle_hotspots	INTEGER,
@@ -164,6 +165,7 @@ const DB = {
         await DB.dropTable("settings");
         await DB.dropTable("vehicles");
         await DB.dropTable("hotspots");
+        DB.dbinitialized = false;
     }
 }
 

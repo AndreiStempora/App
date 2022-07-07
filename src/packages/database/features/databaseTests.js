@@ -27,7 +27,7 @@ const tests = {
     testLogs : async () => {
         //insert a new log
         console.log("insertLog");
-        await logService.insertLog([new Date(), 1, "new test log"]);
+        await logService.insertLog([new Date().getTime(), 1, "new test log"]);
         //get all logs
         const logs = await logService.getAllLogs();
         console.log(logs, "ALL logs");

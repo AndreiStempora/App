@@ -16,19 +16,19 @@ const dealershipsRepository = {
                         },
                         (tx, error)=>{
                             console.log(error, 'got this error');
-                            logService.insertLog([new Date(), dealership_id, error]);
+                            logService.insertLog([new Date().getTime(), dealership_id, error]);
                         }
                     );
                 },
                 //transaction error
                 (error)=>{
                     console.log(error,'transaction error')
-                    logService.insertLog([new Date(), [dealership_id, dealership_name, dealership_logo], error]);
+                    logService.insertLog([new Date().getTime(), [dealership_id, dealership_name, dealership_logo], error]);
                     reject(error);
                 },
                 //transaction success
                 ()=>{
-                    logService.insertLog([new Date(), [dealership_id, dealership_name, dealership_logo], "Dealership inserted successfully"]);
+                    logService.insertLog([new Date().getTime(), [dealership_id, dealership_name, dealership_logo], "Dealership inserted successfully"]);
                 });
             }
         );
@@ -55,12 +55,12 @@ const dealershipsRepository = {
                 //transaction error
                 (error)=>{
                     console.log(error);
-                    logService.insertLog([new Date(), "", error]);
+                    logService.insertLog([new Date().getTime(), "", error]);
                     reject(error);
                 },
                 // transaction success
                 ()=>{
-                    logService.insertLog([new Date(), "", "Dealerships retrieved successfully"]);
+                    logService.insertLog([new Date().getTime(), "", "Dealerships retrieved successfully"]);
                 }
             );
         });
@@ -83,12 +83,12 @@ const dealershipsRepository = {
                 //transaction error
                 (error)=>{
                     console.log(error);
-                    logService.insertLog([new Date(), dealership_id, error]);
+                    logService.insertLog([new Date().getTime(), [dealership_id], error]);
                     reject(error);
                 },
                 // transaction success
                 ()=>{
-                    logService.insertLog([new Date(), dealership_id, "Dealership retrieved successfully"]);
+                    logService.insertLog([new Date().getTime(), [dealership_id], "Dealership retrieved successfully"]);
                 }
             );
         });
@@ -111,12 +111,12 @@ const dealershipsRepository = {
                 //transaction error
                 (error)=>{
                     console.log(error);
-                    logService.insertLog([new Date(), dealership_id, error]);
+                    logService.insertLog([new Date().getTime(), [dealership_id], error]);
                     reject(error);
                 },
                 // transaction success
                 ()=>{
-                    logService.insertLog([new Date(), dealership_id, "Dealership deleted successfully"]);
+                    logService.insertLog([new Date().getTime(), [dealership_id], "Dealership deleted successfully"]);
                 }
             );
         });
@@ -138,14 +138,14 @@ const dealershipsRepository = {
                 },
                 //transaction error
                 (error)=>{
-                    console.log(error);
-                    logService.insertLog([new Date(), dealership_id, error]);
+                    // console.log(error);
+                    logService.insertLog([new Date().getTime(), [dealership_id, dealership_name, dealership_logo], error]);
                     reject(error);
                 },
                 // transaction success
                 ()=>{
-                    console.log("Dealership updated successfully");
-                    logService.insertLog([new Date(), dealership_id, "Dealership updated successfully"]);
+                    // console.log("Dealership updated successfully");
+                    logService.insertLog([new Date().getTime(), [dealership_id, dealership_name, dealership_logo], "Dealership updated successfully"]);
                 }
             );
         });

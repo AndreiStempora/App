@@ -25,6 +25,23 @@ const dealershipsService = {
     //update a dealership
     updateDealership:async ([dealership_id, dealership_name, dealership_logo]) =>{
         await dealershipsRepository.updateDealership([dealership_id, dealership_name, dealership_logo]);
+    },
+
+    //update local dealerships
+    updateLocalDealerships:async (newArray) =>{
+        let oldArray = await dealershipsRepository.getAllDealerships();
+        console.log(oldArray,"currentElements");
+
+        let elementsToAdd = newArray.filter(elem => !oldArray.some(elem2 => parseInt(elem.id) === elem2.dealership_id));
+        // console.log(elementsToAdd, "add");
+        elementsToAdd.map(async (elem) => {await dealershipsRepository.insertDealership([elem.id, elem.dealer, elem.logo])});
+
+        let elementsToDelete = oldArray.filter(elem => !newArray.some(elem2 => parseInt(elem2.id) === elem.dealership_id));
+        elementsToDelete.map(async (elem) => {await dealershipsRepository.deleteDealership([elem.dealership_id])});
+        // console.log(elementsToDelete, "delete");
+
+        console.log(await dealershipsRepository.getAllDealerships(), "updated");
+
     }
 }
 

@@ -3,14 +3,14 @@ import DB from "../database";
 const logRepository = {
 
     //insert a new log
-    insertLog: async ([log_date, dealership_id, log_event]) => {
+    insertLog: async ([log_date, log_body, log_event]) => {
         return new Promise(async (resolve, reject) => {
             //transaction
             (await DB.dbInstance())
                 .transaction((tx) => {
                     tx.executeSql(
-                        `INSERT OR REPLACE INTO log (log_date, dealership_id, log_event) VALUES (?, ?, ?)`,
-                        [log_date, dealership_id, log_event],
+                        `INSERT OR REPLACE INTO log (log_date, log_body, log_event) VALUES (?, ?, ?)`,
+                        [log_date, log_body, log_event],
                         (tx, res) => {
                             resolve(res);
                         }
@@ -18,12 +18,12 @@ const logRepository = {
                 },
                 //transaction error
                 (error) => {
-                    console.log(error, 'insert error');
+                    // console.log(error, 'insert error');
                     reject(error);
                 },
                 //transaction success
                 () => {
-                    console.log('log inserted successfully');
+                    // console.log('log inserted successfully');
                     resolve("Log inserted successfully");
                 }
             );
@@ -50,12 +50,12 @@ const logRepository = {
                 },
                 //transaction error
                 (error) => {
-                    console.log(error, 'get all logs error');
+                    // console.log(error, 'get all logs error');
                     reject(error);
                 },
                 // transaction success
                 () => {
-                    console.log('All logs retrieved successfully');
+                    // console.log('All logs retrieved successfully');
                     resolve("All logs retrieved successfully");
                 }
             );
@@ -78,12 +78,12 @@ const logRepository = {
                 },
                 //transaction error
                 (error) => {
-                    console.log(error, 'get log by id error');
+                    // console.log(error, 'get log by id error');
                     reject(error);
                 },
                 // transaction success
                 () => {
-                    console.log('Log retrieved successfully');
+                    // console.log('Log retrieved successfully');
                     resolve("Log retrieved successfully");
                 }
             );
@@ -106,12 +106,12 @@ const logRepository = {
                 },
                 //transaction error
                 (error) => {
-                    console.log(error, 'delete log by id error');
+                    // console.log(error, 'delete log by id error');
                     reject(error);
                 },
                 // transaction success
                 () => {
-                    console.log('Log deleted successfully');
+                    // console.log('Log deleted successfully');
                     resolve("Log deleted successfully");
                 }
             );
@@ -138,12 +138,12 @@ const logRepository = {
                 },
                 //transaction error
                 (error) => {
-                    console.log(error, 'get last 50 logs error');
+                    // console.log(error, 'get last 50 logs error');
                     reject(error);
                 },
                 // transaction success
                 () => {
-                    console.log('Last 50 logs retrieved successfully');
+                    // console.log('Last 50 logs retrieved successfully');
                     resolve("Last 50 logs retrieved successfully");
                 }
             );

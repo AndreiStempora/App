@@ -3,13 +3,13 @@ import { logService } from "../services/logService";
 
 const vehiclesRepository = {
     //insert a new vehicle
-    insertVehicle: async ([dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim, vehicle_interior, vehicle_exterior, vehicle_hotspots]) => {
+    insertVehicle: async ([dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim]) => {
         return new Promise(async (resolve, reject) => {
             (await DB.dbInstance())
                 .transaction((tx) => {
                     tx.executeSql(
-                        `INSERT OR REPLACE INTO vehicles (dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim, vehicle_interior, vehicle_exterior, vehicle_hotspots) VALUES (?,?,?,?,?,?,?,?,?,?)`, 
-                        [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim, vehicle_interior, vehicle_exterior, vehicle_hotspots],
+                        `INSERT OR REPLACE INTO vehicles (dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim) VALUES (?,?,?,?,?,?,?)`, 
+                        [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim],
                         (tx, res) => {
                             resolve(res);
                     });
@@ -17,12 +17,12 @@ const vehiclesRepository = {
                 //transaction error
                 (error) => {
                     console.log(error, 'transaction error');
-                    logService.insertLog([new Date(), dealership_id, vehicle_vin, error]);
+                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim], vehicle_vin, error]);
                     reject(error);
                 },
                 //transaction success
                 () => {
-                    logService.insertLog([new Date(), [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim, vehicle_interior, vehicle_exterior, vehicle_hotspots] , "Vehicle inserted successfully"]);
+                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim] , "Vehicle inserted successfully"]);
                 }
             );
         });
@@ -47,8 +47,12 @@ const vehiclesRepository = {
                 //transaction error
                 (error) => {
                     console.log(error);
-                    logService.insertLog([new Date(), "", error]);
+                    logService.insertLog([new Date().getTime(), "", error]);
                     reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), "", "Vehicles retrieved successfully"]);
                 }
             );
         });
@@ -69,12 +73,43 @@ const vehiclesRepository = {
                 //transaction error
                 (error) => {
                     console.log(error);
-                    logService.insertLog([new Date(), "", error]);
+                    logService.insertLog([new Date().getTime(), [vehicle_id], error]);
                     reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [vehicle_id], "Vehicle retrieved successfully"]);
                 }
             );
         });
     },
+    //delete a vehicle by id
+    deleteVehicleById: async ([vehicle_id]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `DELETE FROM vehicles WHERE vehicle_id = ?`,
+                        [vehicle_id],
+                        (tx, res) => {
+                            resolve(res);
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    console.log(error);
+                    logService.insertLog([new Date().getTime(), [vehicle_id], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [vehicle_id], "Vehicle deleted successfully"]);
+                }
+            );
+        });
+    },
+
     //get all vehicles that contain a certain string in their vin
     getAllVehiclesByVin: async ([vin]) => {
         return new Promise(async (resolve, reject) => {
@@ -95,8 +130,12 @@ const vehiclesRepository = {
                 //transaction error
                 (error) => {
                     console.log(error);
-                    logService.insertLog([new Date(), "", error]);
+                    logService.insertLog([new Date().getTime(), [vin], error]);
                     reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [vin], "Vehicles retrieved successfully"]);
                 }
             );
         });
