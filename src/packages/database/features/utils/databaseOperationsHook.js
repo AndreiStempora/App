@@ -1,7 +1,6 @@
 import { useAtom } from "jotai";
-import { DB } from "../../packages/database";
-import { error } from "../../packages/errors/index";
-import { loader } from "../../packages/loaders";
+import { error } from "../../../errors/index";
+import { loader } from "../../../loaders";
 import { useState } from "react";
 
 const useDbRequest = ()=>{
