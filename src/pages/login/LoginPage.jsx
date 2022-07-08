@@ -19,6 +19,7 @@ const LoginPage = () => {
     const getFieldsRequest = async () => {
         requestSetters.setToken("");                   //if you are here you should never have token
         requestSetters.isLoggedIn(false);
+        requestSetters.setUserDetails("");
         requestSetters.setUrl(logInUrl);
         await requestSetters.fetch();
         setLogInFields();
@@ -36,7 +37,7 @@ const LoginPage = () => {
 
         let response = await requestSetters.fetch();       //make request
         requestSetters.setToken(response?.token);
-        
+        requestSetters.setUserDetails(response?.profile);     
         requestSetters.setFormData('RESET');                //reset body
 
         if (response.status === "error") {                  //if error
@@ -50,6 +51,7 @@ const LoginPage = () => {
 
         if (response?.status === "ok") {
             requestSetters.isLoggedIn(true);
+            requestSetters.setUserDetails(response.profile);
             requestSetters.push('/dealerships')
         } else {
             if (response?.module === "users-addon-2fa") {

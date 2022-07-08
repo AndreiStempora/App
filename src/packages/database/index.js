@@ -6,6 +6,7 @@ import { tests } from "./features/databaseTests";
 import { imagesService } from "./features/services/imagesService";
 import { hotspotsService } from "./features/services/hotspotsService";
 import useDbRequest from "./features/utils/databaseOperationsHook";
+import DealershipSelector from "./components/dealershipSelector/DealershipSelector";
 
 
-export { DB, dealershipsService, logService, vehiclesService, tests, imagesService, hotspotsService, useDbRequest };
+export { DB, dealershipsService, logService, vehiclesService, tests, imagesService, hotspotsService, useDbRequest, DealershipSelector };

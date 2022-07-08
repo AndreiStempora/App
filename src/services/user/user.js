@@ -8,7 +8,8 @@ const user = {
         set(user.loggedIn,update);
         return get(user.loggedIn)
     }),
-    currentPath: atomWithStorage("lastPage",[])
+    currentPath: atomWithStorage("lastPage",[]),
+    userDetails: atomWithStorage("userDetails",{}),
 }
 
 export { user };

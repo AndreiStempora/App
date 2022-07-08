@@ -1,3 +1,4 @@
+
 const DB = {
     //was the db initialized once or not
     dbinitialized: false,
@@ -16,8 +17,10 @@ const DB = {
 
     //initialize the db
     init:async ()=>{
+        //get userDetails from local storage
+        let userDetails = await JSON.parse(localStorage.getItem("userDetails"));
         return window.sqlitePlugin.openDatabase({
-            name: 'dealership.db',
+            name: `${userDetails.email}.db`,
             location: 'default',
             androidDatabaseProvider: 'system'
         },async (db)=>{  

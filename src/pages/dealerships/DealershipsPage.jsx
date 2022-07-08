@@ -6,16 +6,15 @@ import { IonButton, IonContent } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import "./dealershipsPage.scss";
-import { network } from '../../packages/network';
-import { DB, dealershipsService, logService, tests, vehiclesService, useDbRequest } from '../../packages/database';
+import { DealershipSelector } from '../../packages/database';
 
 const DealershipsPage = () => {
 	const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
-	const dbRequest = useDbRequest();
 	const [summary] = useAtom(myUrl.dealership);
 	const [inventory] = useAtom(myUrl.inventory);
 	// let dealerships;
+	let [dealerships, setDealerships] = useState(null);
 
 	const requestTableContentDealerships = async ()=>{
 		requestSetters.setUrl(summary);
@@ -33,34 +32,11 @@ const DealershipsPage = () => {
 	}
 	
 
-	const dbCalls = async()=>{
-		
-	}
-	
-
 	useEffect(() => {
 		(async()=>{	
-			//if network is online, fetch from server and save to db else fetch from db
-			if(network.getCurrentNetworkStatus()){
-
-				let requestDealerships = (await pageRequest.requestFunction(requestTableContentDealerships)).dealerships;
-				// for each dealership request the logo
-				let requestLogos = requestDealerships.map(async(dealership)=>{
-					let logo = await fetch(dealership.logo);
-						
-						return await {...dealership, logo:await logo.blob()};
-					})
-				console.log(await requestLogos)
-				
-				// theDealerships?.forEach(async dealership => {
-				// 	let logo = await fetch(dealership.logo);
-				// 	console.log(await logo.blob(),"logo");
-				// })
-			} else {
-				let dealerships = await dbRequest.requestFunction(dealershipsService.getAllDealerships);
-			}
-			// console.log(dealerships);
-			// console.log(dealerships,'rr')
+			const response = await  pageRequest.requestFunction(requestTableContentDealerships);
+			// console.log(response)
+			setDealerships(response.dealerships);
 		})()
 	}, []);
 
@@ -68,7 +44,7 @@ const DealershipsPage = () => {
 		<Page>
 			<IonContent>
 				<div className='red'>DealershipsPage</div>
-				
+				<DealershipSelector dealerships={dealerships} ></DealershipSelector>
 			</IonContent>
 		</Page>
 	)
