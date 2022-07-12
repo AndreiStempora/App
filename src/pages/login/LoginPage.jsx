@@ -1,9 +1,10 @@
 import Page from '../../components/page/Page';
-import usePageRequest from "../../services/customHooks/pageRequestHook";
-import usePageSetters from '../../services/customHooks/pageRequestSettersHook';
+// import usePageRequest from "../../services/customHooks/pageRequestHook";
+// import usePageSetters from '../../services/customHooks/pageRequestSettersHook';
+// import { URL } from '../../services/Requests/importantUrls';
+import { URL, usePageRequest, usePageSetters } from "../../services"
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { URL } from '../../services/Requests/importantUrls';
 import { IonGrid, IonRow, IonCol, IonIcon, IonContent } from '@ionic/react';
 import { CustomForm, formAtoms } from '../../packages/form';
 import "./loginPage.scss";

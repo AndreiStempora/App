@@ -20,7 +20,7 @@ const DB = {
         //get userDetails from local storage
         let userDetails = await JSON.parse(localStorage.getItem("userDetails"));
         return window.sqlitePlugin.openDatabase({
-            name: `${userDetails.email}.db`,
+            name: `${userDetails["email"]}.db`,
             location: 'default',
             androidDatabaseProvider: 'system'
         },async (db)=>{  
@@ -50,7 +50,7 @@ const DB = {
         await DB.createTable(db,"dealerships", `CREATE TABLE IF NOT EXISTS dealerships (
             dealership_id	INTEGER,
             dealership_name	TEXT,
-            dealership_logo	BLOB,
+            dealership_logo	MEDIUMBLOB,
             PRIMARY KEY (dealership_id)
             UNIQUE (dealership_id)
         )`);
@@ -169,6 +169,16 @@ const DB = {
         await DB.dropTable("vehicles");
         await DB.dropTable("hotspots");
         DB.dbinitialized = false;
+    },
+
+    blobToBase64 : blob => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Promise(resolve => {
+            reader.onloadend = () => {
+                resolve(reader.result);
+            };
+        });
     }
 }
 

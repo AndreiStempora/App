@@ -1,9 +1,13 @@
 import React from 'react'
 import './dealershipElement.scss'
 
-const DealershipElement = ({...props}) => {
+const DealershipElement = ({dealership}) => {
     return (
-        <div className='element-title'>DealershipElement</div>
+        <div className="dealership-element">
+        <div className='element-title'>{dealership.dealership_name}</div>
+            <img src={dealership.dealership_logo} alt=""/>
+        </div>
+
     )
 }
 

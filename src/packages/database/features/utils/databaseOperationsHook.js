@@ -11,13 +11,9 @@ const useDbRequest = ()=>{
     const givenFunctionWrapper = async(dbRequestFunction)=>{
         setLoading(true);
         try{
-            // console.log(await DB.db.openSuccess());
-            // // const result = dbRequestFunction();
             const result = await dbRequestFunction();
-            // setData(result);
-            // setData(result);
+            setData(result);
             return result;
-            // console.log(data,"data from hook");
         }catch(e){
             setError("There was a problem with the database!");
             console.log(e)

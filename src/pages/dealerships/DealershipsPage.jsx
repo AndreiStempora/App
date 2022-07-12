@@ -1,8 +1,7 @@
 import Page from '../../components/page/Page';
-import usePageRequest from "../../services/customHooks/pageRequestHook";
-import usePageSetters from '../../services/customHooks/pageRequestSettersHook';
-import { URL as myUrl } from '../../services/Requests/importantUrls';
-import { IonButton, IonContent } from '@ionic/react';
+
+import { URL as myUrl, usePageRequest, usePageSetters } from "../../services"
+import { IonContent, IonHeader, IonToolbar,IonTitle} from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import "./dealershipsPage.scss";
@@ -42,8 +41,13 @@ const DealershipsPage = () => {
 
 	return (
 		<Page>
+			<IonHeader>
+				<IonToolbar>
+					<IonTitle class='ion-text-center'>Inline Modal</IonTitle>
+				</IonToolbar>
+			</IonHeader>
 			<IonContent>
-				<div className='red'>DealershipsPage</div>
+				{/* <div className='red'>DealershipsPage</div> */}
 				<DealershipSelector dealerships={dealerships} ></DealershipSelector>
 			</IonContent>
 		</Page>

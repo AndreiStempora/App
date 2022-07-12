@@ -1,62 +1,75 @@
 import './dealershipSelector.scss'
 import { IonContent } from '@ionic/react';
 import DealershipElement from './DealershipElement';
+import {  usePageRequest, usePageSetters } from "../../../../services";
 import { useState, useEffect } from 'react';
 import { DB, useDbRequest, dealershipsService } from "../../";
 import { network } from '../../../network';
 
-
-
 const DealershipSelector = ({dealerships}) => {
 	const dbRequest = useDbRequest();
+	const pageRequest = usePageRequest();
+	const requestSetters = usePageSetters();
+
+	const [dealershipElements , setDealershipElements] = useState([]);
 	const simplifiedArray = async (arr)=>{
 		try{
 	
 			return await Promise.all(arr?.map(async (dealership)=>{
 					let logoBlob = await (await fetch(dealership.logo)).blob();
-					return {id: parseInt(dealership.id), dealer: dealership.dealer, logo: logoBlob}
+					const base64string = await DB.blobToBase64(logoBlob);
+
+					return {id: parseInt(dealership.id), dealer: dealership.dealer, logo: base64string};
 				})
 			)
-
 		} catch(e){
 			console.log(e);
 		}
 	}
 
-	const usableArray = async (arr)=>{
-		try{	
-			return await Promise.all(arr?.map(async (dealership)=>{
-				console.log(dealership.logo);
-				let src = window.URL.createObjectURL(dealership.logo);
-				return {id: parseInt(dealership.id), dealer: dealership.dealer, logo: src}
-			}
-			))
-		} catch(e){
-			console.log(e);
-		}
-	}
-
+	// const usableArray = async (arr)=>{
+	// 	try{	
+	// 		return await Promise.all(arr?.map(async (dealership)=>{
+	// 			console.log(dealership.logo);
+	// 			let src = window.URL.createObjectURL(dealership.logo);
+	// 			return {id: parseInt(dealership.id), dealer: dealership.dealer, logo: src}
+	// 		}
+	// 		))
+	// 	} catch(e){
+	// 		console.log(e);
+	// 	}
+	// }
+	
+	
 
 	useEffect(() => {
-		
-		
 		(async()=>{
-			const simplifiedDealershipsArray = await simplifiedArray(dealerships);
-			//get all dealerships
-			await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealershipsArray));
-
-			const dealershipsInDB = await dbRequest.requestFunction(dealershipsService.getAllDealerships);
-			console.log(dealershipsInDB, "dealerships in db");
+			let x = await simplifiedArray(dealerships)
+			x.map(async (dealership)=>{
+				await dbRequest.requestFunction(()=>dealershipsService.insertDealership([dealership.id,dealership.dealer, dealership.logo]));
+			})
+			let y = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
+			console.log(y)
+			setDealershipElements(y)
+			// console.log(x,'::::::::::::::')
+			// let logoBlob = await fetch("https://app.novosteer.me/public/dealerships/logo/1.jpg?1647123485").then(res => res.blob());
 			
-			let x = await usableArray(dealershipsInDB);
-			console.log(x, "usable array");
+			// let str = await blobToBase64(logoBlob);
+			// console.log(str)
+			// await dbRequest.requestFunction(()=>dealershipsService.insertDealership([3, "test33", str]));
+			// const dealershipsInDB = await dbRequest.requestFunction(dealershipsService.getAllDealerships);
+			// console.log(dealershipsInDB[0].dealership_logo, "blob+++++++++");
+
+			// setSrc(dealershipsInDB[0].dealership_logo);
+			
 		})()
 	}, [dealerships]);
     return (
 		<IonContent>
 			<div className='element-title'>DealershipsSelector</div>
-			<DealershipElement />
-			<DealershipElement />
+			{dealershipElements.map((dealership,index)=>{
+				return <DealershipElement key={index} dealership={dealership}/>
+			})}
 		</IonContent>
     )
 
