@@ -64,17 +64,15 @@ const LoginPage = () => {
     return (
         <Page>
             <IonContent>
-                <IonGrid className="ion-align-self-center full-height">
+                <IonGrid className="content-in-center vertical-centering">
                     <IonRow >
-                        <IonCol class="ion-text-center">
+                        <IonCol size='12' class="ion-text-center">
                             <IonIcon
                                 className="logo"
                                 icon="assets/svgs/logo.svg"
                             ></IonIcon>
                         </IonCol>
-                    </IonRow>
-                    <IonRow>
-                        <IonCol class="ion-text-center">
+                        <IonCol size='12' class="ion-text-center">
                             <CustomForm submitForm={submitLogin} autofocus={true} />
                         </IonCol>
                     </IonRow>

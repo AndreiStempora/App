@@ -1,17 +1,43 @@
+@import '../../theme/app.scss';
+
 .ion-page{
-    // background-color: transparent;
+    --ion-text-color:#fff;
+    --ion-item-background:transparent;
     background-image: url('../../../public/assets/img/AppBackground.jpg');
     --background:none;
 
     background-repeat: no-repeat;
     background-size: cover;
     ion-toolbar{
-        --background: none;
+        --background: #181818;
+    }
+
+    ion-header{
+        border-bottom:1px solid;
+        border-image: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 100%);
+        border-image-slice: 1;
     }
     ion-content{
         --background:none;
         ion-grid{
             padding:25px;
+            @include context('ion-content','ion-header + ion-content'){
+                padding:0 25px;
+            }
+        }
+    }
+    
+    ion-content{
+        position: relative;
+        ion-grid{
+            height:100%;
+            &.content-in-center{
+                position:relative;
+                display: flex;
+                ion-row{
+                    margin:auto 0;
+                }
+            }
         }
     }
 }

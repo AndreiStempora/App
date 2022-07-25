@@ -5,6 +5,7 @@ import useDigitInput from 'react-digit-input';
 import usePageRequest from '../../../services/customHooks/pageRequestHook';
 import usePageSetters from '../../../services/customHooks/pageRequestSettersHook';
 import parser from 'html-react-parser';
+import { IonIcon } from '@ionic/react';
 
 const TwoFaCode = () => {
 	const pageRequest = usePageRequest();
@@ -13,6 +14,15 @@ const TwoFaCode = () => {
 	const [fields, setFields] = useState();
 	const [pageInfo, setPageInfo] = useState();
 	const [selectedOption] = useAtom(TwoFA.selectedOption);
+	console.log(selectedOption[0].icon,'fff');
+
+	const getIcon = () => {
+		const str = selectedOption[0].icon;
+		//remove from string spaces and svgicon
+		const str2 = str.replace(/ /g, '');
+		const str3 = str2.replace('svgicon', '');
+		return str3;
+	}
 
 	const requestFormFields = async ()=>{
 		if(requestSetters.data?.services !== undefined){
@@ -79,6 +89,7 @@ const TwoFaCode = () => {
 	
 	return (
 		<div>
+			<IonIcon icon={`/assets/svgs/${getIcon()}.svg`}></IonIcon>
 			{ pageInfo && parser(pageInfo)}
 			<div className="input-group">
 				{digitForm(fields)}

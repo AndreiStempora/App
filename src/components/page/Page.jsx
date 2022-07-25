@@ -9,9 +9,7 @@ const Page = ({ children }) => {
 		<IonPage>
 			<NetworkConnectionComponent />
             <PageLoaderComponent />
-			{/* <IonContent> */}
 				{children}
-			{/* </IonContent> */}
             <ErrorComponent />
 		</IonPage>
 	)

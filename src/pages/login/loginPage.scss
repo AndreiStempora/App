@@ -4,13 +4,6 @@
     margin-bottom:55px;
 }
 
-.full-height{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
-}
-
 .login-btn{
     
     position: relative;
@@ -72,15 +65,3 @@
         }
     }
 }
-           // @keyframes rotate {
-    //     from{
-    //         transform: translate(-28px, -50%) rotate(10deg);
-    //     }
-    //     to{
-    //         transform: translate(-28px, -50%) rotate(370deg);
-    //     }
-    // }
-    
-   
-            // background:linear-gradient( #007bff 40%, #272a2e 58%,#707173 62%, #272a2e 65%,#007bff 100%);
-            // transform: translate(-28px, -50%) rotate(10deg);
