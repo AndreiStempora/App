@@ -1,0 +1,15 @@
+ion-content{
+    &.twofa{
+        p{
+            margin-block-start: 0px;
+            margin-block-end: 0px;
+        }
+        .title{
+            font-size: 17px;
+        }
+        .list-md{
+            padding:0;
+        }
+    }
+
+}

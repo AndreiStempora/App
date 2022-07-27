@@ -14,10 +14,10 @@ const TwoFaCode = () => {
 	const [fields, setFields] = useState();
 	const [pageInfo, setPageInfo] = useState();
 	const [selectedOption] = useAtom(TwoFA.selectedOption);
-	console.log(selectedOption[0].icon,'fff');
+	// console.log(selectedOption[0].icon,'fff');
 
 	const getIcon = () => {
-		const str = selectedOption[0].icon;
+		const str = selectedOption.icon;
 		//remove from string spaces and svgicon
 		const str2 = str.replace(/ /g, '');
 		const str3 = str2.replace('svgicon', '');

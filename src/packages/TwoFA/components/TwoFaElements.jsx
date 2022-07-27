@@ -1,11 +1,13 @@
 import React from 'react'
-import { IonItem, IonList,IonLabel, IonIcon, IonButton } from '@ionic/react';
+import { IonItem, IonList,IonLabel, IonIcon } from '@ionic/react';
+import { usePageSetters } from '../../../services';
 import { useAtom } from 'jotai';
-import { useHistory } from 'react-router';
 import { TwoFA } from '../features/TwoFA';
+import './twoFaElements.scss';
+
 
 const TwoFaElements = ({services}) => {
-    const history = useHistory();
+    const requestSetters = usePageSetters();
     const [service,setService] = useAtom(TwoFA.selectedOption);
 
     const getIcon = (str) => {
@@ -16,20 +18,20 @@ const TwoFaElements = ({services}) => {
 
     const click = (service)=>{
         setService(service);
-        history.push("/2fa/service");
+        // console.log('red')
+        requestSetters.push("/2fa/code");
     }
-    console.log(services,'services');
 
     return (
         <IonList>
             {services?.map((service,index)=>(
                 <IonItem key={index} onClick={()=>click(service)}>
                     {service.icon &&
-                        <IonIcon icon={`/assets/svgs/${getIcon(service.icon)}.svg`}></IonIcon>
+                        <IonIcon class='option-icon' icon={`/assets/svgs/${getIcon(service.icon)}.svg`}></IonIcon>
                     }
                     <IonLabel>{service.widget}</IonLabel>
-                    <IonIcon icon={`/assets/svgs/next.svg`}></IonIcon>
-                </IonItem>
+                    <IonIcon class='forward-icon' icon={`/assets/svgs/next.svg`}></IonIcon>
+                </IonItem> 
             ))}
         </IonList>
     )

@@ -2,8 +2,18 @@
 http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
+@font-face {
+	font-family: "SF Pro Text";
+	src: 
+		/* url("../../public/assets/fonts/sf-pro/FontsFree-Net-SFProText-Regular.woff") format("woff"), */
+		url("../../public/assets/fonts/sf-pro/FontsFree-Net-SFProText-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+
 :root {
   /** primary **/
+  --ion-font-family: "SFProText", sans-serif;
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;

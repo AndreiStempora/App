@@ -5,7 +5,7 @@ import './twoFAPage.scss';
 
 const TwoFAPage = () => {
     return (
-        <Page>
+        <Page >
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start" >
@@ -14,7 +14,7 @@ const TwoFAPage = () => {
                     <IonTitle class="page-title">Two-Factor Authentication</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent>
+            <IonContent class={'twofa'}>
                 <IonGrid className="content-in-center">
                     <IonRow>
                         <IonCol size='12' class="ion-text-center">

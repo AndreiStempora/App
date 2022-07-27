@@ -16,9 +16,9 @@ const TwoFaSelector = () => {
         requestSetters.setUrl(requestSetters.data?.call);
         requestSetters.setRequestBody();
         const response = await requestSetters.fetch();
-        if(response?.services.length === 2){
+        if(response?.services.length === 1){
             setSelectedOption(response?.services);
-            // requestSetters.push("/2fa/code");
+            requestSetters.push("/2fa/code");
         } else {
             setServices(response?.services);
         }

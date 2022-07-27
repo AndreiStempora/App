@@ -5,7 +5,8 @@
     --ion-item-background:transparent;
     background-image: url('../../../public/assets/img/AppBackground.jpg');
     --background:none;
-
+    --ion-grid-column-padding-xs:15px;
+    
     background-repeat: no-repeat;
     background-size: cover;
     ion-toolbar{
