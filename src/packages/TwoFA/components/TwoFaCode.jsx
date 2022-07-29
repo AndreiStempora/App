@@ -5,7 +5,8 @@ import useDigitInput from 'react-digit-input';
 import usePageRequest from '../../../services/customHooks/pageRequestHook';
 import usePageSetters from '../../../services/customHooks/pageRequestSettersHook';
 import parser from 'html-react-parser';
-import { IonIcon } from '@ionic/react';
+import { IonButtons, IonIcon, IonButton } from '@ionic/react';
+import './twoFaCode.scss';
 
 const TwoFaCode = () => {
 	const pageRequest = usePageRequest();
@@ -14,10 +15,10 @@ const TwoFaCode = () => {
 	const [fields, setFields] = useState();
 	const [pageInfo, setPageInfo] = useState();
 	const [selectedOption] = useAtom(TwoFA.selectedOption);
-	// console.log(selectedOption[0].icon,'fff');
+	const [buttonResend, setButtonResend] = useState(false);
 
 	const getIcon = () => {
-		const str = selectedOption.icon;
+		const str = selectedOption?.icon;
 		//remove from string spaces and svgicon
 		const str2 = str.replace(/ /g, '');
 		const str3 = str2.replace('svgicon', '');
@@ -28,7 +29,7 @@ const TwoFaCode = () => {
 		if(requestSetters.data?.services !== undefined){
 			requestSetters.setUrl(requestSetters.data?.services[0]?.call);
 		} else {
-			requestSetters.setUrl(selectedOption[0].call);
+			requestSetters.setUrl(selectedOption.call);
 		}
 
 		requestSetters.setRequestBody();
@@ -75,6 +76,14 @@ const TwoFaCode = () => {
 		}
 	}
 
+	const clickHandler = () => {
+		pageRequest.requestFunction(requestFormFields);
+		setButtonResend(false);
+		setTimeout(()=>{
+			setButtonResend(true);
+		},10000)
+	}
+
 	useEffect(()=>{
 		let sendCode = false;
 		let chars = value.split('');
@@ -85,15 +94,19 @@ const TwoFaCode = () => {
 				pageRequest.requestFunction(sendDigitsForValidation);
 			})()
 		}
+		setTimeout(()=>{
+			setButtonResend(true);
+		},10000)
 	},[value])
 	
 	return (
-		<div>
-			<IonIcon icon={`/assets/svgs/${getIcon()}.svg`}></IonIcon>
+		<div class='code-block'>
+			<IonIcon className="big-icon" icon={`/assets/svgs/${getIcon()}.svg`}></IonIcon>
 			{ pageInfo && parser(pageInfo)}
 			<div className="input-group">
 				{digitForm(fields)}
 			</div>
+			{buttonResend && <IonButton fill='clear' className="resend-button" onClick={clickHandler}>Didn't get a code?</IonButton>}
 		</div>
 	)
 }

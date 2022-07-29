@@ -9,14 +9,17 @@
     
     background-repeat: no-repeat;
     background-size: cover;
-    ion-toolbar{
-        --background: #181818;
-    }
-
+    
     ion-header{
         border-bottom:1px solid;
         border-image: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 100%);
         border-image-slice: 1;
+        ion-toolbar{
+            --background: #181818;
+            ion-buttons{
+                position: absolute;
+            }
+        }
     }
     ion-content{
         --background:none;

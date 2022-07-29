@@ -18,7 +18,6 @@ const TwoFaElements = ({services}) => {
 
     const click = (service)=>{
         setService(service);
-        // console.log('red')
         requestSetters.push("/2fa/code");
     }
 

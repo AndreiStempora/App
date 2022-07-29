@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.69e01a9b.css",
-    "main.js": "/static/js/main.54d82e87.js",
+    "main.css": "/static/css/main.c153dff2.css",
+    "main.js": "/static/js/main.83092293.js",
     "static/js/681.cf24cee8.chunk.js": "/static/js/681.cf24cee8.chunk.js",
     "static/js/738.5590a8c3.chunk.js": "/static/js/738.5590a8c3.chunk.js",
     "static/js/372.b3a9a9a4.chunk.js": "/static/js/372.b3a9a9a4.chunk.js",
@@ -13,13 +13,14 @@
     "static/js/186.3dcdfe0e.chunk.js": "/static/js/186.3dcdfe0e.chunk.js",
     "static/js/335.1f75c2c9.chunk.js": "/static/js/335.1f75c2c9.chunk.js",
     "static/js/377.a76e6a11.chunk.js": "/static/js/377.a76e6a11.chunk.js",
+    "static/media/FontsFree-Net-SFProText-Regular.ttf": "/static/media/FontsFree-Net-SFProText-Regular.90da7ab18293ca42e335.ttf",
     "static/media/AppBackground.jpg": "/static/media/AppBackground.ee658be5e41332428b0f.jpg",
     "static/media/background.png": "/static/media/background.1d14604b63db5086f711.png",
     "service-worker.js": "/service-worker.js",
+    "static/media/alert-icon.svg": "/static/media/alert-icon.4668ae10a5927bd44841.svg",
     "index.html": "/index.html",
-    "static/media/alert-icon.svg": "/static/media/alert-icon.d1b8e17b3740e42b5f1c.svg",
-    "main.69e01a9b.css.map": "/static/css/main.69e01a9b.css.map",
-    "main.54d82e87.js.map": "/static/js/main.54d82e87.js.map",
+    "main.c153dff2.css.map": "/static/css/main.c153dff2.css.map",
+    "main.83092293.js.map": "/static/js/main.83092293.js.map",
     "681.cf24cee8.chunk.js.map": "/static/js/681.cf24cee8.chunk.js.map",
     "738.5590a8c3.chunk.js.map": "/static/js/738.5590a8c3.chunk.js.map",
     "372.b3a9a9a4.chunk.js.map": "/static/js/372.b3a9a9a4.chunk.js.map",
@@ -33,7 +34,7 @@
     "377.a76e6a11.chunk.js.map": "/static/js/377.a76e6a11.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.69e01a9b.css",
-    "static/js/main.54d82e87.js"
+    "static/css/main.c153dff2.css",
+    "static/js/main.83092293.js"
   ]
 }

@@ -43,26 +43,26 @@ const DealershipSelector = ({dealerships}) => {
 	
 
 	useEffect(() => {
-		(async()=>{
-			let x = await simplifiedArray(dealerships)
-			x.map(async (dealership)=>{
-				await dbRequest.requestFunction(()=>dealershipsService.insertDealership([dealership.id,dealership.dealer, dealership.logo]));
-			})
-			let y = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
-			console.log(y)
-			setDealershipElements(y)
-			// console.log(x,'::::::::::::::')
-			// let logoBlob = await fetch("https://app.novosteer.me/public/dealerships/logo/1.jpg?1647123485").then(res => res.blob());
+		// (async()=>{
+		// 	let x = await simplifiedArray(dealerships)
+		// 	x.map(async (dealership)=>{
+		// 		await dbRequest.requestFunction(()=>dealershipsService.insertDealership([dealership.id,dealership.dealer, dealership.logo]));
+		// 	})
+		// 	let y = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
+		// 	console.log(y)
+		// 	setDealershipElements(y)
+		// 	// console.log(x,'::::::::::::::')
+		// 	// let logoBlob = await fetch("https://app.novosteer.me/public/dealerships/logo/1.jpg?1647123485").then(res => res.blob());
 			
-			// let str = await blobToBase64(logoBlob);
-			// console.log(str)
-			// await dbRequest.requestFunction(()=>dealershipsService.insertDealership([3, "test33", str]));
-			// const dealershipsInDB = await dbRequest.requestFunction(dealershipsService.getAllDealerships);
-			// console.log(dealershipsInDB[0].dealership_logo, "blob+++++++++");
+		// 	// let str = await blobToBase64(logoBlob);
+		// 	// console.log(str)
+		// 	// await dbRequest.requestFunction(()=>dealershipsService.insertDealership([3, "test33", str]));
+		// 	// const dealershipsInDB = await dbRequest.requestFunction(dealershipsService.getAllDealerships);
+		// 	// console.log(dealershipsInDB[0].dealership_logo, "blob+++++++++");
 
-			// setSrc(dealershipsInDB[0].dealership_logo);
+		// 	// setSrc(dealershipsInDB[0].dealership_logo);
 			
-		})()
+		// })()
 	}, [dealerships]);
     return (
 		<IonContent>

@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import "./dealershipsPage.scss";
 import { DealershipSelector } from '../../packages/database';
+import { CameraComponent } from '../../packages/camera';
 
 const DealershipsPage = () => {
 	const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
 	const [summary] = useAtom(myUrl.dealership);
 	const [inventory] = useAtom(myUrl.inventory);
-	// let dealerships;
 	let [dealerships, setDealerships] = useState(null);
 
 	const requestTableContentDealerships = async ()=>{
@@ -34,7 +34,7 @@ const DealershipsPage = () => {
 	useEffect(() => {
 		(async()=>{	
 			const response = await  pageRequest.requestFunction(requestTableContentDealerships);
-			// console.log(response)
+
 			setDealerships(response.dealerships);
 		})()
 	}, []);
@@ -43,12 +43,12 @@ const DealershipsPage = () => {
 		<Page>
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle class='ion-text-center'>Inline Modal</IonTitle>
+					<IonTitle className='ion-text-center'>Dealerships</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				{/* <div className='red'>DealershipsPage</div> */}
 				<DealershipSelector dealerships={dealerships} ></DealershipSelector>
+				<CameraComponent></CameraComponent>
 			</IonContent>
 		</Page>
 	)

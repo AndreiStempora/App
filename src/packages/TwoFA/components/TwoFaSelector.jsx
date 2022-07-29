@@ -10,14 +10,15 @@ const TwoFaSelector = () => {
     const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
     const [services, setServices] = useState();
-    const [,setSelectedOption] = useAtom(TwoFA.selectedOption);
+    const [selectedOption,setSelectedOption] = useAtom(TwoFA.selectedOption);
 
     const twoFAPageRequest = async ()=>{
+        console.log(selectedOption,'selectedOption',requestSetters.data);
         requestSetters.setUrl(requestSetters.data?.call);
         requestSetters.setRequestBody();
         const response = await requestSetters.fetch();
         if(response?.services.length === 1){
-            setSelectedOption(response?.services);
+            setSelectedOption(response?.services[0]);
             requestSetters.push("/2fa/code");
         } else {
             setServices(response?.services);

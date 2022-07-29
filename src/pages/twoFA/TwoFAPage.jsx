@@ -11,7 +11,7 @@ const TwoFAPage = () => {
                     <IonButtons slot="start" >
                         <IonBackButton defaultHref="/login" icon="assets/svgs/previous.svg"/>
                     </IonButtons>
-                    <IonTitle class="page-title">Two-Factor Authentication</IonTitle>
+                    <IonTitle class="ion-text-center page-title">Two-Factor Authentication</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent class={'twofa'}>
