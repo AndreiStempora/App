@@ -62,7 +62,7 @@ const LoginPage = () => {
     }
 
     return (
-        <Page>
+        <Page pageClass={'loginPage'}>
             <IonContent>
                 <IonGrid className="content-in-center vertical-centering">
                     <IonRow >

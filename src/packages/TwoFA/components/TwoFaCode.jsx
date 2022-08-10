@@ -47,7 +47,12 @@ const TwoFaCode = () => {
 		let inputs = [];
         for (let i = 0; i < fields; i++) {
 			inputs.push(
-				<input className='digit' inputMode="decimal" key={i} autoFocus={i === 0? true : false} {...digits[i]} />
+				<input 
+					className='digit' 
+					inputMode="decimal" 
+					key={i} 
+					// autoFocus={i === 0? true : false} 
+					{...digits[i]} />
 			)
 		}
 		return inputs;
@@ -100,7 +105,7 @@ const TwoFaCode = () => {
 	},[value])
 	
 	return (
-		<div class='code-block'>
+		<div className='code-block'>
 			<IonIcon className="big-icon" icon={`/assets/svgs/${getIcon()}.svg`}></IonIcon>
 			{ pageInfo && parser(pageInfo)}
 			<div className="input-group">

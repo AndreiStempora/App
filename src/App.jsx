@@ -34,7 +34,8 @@ const App = () => {
 			<Provider>
 				<Suspense fallback="Loading">
 					<IonReactRouter>
-						<IonRouterOutlet animated={false}>
+						<IonRouterOutlet>
+							{/* animated={false}> */}
 							
 							<Route path="/login" component={LoginPage} />
 							<Route path="/2fa" exact={true} component={TwoFAPage} />

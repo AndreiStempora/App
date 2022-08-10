@@ -10,11 +10,10 @@ const DealershipSelector = ({dealerships}) => {
 	const dbRequest = useDbRequest();
 	const pageRequest = usePageRequest();
 	const requestSetters = usePageSetters();
-
 	const [dealershipElements , setDealershipElements] = useState([]);
+
 	const simplifiedArray = async (arr)=>{
 		try{
-	
 			return await Promise.all(arr?.map(async (dealership)=>{
 					let logoBlob = await (await fetch(dealership.logo)).blob();
 					const base64string = await DB.blobToBase64(logoBlob);

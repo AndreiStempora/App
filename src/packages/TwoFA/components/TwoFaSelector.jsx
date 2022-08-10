@@ -6,23 +6,29 @@ import { TwoFA } from '../features/TwoFA';
 import { useAtom } from 'jotai';
 
 const TwoFaSelector = () => {
-
     const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
     const [services, setServices] = useState();
     const [selectedOption,setSelectedOption] = useAtom(TwoFA.selectedOption);
+    const [twoFAURL,setTwoFAURL] = useAtom(TwoFA.url);
 
+    (()=>{
+        if(requestSetters.data?.call !== undefined){
+            setTwoFAURL(requestSetters.data?.call);
+        }
+    })()
+    
     const twoFAPageRequest = async ()=>{
-        console.log(selectedOption,'selectedOption',requestSetters.data);
-        requestSetters.setUrl(requestSetters.data?.call);
+        console.log(twoFAURL,'selectedOption',requestSetters.data);
+        requestSetters.setUrl(twoFAURL);
         requestSetters.setRequestBody();
         const response = await requestSetters.fetch();
-        if(response?.services.length === 1){
-            setSelectedOption(response?.services[0]);
-            requestSetters.push("/2fa/code");
-        } else {
+        // if(response?.services.length === 1){
+        //     setSelectedOption(response?.services[0]);
+        //     requestSetters.push("/2fa/code");
+        // } else {
             setServices(response?.services);
-        }
+        // }
     }
 
     useEffect(()=>{
