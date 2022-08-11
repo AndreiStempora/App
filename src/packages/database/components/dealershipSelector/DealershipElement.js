@@ -1,13 +1,23 @@
-import React from 'react'
+import { IonIcon, IonLabel, IonItem } from '@ionic/react';
+import { useAtom } from "jotai";
+import { user } from '../../../../services';
 import './dealershipElement.scss'
 
+// const [selectedDealershipId, setSelectedDealershipId] = atomWithStorage('selectedDealershipId', null);
 const DealershipElement = ({dealership}) => {
-    return (
-        <div className="dealership-element">
-        <div className='element-title'>{dealership.dealership_name}</div>
-            <img src={dealership.dealership_logo} alt=""/>
-        </div>
+    const [selectedDealershipId , setSelectedDealershipId] = useAtom(user.userSelectedDealership);
 
+    const clickHandler = () => {
+        setSelectedDealershipId(dealership.dealership_id);
+        console.log('clicked',selectedDealershipId)
+    }
+
+    return (
+        <IonItem onClick={clickHandler} >
+            <img className="dealership-image" src={dealership.dealership_logo} alt=""/>
+            <IonLabel>{dealership.dealership_name}</IonLabel>
+            <IonIcon class='forward-icon' icon={`/assets/svgs/next.svg`}></IonIcon>
+        </IonItem>
     )
 }
 

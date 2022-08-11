@@ -1,16 +1,14 @@
 import './dealershipSelector.scss'
-import { IonContent } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonList,IonItem } from '@ionic/react';
 import DealershipElement from './DealershipElement';
-import {  usePageRequest, usePageSetters } from "../../../../services";
 import { useState, useEffect } from 'react';
 import { DB, useDbRequest, dealershipsService } from "../../";
-import { network } from '../../../network';
 
-const DealershipSelector = ({dealerships}) => {
+
+const DealershipSelector = ({dealerships, inventory}) => {
 	const dbRequest = useDbRequest();
-	const pageRequest = usePageRequest();
-	const requestSetters = usePageSetters();
 	const [dealershipElements , setDealershipElements] = useState([]);
+
 
 	const simplifiedArray = async (arr)=>{
 		try{
@@ -26,6 +24,21 @@ const DealershipSelector = ({dealerships}) => {
 		}
 	}
 
+	const determineAction = async()=>{
+		//open database
+		await DB.dbInstance();
+		let localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
+		// console.log(localDealerships);
+		
+		// if dealerships is not null, then we have dealerships from the api, so we can use them
+		if(dealerships){
+			const simplifiedDealerships = await simplifiedArray(dealerships);	
+			await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships));
+			localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
+		}
+		
+		setDealershipElements(localDealerships);
+	}
 	// const usableArray = async (arr)=>{
 	// 	try{	
 	// 		return await Promise.all(arr?.map(async (dealership)=>{
@@ -42,6 +55,7 @@ const DealershipSelector = ({dealerships}) => {
 	
 
 	useEffect(() => {
+		determineAction();
 		// (async()=>{
 		// 	let x = await simplifiedArray(dealerships)
 		// 	x.map(async (dealership)=>{
@@ -62,16 +76,26 @@ const DealershipSelector = ({dealerships}) => {
 		// 	// setSrc(dealershipsInDB[0].dealership_logo);
 			
 		// })()
-	}, [dealerships]);
-    return (
-		<IonContent>
-			<div className='element-title'>DealershipsSelector</div>
-			{dealershipElements.map((dealership,index)=>{
-				return <DealershipElement key={index} dealership={dealership}/>
-			})}
-		</IonContent>
-    )
+	}, []);
 
+    return (
+		<IonGrid className="content-in-center vertical-centering">
+			<IonRow >
+				<IonCol size='12'>
+					<p>Franchised car dealerships are the front line for car manufacturers to get their products on the road.</p>
+				</IonCol>
+				<IonCol size='12'>
+					<IonList className='dealership-list'>
+						{dealershipElements.map((dealership,index)=>{
+							return (
+									<DealershipElement key={index} dealership={dealership}/>
+								)
+						})}
+					</IonList>
+				</IonCol>
+			</IonRow>
+        </IonGrid>
+    )
 }
 
 //if network is online, fetch from server and save to db else fetch from db
@@ -99,4 +123,4 @@ const DealershipSelector = ({dealerships}) => {
 			// // console.log(dealerships);
 			// // console.log(dealerships,'rr')
 
-export default DealershipSelector
+export default DealershipSelector;

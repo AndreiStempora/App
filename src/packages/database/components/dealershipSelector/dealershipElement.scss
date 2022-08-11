@@ -1,3 +1,9 @@
-.element-title{
-    color: #fff;
+.dealership-list{
+    // border-top:1px solid rgba(248, 249, 250, 0.25);
+    padding:0;
+    .dealership-image{
+        width:80px;
+        height:60px;
+        margin:15px 15px 15px 0;
+    }
 }

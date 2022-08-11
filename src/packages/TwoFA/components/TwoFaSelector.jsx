@@ -12,11 +12,6 @@ const TwoFaSelector = () => {
     const [selectedOption,setSelectedOption] = useAtom(TwoFA.selectedOption);
     const [twoFAURL,setTwoFAURL] = useAtom(TwoFA.url);
 
-    (()=>{
-        if(requestSetters.data?.call !== undefined){
-            setTwoFAURL(requestSetters.data?.call);
-        }
-    })()
     
     const twoFAPageRequest = async ()=>{
         console.log(twoFAURL,'selectedOption',requestSetters.data);
@@ -24,14 +19,20 @@ const TwoFaSelector = () => {
         requestSetters.setRequestBody();
         const response = await requestSetters.fetch();
         // if(response?.services.length === 1){
-        //     setSelectedOption(response?.services[0]);
-        //     requestSetters.push("/2fa/code");
-        // } else {
-            setServices(response?.services);
-        // }
-    }
-
+            //     setSelectedOption(response?.services[0]);
+            //     requestSetters.push("/2fa/code");
+            // } else {
+                setServices(response?.services);
+                // }
+            }
+            
     useEffect(()=>{
+        (async ()=>{
+            if(requestSetters.data?.call !== undefined){
+                setTwoFAURL(await requestSetters.data?.call);
+            }
+        })()
+
         pageRequest.requestFunction(twoFAPageRequest);
     },[])
 

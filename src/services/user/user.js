@@ -10,6 +10,7 @@ const user = {
     }),
     currentPath: atomWithStorage("lastPage",[]),
     userDetails: atomWithStorage("userDetails",{}),
+    userSelectedDealership: atomWithStorage("userSelectedDealership",null),
 }
 
 export { user };

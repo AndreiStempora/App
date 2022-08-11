@@ -1,11 +1,12 @@
 import { IonLoading } from '@ionic/react';
+import { useState, useEffect} from 'react';
 import { useAtom } from 'jotai';
 import { loader } from '../features/loader';
 import "./pageLoaderComponent.scss";
 
 const PageLoaderComponent = () => {
-	const [loading] = useAtom(loader.showLoaderAtom)
-	
+	const [loading] = useAtom(loader.showLoaderAtom);
+
 	return (
 		<IonLoading
 			cssClass={"darken"}
