@@ -1,6 +1,8 @@
 @import '../../theme/app.scss';
 ion-app{
     .ion-page{
+        
+
         --ion-text-color:#fff;
         --ion-item-background:transparent;
         background-image: url('../../../public/assets/img/AppBackground.jpg');
@@ -17,11 +19,36 @@ ion-app{
             ion-toolbar{
                 --background: #181818;
                 ion-buttons{
-                    position: absolute;
+                    ion-back-button{
+                        position: absolute;
+                    }
                 }
             }
         }
+        ion-header,ion-content,ion-footer{
+            opacity:0;
+        }
+        ion-header{
+            transition: opacity 0.2s ease-in;
+            transition-delay: 0.5s;
+            @include context(".ion-page", '.ion-page.show-page'){
+                opacity:1;
+            }
+        }
+        ion-footer{
+            transition: opacity 0.2s ease-in;
+            transition-delay: 0.5s;
+            @include context(".ion-page", '.ion-page.show-page'){
+                opacity:1;
+            }
+        }
         ion-content{
+            // opacity:0;
+            transition: opacity 0.2s ease-in;
+            transition-delay: 0.5s;
+            @include context(".ion-page", '.ion-page.show-page'){
+                opacity:1;
+            }
             --background:none;
             ion-grid{
                 padding:15px;

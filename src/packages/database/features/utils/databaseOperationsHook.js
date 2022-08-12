@@ -18,9 +18,9 @@ const useDbRequest = ()=>{
             setError("There was a problem with the database!");
             console.log(e)
         }finally{
-            
-            setLoading(false); 
-            
+            setTimeout(()=>{
+                setLoading(false);
+            },200);
         }
     }
 

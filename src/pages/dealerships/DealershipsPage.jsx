@@ -45,7 +45,7 @@ const DealershipsPage = () => {
 	}, []);
 
 	return (
-		<Page>
+		<Page pageClass={'dealersipSelect'}>
 			<IonHeader>
 				<IonToolbar>
 					<IonTitle className='ion-text-center'>Dealerships</IonTitle>

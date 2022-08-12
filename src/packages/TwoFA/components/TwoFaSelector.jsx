@@ -14,7 +14,7 @@ const TwoFaSelector = () => {
 
     
     const twoFAPageRequest = async ()=>{
-        console.log(twoFAURL,'selectedOption',requestSetters.data);
+        // console.log(twoFAURL,'selectedOption',requestSetters.data);
         requestSetters.setUrl(twoFAURL);
         requestSetters.setRequestBody();
         const response = await requestSetters.fetch();

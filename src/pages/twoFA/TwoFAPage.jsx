@@ -5,7 +5,7 @@ import './twoFAPage.scss';
 
 const TwoFAPage = () => {
     return (
-        <Page >
+        <Page pageClass={'twoFaSelect'}>
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start" >

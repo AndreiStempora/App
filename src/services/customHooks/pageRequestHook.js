@@ -6,7 +6,6 @@ import { loader } from "../../packages/loaders";
 const usePageRequest = ()=>{
     const history = useHistory();
     const [loading,setLoading]= useAtom(loader.showLoaderAtom);
-    const [showContent,setShowContent] = useAtom(loader.showContentAtom);
     const [,setError] = useAtom(error.errorAtom);
 
     const givenFunctionWrapper = async(pageRequestFunction)=>{
@@ -20,10 +19,7 @@ const usePageRequest = ()=>{
         }catch(e){
             setError(await e.toString());
         }finally{
-            setTimeout(()=>{
-                setLoading(false); 
-                setShowContent(true);
-            },500)
+            setLoading(false);    
         }
     }
 

@@ -2,7 +2,7 @@ import './dealershipSelector.scss'
 import { IonGrid, IonRow, IonCol, IonList,IonItem } from '@ionic/react';
 import DealershipElement from './DealershipElement';
 import { useState, useEffect } from 'react';
-import { DB, useDbRequest, dealershipsService } from "../../";
+import { DB, useDbRequest, dealershipsService, vehiclesService } from "../../";
 
 
 const DealershipSelector = ({dealerships, inventory}) => {
@@ -15,7 +15,6 @@ const DealershipSelector = ({dealerships, inventory}) => {
 			return await Promise.all(arr?.map(async (dealership)=>{
 					let logoBlob = await (await fetch(dealership.logo)).blob();
 					const base64string = await DB.blobToBase64(logoBlob);
-
 					return {id: parseInt(dealership.id), dealer: dealership.dealer, logo: base64string};
 				})
 			)
@@ -25,34 +24,23 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	}
 
 	const determineAction = async()=>{
-		//open database
 		await DB.dbInstance();
 		let localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
-		// console.log(localDealerships);
-		
-		// if dealerships is not null, then we have dealerships from the api, so we can use them
 		if(dealerships){
 			const simplifiedDealerships = await simplifiedArray(dealerships);	
 			await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships));
 			localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
 		}
+		let localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
+		if(inventory){
+			await dbRequest.requestFunction(()=>vehiclesService.updateLocalVehicles(inventory));
+			localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
+			console.log(localInventory);
+		}
+
 		
 		setDealershipElements(localDealerships);
 	}
-	// const usableArray = async (arr)=>{
-	// 	try{	
-	// 		return await Promise.all(arr?.map(async (dealership)=>{
-	// 			console.log(dealership.logo);
-	// 			let src = window.URL.createObjectURL(dealership.logo);
-	// 			return {id: parseInt(dealership.id), dealer: dealership.dealer, logo: src}
-	// 		}
-	// 		))
-	// 	} catch(e){
-	// 		console.log(e);
-	// 	}
-	// }
-	
-	
 
 	useEffect(() => {
 		determineAction();
@@ -88,8 +76,8 @@ const DealershipSelector = ({dealerships, inventory}) => {
 					<IonList className='dealership-list'>
 						{dealershipElements.map((dealership,index)=>{
 							return (
-									<DealershipElement key={index} dealership={dealership}/>
-								)
+								<DealershipElement key={index} dealership={dealership}/>
+							)
 						})}
 					</IonList>
 				</IonCol>

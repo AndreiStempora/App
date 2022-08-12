@@ -25,6 +25,7 @@ import ProtectedRoute from "./components/page/restrictedPages/ProtectedRoute"
 import TwoFAPage from './pages/twoFA/TwoFAPage';
 import TwoFACodePage from './pages/twoFA/TwoFACodePage';
 import CameraPage from './pages/camera/CameraPage';
+import VehicleSearch from './pages/vehicles/VehicleSearch';
 setupIonicReact();
 
 const App = () => {
@@ -35,12 +36,12 @@ const App = () => {
 				<Suspense fallback="Loading">
 					<IonReactRouter>
 						<IonRouterOutlet animated={false}>
-						
-							
+
 							<Route path="/login" component={LoginPage} />
 							<Route path="/2fa" exact={true} component={TwoFAPage} />
 							<Route path="/2fa/code" exact={true} component={TwoFACodePage} />
 							<ProtectedRoute exact={true} path="/dealerships" component={DealershipsPage} />
+							<ProtectedRoute exact={true} path="/vehicle-search" component={VehicleSearch} />
 							<ProtectedRoute exact={true} path="/camera" component={CameraPage} />
 							<Route render={() => <Redirect to="/dealerships" />} />
 							

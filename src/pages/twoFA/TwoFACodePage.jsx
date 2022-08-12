@@ -7,7 +7,7 @@ import "./twoFACodePage.scss";
 const TwoFACodePage = () => {
     const [selectedOption] = useAtom(TwoFA.selectedOption);
     return (
-        <Page>
+        <Page pageClass={'twoFaCode'}>
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start" >

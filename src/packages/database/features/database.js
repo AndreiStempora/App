@@ -169,6 +169,7 @@ const DB = {
         await DB.dropTable("vehicles");
         await DB.dropTable("hotspots");
         DB.dbinitialized = false;
+        return true;
     },
 
     blobToBase64 : blob => {
