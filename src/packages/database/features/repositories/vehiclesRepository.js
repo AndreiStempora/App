@@ -110,6 +110,33 @@ const vehiclesRepository = {
         });
     },
 
+    //get all vehicles that don't have any empty fields
+    getAllVehiclesWithoutEmptyFields: async () => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM vehicles WHERE vehicle_vin != '' AND vehicle_stock != '' AND vehicle_date != '' AND vehicle_make != '' AND vehicle_model != '' AND vehicle_trim != ''`,
+                        [],
+                        (tx, results) => {
+                            let arr = [];
+                            for (let i = 0; i < results.rows.length; i++) {
+                                arr.push(results.rows.item(i));
+                            }
+                            resolve(arr);
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    console.log(error);
+                    logService.insertLog([new Date().getTime(), "", error]);
+                    reject(error);
+                }
+            );
+        });
+    },
+
     //get all vehicles that contain a certain string in their vin
     getAllVehiclesByVin: async ([vin]) => {
         return new Promise(async (resolve, reject) => {

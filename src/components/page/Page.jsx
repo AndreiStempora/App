@@ -5,22 +5,31 @@ import { NetworkConnectionComponent } from "../../packages/network/index";
 import './page.scss';
 
 const Page = ({ children, pageClass }) => {
-
 	useIonViewDidEnter(() => {
-		setTimeout(() => {
+		try{
 			document.querySelector(`.${pageClass}`).classList.add('show-page');
-		} , 100);
+		}
+		catch(e){
+		}
 	})
 	useIonViewWillLeave(() => {
-		document.querySelector(`.${pageClass}`).classList.remove('show-page');
+		try{
+			document.querySelector(`.${pageClass}`).classList.remove('show-page');
+		}
+		catch(e){;
+		}
 	})
+
+	
 	return (
+		<>
+            {/* <PageLoaderComponent /> */}
 		<IonPage className={`${pageClass} app-page`}>
 			<NetworkConnectionComponent />
-            <PageLoaderComponent />
 					{children}
             <ErrorComponent />
 		</IonPage>
+		</>
 	)
 }
 

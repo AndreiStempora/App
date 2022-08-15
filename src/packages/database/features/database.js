@@ -23,12 +23,12 @@ const DB = {
             name: `${userDetails["email"]}.db`,
             location: 'default',
             androidDatabaseProvider: 'system'
-        },async (db)=>{  
-            await DB.createTables(db);
-            await DB.createIndexes(db);
+        },(db)=>{
+            DB.createTables(db);
+            DB.createIndexes(db);
             DB.db = db;
             DB.dbinitialized = true;
-            return db;
+            return true;
         }, (error)=>{
             console.log(error);            
         });
@@ -36,7 +36,7 @@ const DB = {
 
     //create a table
     createTable:async (db, tableName, tableSQL) =>{
-        db.transaction((tx)=>{
+        return db.transaction((tx)=>{
             tx.executeSql(tableSQL, [], function(tx, res){
                 console.log("Table " + tableName + " created successfully");
             }, function(tx, error){
@@ -46,56 +46,67 @@ const DB = {
     },
 
     //createTables
-    createTables: async (db) =>{
-        await DB.createTable(db,"dealerships", `CREATE TABLE IF NOT EXISTS dealerships (
+    createTables: async (db) =>{ 
+        DB.createTable(db,"dealerships", `CREATE TABLE IF NOT EXISTS dealerships (
             dealership_id	INTEGER,
             dealership_name	TEXT,
             dealership_logo	MEDIUMBLOB,
             PRIMARY KEY (dealership_id)
             UNIQUE (dealership_id)
-        )`);
-        await DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
-            image_id	INTEGER,
-            image_status	INTEGER, 
-            image_type	INTEGER,
-            hotspot_id	INTEGER,
-            vehicle_id	INTEGER REFERENCES vehicles (vehicle_id) ON DELETE CASCADE,
-            image_data	BLOB,
-            PRIMARY KEY(image_id AUTOINCREMENT)
-        )`);
-        await DB.createTable(db,"log", `CREATE TABLE IF NOT EXISTS log (
-            log_id	    INTEGER,
-            log_date	INTEGER,
-            log_body    TEXT,
-            log_event	INTEGER,
-            PRIMARY KEY(log_id AUTOINCREMENT)
-        )`);
-        await DB.createTable(db,"settings", `CREATE TABLE IF NOT EXISTS settings (
-            name	TEXT,
-            value	TEXT,
-            dealership_id	INTEGER REFERENCES dealerships (dealership_id) ON DELETE CASCADE
-        )`);
-        await DB.createTable(db,"vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
-            vehicle_id	INTEGER,
-            dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
-            vehicle_vin	TEXT,
-            vehicle_stock	TEXT,
-            vehicle_date	INTEGER,
-            vehicle_make	TEXT,
-            vehicle_model	TEXT,
-            vehicle_trim	TEXT,
-            vehicle_year    INTEGER,
-            vehicle_exterior	INTEGER,
-            vehicle_interior	INTEGER,
-            vehicle_hotspots	INTEGER,
-            PRIMARY KEY(vehicle_id AUTOINCREMENT)
-        )`);
-        await DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
-            hotspot_id	INTEGER,
-            dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
-            hotspot_name TEXT,
-            PRIMARY KEY(hotspot_id AUTOINCREMENT)
-        )`);   
+        )`)
+        .then(()=>{
+            
+            DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
+                image_id	INTEGER,
+                image_status	INTEGER, 
+                image_type	INTEGER,
+                hotspot_id	INTEGER,
+                vehicle_id	INTEGER REFERENCES vehicles (vehicle_id) ON DELETE CASCADE,
+                image_data	BLOB,
+                PRIMARY KEY(image_id AUTOINCREMENT)
+            )`);
+        }).then(()=>{
+            
+            DB.createTable(db,"log", `CREATE TABLE IF NOT EXISTS log (
+                log_id	    INTEGER,
+                log_date	INTEGER,
+                log_body    TEXT,
+                log_event	INTEGER,
+                PRIMARY KEY(log_id AUTOINCREMENT)
+            )`);
+        }).then(()=>{
+            
+            DB.createTable(db,"settings", `CREATE TABLE IF NOT EXISTS settings (
+                name	TEXT,
+                value	TEXT,
+                dealership_id	INTEGER REFERENCES dealerships (dealership_id) ON DELETE CASCADE
+            )`);
+        }).then(()=>{
+            
+            DB.createTable(db,"vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
+                vehicle_id	INTEGER,
+                dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
+                vehicle_vin	TEXT,
+                vehicle_stock	TEXT,
+                vehicle_date	INTEGER,
+                vehicle_make	TEXT,
+                vehicle_model	TEXT,
+                vehicle_trim	TEXT,
+                vehicle_year    INTEGER,
+                vehicle_exterior	INTEGER,
+                vehicle_interior	INTEGER,
+                vehicle_hotspots	INTEGER,
+                PRIMARY KEY(vehicle_id AUTOINCREMENT)
+            )`);
+        }).then(()=>{
+            
+            DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
+                hotspot_id	INTEGER,
+                dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
+                hotspot_name TEXT,
+                PRIMARY KEY(hotspot_id AUTOINCREMENT)
+            )`);
+        });
     },
 
     //create indexes

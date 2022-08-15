@@ -8,6 +8,7 @@ import { DB, useDbRequest, dealershipsService, vehiclesService } from "../../";
 const DealershipSelector = ({dealerships, inventory}) => {
 	const dbRequest = useDbRequest();
 	const [dealershipElements , setDealershipElements] = useState([]);
+	
 
 
 	const simplifiedArray = async (arr)=>{
@@ -24,22 +25,38 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	}
 
 	const determineAction = async()=>{
-		await DB.dbInstance();
-		let localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
-		if(dealerships){
-			const simplifiedDealerships = await simplifiedArray(dealerships);	
-			await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships));
-			localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
-		}
-		let localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
-		if(inventory){
-			await dbRequest.requestFunction(()=>vehiclesService.updateLocalVehicles(inventory));
-			localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
-			console.log(localInventory);
-		}
+		await DB.dbInstance().then(async ()=>{
+			return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())
+		}).then(async (localDealerships)=>{
+
+			if(dealerships){
+				const simplifiedDealerships = await simplifiedArray(dealerships);	
+				await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships));
+				localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
+				console.log(localDealerships, "localDealerships");
+			}
+
+			let localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
+			if(inventory){
+				await dbRequest.requestFunction(()=>vehiclesService.updateLocalVehicles(inventory));
+				localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
+				console.log(localInventory, "localInventory");
+			}
+			return localDealerships;
+		
+		}).then((localDealerships)=>{
+			setDealershipElements(localDealerships);
+		})
+		.catch(e=>{console.log(e)});
+			
+		// await DB.dbInstance().then(()=>{
+		// 	console.log("this was resolved")})
+		
+		// DB.dropAllTables();
+
+		// await dbRequest.requestFunction(()=>DB.dropAllTables());
 
 		
-		setDealershipElements(localDealerships);
 	}
 
 	useEffect(() => {
@@ -74,7 +91,7 @@ const DealershipSelector = ({dealerships, inventory}) => {
 				</IonCol>
 				<IonCol size='12'>
 					<IonList className='dealership-list'>
-						{dealershipElements.map((dealership,index)=>{
+						{dealershipElements?.map((dealership,index)=>{
 							return (
 								<DealershipElement key={index} dealership={dealership}/>
 							)

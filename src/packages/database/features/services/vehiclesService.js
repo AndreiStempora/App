@@ -21,6 +21,11 @@ const vehiclesService = {
     getAllVehiclesByVin: async ([vehicle_vin]) => {
         return await vehiclesRepository.getAllVehiclesByVin([vehicle_vin]);
     },
+    
+    //get all vehicles that don't have empty fields
+    getAllVehiclesWithoutEmptyFields: async () => {
+        return await vehiclesRepository.getAllVehiclesWithoutEmptyFields();
+    },
 
     //update local vehicles
     updateLocalVehicles: async (newArray) => {
