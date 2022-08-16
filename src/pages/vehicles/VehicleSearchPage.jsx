@@ -2,11 +2,12 @@ import { IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, Ion
 import Page from '../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../services/user/user';
-import './vehicleSearch.scss';
+import { VehicleSearch } from '../../packages/database';
+import './vehicleSearchPage.scss';
 
-const VehicleSearch = () => {
+const VehicleSearchPage = () => {
     const [userInfo]= useAtom(user.userDetails);
-    console.log(userInfo);
+    // console.log(userInfo.avatar);
 
     
     return (
@@ -15,7 +16,8 @@ const VehicleSearch = () => {
                 <IonToolbar>
                     <IonButtons slot="start" >
                         <IonButton defaultHref="/profile" >
-                            <IonIcon icon='/assets/svgs/user.svg'></IonIcon>
+                            {userInfo.avatar? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg'/>}
+                            
                             </IonButton>
                     </IonButtons>
                     
@@ -27,9 +29,11 @@ const VehicleSearch = () => {
                     </IonButtons>
 				</IonToolbar>
             </IonHeader>
-            <IonContent></IonContent>
+            <IonContent>
+                <VehicleSearch></VehicleSearch>
+            </IonContent>
         </Page>
     )
 }
 
-export default VehicleSearch
+export default VehicleSearchPage;

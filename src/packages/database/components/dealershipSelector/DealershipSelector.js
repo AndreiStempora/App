@@ -22,16 +22,19 @@ const DealershipSelector = ({dealerships, inventory}) => {
 		}
 	}
 
-	const determineAction = async()=>{
+	useEffect(() => {
+		//start db
 		DB.dbInstance().then(async (db)=>{
 			return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())	
 		}).then(async (localDealerships)=>{
-			console.log(dealerships,inventory,'------------')
+
 			if(dealerships){
 				const simplifiedDealerships = await simplifiedArray(dealerships);	
-				await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships));
+
+				await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships))
+
 				localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
-				console.log(localDealerships, "localDealerships");
+				// console.log(localDealerships, "localDealerships");
 			}
 			
 			let localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
@@ -45,41 +48,7 @@ const DealershipSelector = ({dealerships, inventory}) => {
 		}).then((localDealerships)=>{
 			setDealershipElements(localDealerships);
 		})
-		.catch(e=>{console.log(e)});
-			
-		// await DB.dbInstance().then(()=>{
-		// 	console.log("this was resolved")})
-		
-		// DB.dropAllTables();
 
-		// await dbRequest.requestFunction(()=>DB.dropAllTables());
-
-		
-	}
-
-	useEffect(() => {
-		
-		determineAction();
-		// (async()=>{
-		// 	let x = await simplifiedArray(dealerships)
-		// 	x.map(async (dealership)=>{
-		// 		await dbRequest.requestFunction(()=>dealershipsService.insertDealership([dealership.id,dealership.dealer, dealership.logo]));
-		// 	})
-		// 	let y = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
-		// 	console.log(y)
-		// 	setDealershipElements(y)
-		// 	// console.log(x,'::::::::::::::')
-		// 	// let logoBlob = await fetch("https://app.novosteer.me/public/dealerships/logo/1.jpg?1647123485").then(res => res.blob());
-			
-		// 	// let str = await blobToBase64(logoBlob);
-		// 	// console.log(str)
-		// 	// await dbRequest.requestFunction(()=>dealershipsService.insertDealership([3, "test33", str]));
-		// 	// const dealershipsInDB = await dbRequest.requestFunction(dealershipsService.getAllDealerships);
-		// 	// console.log(dealershipsInDB[0].dealership_logo, "blob+++++++++");
-
-		// 	// setSrc(dealershipsInDB[0].dealership_logo);
-			
-		// })()
 	}, [dealerships, inventory]);
 
     return (
@@ -101,30 +70,5 @@ const DealershipSelector = ({dealerships, inventory}) => {
         </IonGrid>
     )
 }
-
-//if network is online, fetch from server and save to db else fetch from db
-			// // if(network.getCurrentNetworkStatus()){
-
-			// // 	let requestDealerships = (await pageRequest.requestFunction(requestTableContentDealerships)).dealerships;
-			// // 	// for each dealership request the logo
-			// // 	let requestLogos = requestDealerships.map(async(dealership)=>{
-			// // 		let logo = await fetch(dealership.logo);
-						
-			// // 			return await {...dealership, logo:await logo.blob()};
-			// // 		})
-			// // 	console.log(await requestLogos)
-				
-			// // 	// theDealerships?.forEach(async dealership => {
-			// // 	// 	let logo = await fetch(dealership.logo);
-			// // 	// 	console.log(await logo.blob(),"logo");
-			// // 	// })
-			// // } else {
-			// 	// await dbRequest.requestFunction(()=>dealershipsService.insertDealership([1,'dealership ema','logo1']));
-			// 	// await dbRequest.requestFunction(()=>dealershipsService.insertDealership([2,'dealership2 ema','logo@']));
-			// 	let dealerships = await dbRequest.requestFunction(dealershipsService.getAllDealerships);
-			// 	console.log(dealerships,"dealerships");
-			// // }
-			// // console.log(dealerships);
-			// // console.log(dealerships,'rr')
 
 export default DealershipSelector;

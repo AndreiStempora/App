@@ -41,6 +41,10 @@ const vehiclesService = {
         console.log(elementsToDelete, "deleteRED");
 
         console.log(await vehiclesRepository.getAllVehicles(), "updated");
+    },
+
+    getAllVehiclesByDealershipId: async ([dealership_id]) => {
+        return await vehiclesRepository.getAllVehiclesByDealerId([dealership_id]);
     }
 
 }

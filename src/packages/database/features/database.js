@@ -63,7 +63,6 @@ const DB = {
             UNIQUE (dealership_id)
         )`)
         .then(()=>{
-            
             DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
                 image_id	INTEGER,
                 image_status	INTEGER, 
@@ -74,7 +73,6 @@ const DB = {
                 PRIMARY KEY(image_id AUTOINCREMENT)
             )`);
         }).then(()=>{
-            
             DB.createTable(db,"log", `CREATE TABLE IF NOT EXISTS log (
                 log_id	    INTEGER,
                 log_date	INTEGER,
@@ -83,14 +81,12 @@ const DB = {
                 PRIMARY KEY(log_id AUTOINCREMENT)
             )`);
         }).then(()=>{
-            
             DB.createTable(db,"settings", `CREATE TABLE IF NOT EXISTS settings (
                 name	TEXT,
                 value	TEXT,
                 dealership_id	INTEGER REFERENCES dealerships (dealership_id) ON DELETE CASCADE
             )`);
         }).then(()=>{
-            
             DB.createTable(db,"vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
                 vehicle_id	INTEGER,
                 dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
@@ -107,7 +103,6 @@ const DB = {
                 PRIMARY KEY(vehicle_id AUTOINCREMENT)
             )`);
         }).then(()=>{
-            
             DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
                 hotspot_id	INTEGER,
                 dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
