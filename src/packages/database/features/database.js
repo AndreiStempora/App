@@ -19,19 +19,27 @@ const DB = {
     init:async ()=>{
         //get userDetails from local storage
         let userDetails = await JSON.parse(localStorage.getItem("userDetails"));
-        return window.sqlitePlugin.openDatabase({
-            name: `${userDetails["email"]}.db`,
-            location: 'default',
-            androidDatabaseProvider: 'system'
-        },(db)=>{
+        return new Promise((resolve, reject)=>{
+            window.sqlitePlugin.openDatabase({
+                name: `${userDetails["email"]}.db`,
+                location: 'default',
+                androidDatabaseProvider: 'system'
+            },(db)=>{
+                resolve(db)
+                // return true;
+            }, (error)=>{
+                console.log(error);            
+            });
+        })
+        .then((db)=>{
             DB.createTables(db);
+            return db;
+        }).then((db)=>{
             DB.createIndexes(db);
             DB.db = db;
             DB.dbinitialized = true;
-            return true;
-        }, (error)=>{
-            console.log(error);            
-        });
+            return db;
+        })
     },
 
     //create a table

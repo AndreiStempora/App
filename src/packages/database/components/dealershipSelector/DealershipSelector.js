@@ -8,8 +8,6 @@ import { DB, useDbRequest, dealershipsService, vehiclesService } from "../../";
 const DealershipSelector = ({dealerships, inventory}) => {
 	const dbRequest = useDbRequest();
 	const [dealershipElements , setDealershipElements] = useState([]);
-	
-
 
 	const simplifiedArray = async (arr)=>{
 		try{
@@ -25,25 +23,25 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	}
 
 	const determineAction = async()=>{
-		await DB.dbInstance().then(async ()=>{
-			return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())
+		DB.dbInstance().then(async (db)=>{
+			return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())	
 		}).then(async (localDealerships)=>{
-
+			console.log(dealerships,inventory,'------------')
 			if(dealerships){
 				const simplifiedDealerships = await simplifiedArray(dealerships);	
 				await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships));
 				localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
 				console.log(localDealerships, "localDealerships");
 			}
-
+			
 			let localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
 			if(inventory){
 				await dbRequest.requestFunction(()=>vehiclesService.updateLocalVehicles(inventory));
 				localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
 				console.log(localInventory, "localInventory");
 			}
-			return localDealerships;
-		
+			return await localDealerships;
+			
 		}).then((localDealerships)=>{
 			setDealershipElements(localDealerships);
 		})
@@ -60,6 +58,7 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	}
 
 	useEffect(() => {
+		
 		determineAction();
 		// (async()=>{
 		// 	let x = await simplifiedArray(dealerships)
@@ -81,7 +80,7 @@ const DealershipSelector = ({dealerships, inventory}) => {
 		// 	// setSrc(dealershipsInDB[0].dealership_logo);
 			
 		// })()
-	}, []);
+	}, [dealerships, inventory]);
 
     return (
 		<IonGrid className="content-in-center vertical-centering">

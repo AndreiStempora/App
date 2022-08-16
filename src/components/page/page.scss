@@ -14,7 +14,7 @@ ion-app{
         
         ion-header{
             border-bottom:1px solid;
-            border-image: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 100%);
+            border-image: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(255,255,255,0.3) 100%);
             border-image-slice: 1;
             ion-toolbar{
                 --background: #181818;
