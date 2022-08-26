@@ -23,31 +23,32 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	}
 
 	useEffect(() => {
+		console.log(inventory)
 		//start db
-		DB.dbInstance().then(async (db)=>{
-			return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())	
-		}).then(async (localDealerships)=>{
+		// DB.dbInstance().then(async (db)=>{
+		// 	return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())	
+		// }).then(async (localDealerships)=>{
 
-			if(dealerships){
-				const simplifiedDealerships = await simplifiedArray(dealerships);	
+		// 	if(dealerships){
+		// 		const simplifiedDealerships = await simplifiedArray(dealerships);	
 
-				await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships))
+		// 		await dbRequest.requestFunction(()=>dealershipsService.updateLocalDealerships(simplifiedDealerships))
 
-				localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
-				// console.log(localDealerships, "localDealerships");
-			}
+		// 		localDealerships = await dbRequest.requestFunction(()=>dealershipsService.getAllDealerships());
+		// 		// console.log(localDealerships, "localDealerships");
+		// 	}
 			
-			let localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
-			if(inventory){
-				await dbRequest.requestFunction(()=>vehiclesService.updateLocalVehicles(inventory));
-				localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
-				console.log(localInventory, "localInventory");
-			}
-			return await localDealerships;
+		// 	let localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
+		// 	if(inventory){
+		// 		await dbRequest.requestFunction(()=>vehiclesService.updateLocalVehicles(inventory));
+		// 		localInventory = await dbRequest.requestFunction(()=>vehiclesService.getAllVehicles());
+		// 		console.log(localInventory, "localInventory");
+		// 	}
+		// 	return await localDealerships;
 			
-		}).then((localDealerships)=>{
-			setDealershipElements(localDealerships);
-		})
+		// }).then((localDealerships)=>{
+		// 	setDealershipElements(localDealerships);
+		// })
 
 	}, [dealerships, inventory]);
 

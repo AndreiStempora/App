@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import "./dealershipsPage.scss";
 import { DealershipSelector } from '../../packages/database';
-import { CameraComponent } from '../../packages/camera';
 import { network } from '../../packages/network';
 
 const DealershipsPage = () => {
@@ -13,8 +12,8 @@ const DealershipsPage = () => {
     const requestSetters = usePageSetters();
 	const [dealershipsURL] = useAtom(myUrl.dealership);
 	const [inventoryURL] = useAtom(myUrl.inventory);
-	let [dealerships, setDealerships] = useState(null);
-	let [carInventory, setCarInventory] = useState(null);
+	const [dealerships, setDealerships] = useState(null);
+	const [carInventory, setCarInventory] = useState([]);
 
 	const requestTableContentDealerships = async ()=>{
 		requestSetters.setUrl(dealershipsURL);
@@ -22,14 +21,25 @@ const DealershipsPage = () => {
 		const response = await requestSetters.fetch();
 		return response;
 	}
-
-	const requestTableContentVehicles = async ()=>{
+	const requestTableContentInventory = async (dealershipId)=>{
 		requestSetters.setUrl(inventoryURL);
-		requestSetters.setFormData({dealership:1})
-		requestSetters.setRequestBody();
+		requestSetters.setRequestBody({dealership:dealershipId});
 		const response = await requestSetters.fetch();
 		return response;
 	}
+	const requestTableContentVehicles = async (dealershipId)=>{
+		// let arr = [];
+		// dealerships.map(dealership => {
+		// 	requestSetters.setUrl(inventoryURL);
+		// 	requestSetters.setFormData({dealership:dealership.id});
+		// 	requestSetters.setRequestBody();
+		// 	requestSetters.fetch().then(response => {
+		// 		setCarInventory([...carInventory, {[dealership.id]:response.vehicles}]);
+		// 	})
+		// })
+		//for each dealership, request the inventory for that dealership
+
+		}
 	
 
 	useEffect(() => {
@@ -37,8 +47,9 @@ const DealershipsPage = () => {
 			if(await network.getCurrentNetworkStatus()){
 				const response = await pageRequest.requestFunction(requestTableContentDealerships);
 				setDealerships(response.dealerships);
-				const response2 = await pageRequest.requestFunction(requestTableContentVehicles);
-				setCarInventory(response2.vehicles);
+				
+				// const response2 = await pageRequest.requestFunction(requestTableContentVehicles(response.dealerships));
+				// setCarInventory(response2);
 			}
 		})()
 	}, []);

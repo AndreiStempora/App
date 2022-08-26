@@ -7,15 +7,14 @@
     "@awesome-cordova-plugins/screen-orientation": "^5.43.0",
     "@awesome-cordova-plugins/sqlite": "^5.43.0",
     "@capacitor-community/camera-preview": "^3.1.0",
-    "@capacitor/android": "^4.0.1",
-    "@capacitor/app": "1.1.1",
-    "@capacitor/camera": "^4.0.1",
-    "@capacitor/core": "^4.0.1",
-    "@capacitor/haptics": "1.1.4",
-    "@capacitor/keyboard": "1.2.2",
-    "@capacitor/network": "^1.0.7",
-    "@capacitor/splash-screen": "^1.2.2",
-    "@capacitor/status-bar": "1.0.8",
+    "@capacitor/android": "^4.1.0",
+    "@capacitor/app": "^4.0.1",
+    "@capacitor/camera": "^4.1.0",
+    "@capacitor/haptics": "^4.0.1",
+    "@capacitor/keyboard": "^4.0.1",
+    "@capacitor/network": "^4.0.1",
+    "@capacitor/splash-screen": "^4.0.1",
+    "@capacitor/status-bar": "^4.0.1",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
     "@testing-library/jest-dom": "^5.11.9",
@@ -80,7 +79,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.5.1",
+    "@capacitor/cli": "^4.1.0",
+    "@capacitor/core": "^4.1.0",
     "node-sass": "^7.0.1"
   },
   "description": "An Ionic project"

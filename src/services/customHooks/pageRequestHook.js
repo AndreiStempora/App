@@ -18,6 +18,7 @@ const usePageRequest = ()=>{
             return response;
         }catch(e){
             setError(await e.toString());
+            console.log(await e.toString())
         }finally{
             // setLoading(false);    
         }
