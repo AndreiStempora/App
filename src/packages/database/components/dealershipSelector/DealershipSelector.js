@@ -23,7 +23,7 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	}
 
 	useEffect(() => {
-		console.log(inventory)
+		console.log(inventory,'inventory');
 		//start db
 		// DB.dbInstance().then(async (db)=>{
 		// 	return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())	

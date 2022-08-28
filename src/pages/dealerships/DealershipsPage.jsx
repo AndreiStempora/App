@@ -21,26 +21,21 @@ const DealershipsPage = () => {
 		const response = await requestSetters.fetch();
 		return response;
 	}
-	const requestTableContentInventory = async (dealershipId)=>{
-		requestSetters.setUrl(inventoryURL);
-		requestSetters.setRequestBody({dealership:dealershipId});
-		const response = await requestSetters.fetch();
-		return response;
-	}
-	const requestTableContentVehicles = async (dealershipId)=>{
-		// let arr = [];
-		// dealerships.map(dealership => {
-		// 	requestSetters.setUrl(inventoryURL);
-		// 	requestSetters.setFormData({dealership:dealership.id});
-		// 	requestSetters.setRequestBody();
-		// 	requestSetters.fetch().then(response => {
-		// 		setCarInventory([...carInventory, {[dealership.id]:response.vehicles}]);
-		// 	})
-		// })
-		//for each dealership, request the inventory for that dealership
 
+	const requestTableContentVehicles = async (dealerships)=>{
+		try{
+			return await Promise.all(
+				dealerships?.map(async dealership => {
+					requestSetters.setUrl(inventoryURL);
+					requestSetters.setFormData({dealership:dealership.id});
+					requestSetters.setRequestBody();
+					return {[dealership.id]:(await requestSetters.fetch()).vehicles};
+				})
+			)
+		} catch (e){
+			console.log(e);
 		}
-	
+	}
 
 	useEffect(() => {
 		(async()=>{
@@ -48,8 +43,8 @@ const DealershipsPage = () => {
 				const response = await pageRequest.requestFunction(requestTableContentDealerships);
 				setDealerships(response.dealerships);
 				
-				// const response2 = await pageRequest.requestFunction(requestTableContentVehicles(response.dealerships));
-				// setCarInventory(response2);
+				const vehicleArrays = await requestTableContentVehicles(response.dealerships);
+				setCarInventory(vehicleArrays);
 			}
 		})()
 	}, []);
