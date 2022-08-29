@@ -2,7 +2,7 @@ import './dealershipSelector.scss'
 import { IonGrid, IonRow, IonCol, IonList,IonItem } from '@ionic/react';
 import DealershipElement from './DealershipElement';
 import { useState, useEffect } from 'react';
-import { DB, useDbRequest, dealershipsService, vehiclesService } from "../../";
+import { DB, useDbRequest, dealershipsService, vehiclesService, tests } from "../../";
 
 
 const DealershipSelector = ({dealerships, inventory}) => {
@@ -22,13 +22,52 @@ const DealershipSelector = ({dealerships, inventory}) => {
 		}
 	}
 
+	const dealershipsToAdd = async ()=>{
+		const oldList = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships())
+		const newList = dealerships;
+		const newDealerships = newList?.filter(elem => !oldList?.some(elem2 => parseInt(elem.id) === elem2.dealership_id));
+		console.log(newDealerships,'for adding');
+	}
+
+	const dealershipsToDelete = async ()=>{
+		const oldList = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships())
+		const newList = dealerships;
+		const newDealerships = oldList?.filter(elem => !newList?.some(elem2 => parseInt(elem2.id) === elem.dealership_id));
+		console.log(newDealerships,'for deleting');
+	}
+
+	const serverHasNewDealerships = () =>{
+		if(dealerships === undefined){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	
+
 	useEffect(() => {
-		console.log(inventory,'inventory');
-		//start db
+		// console.log(inventory,dealerships,'inventory');
+		// start db
+		(async ()=>{
+			if(serverHasNewDealerships()){
+				dealershipsToAdd();
+				dealershipsToDelete();
+			}
+		})();
 		// DB.dbInstance().then(async (db)=>{
+		// 	dbRequest.requestFunction = async ()=>{
+		// 		//drop all tables
+		// 		await DB.dropAllTables();
+		// 	}
+		// })
+		// 	dbRequest.requestFunction(async ()=>{dealershipsService.getAllDealerships()}).then(async (dealerships)=>{console.log(dealerships,'dealerships')})
+		// })
 		// 	return await dbRequest.requestFunction(async ()=> await dealershipsService.getAllDealerships())	
 		// }).then(async (localDealerships)=>{
+		// 	if(serverHasNewDealerships()){
 
+		// 	}
 		// 	if(dealerships){
 		// 		const simplifiedDealerships = await simplifiedArray(dealerships);	
 
@@ -50,6 +89,37 @@ const DealershipSelector = ({dealerships, inventory}) => {
 		// 	setDealershipElements(localDealerships);
 		// })
 
+
+		// DB.dbInstance().then( db =>{
+		// 	dbRequest.requestFunction(()=>{
+		// 		tests.testCascade()
+		// 	})
+		// })
+
+
+			// 	dealershipsService.insertDealership([57,'dealership 57', 'logo'])
+			// }).then(()=>{
+			// 	return dealershipsService.getAllDealerships();	
+			// }).then(dealers =>{
+			// 	console.log(dealers,'dealers');
+			// })
+			// vehiclesService.insertVehicle([57, "vin_abc", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
+			// vehiclesService.insertVehicle([57, "vin_abc", 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
+			// return vehiclesService.getAllVehicles();}).then(vehicles =>{console.log(vehicles,'vehicles');})
+			// .then(()=>{
+			// 	dealershipsService.deleteDealership([57]);
+			// }).then(()=>{
+			// 	return dealershipsService.getAllDealerships();
+			// }).then(dealers =>{
+			// 		console.log(dealers,'dealers');
+			// 	})
+			// .then(()=>{
+			// 	return vehiclesService.getAllVehicles();}).then(vehicles =>{console.log(vehicles,'vehicles')
+			// })
+		
+			
+		
+		
 	}, [dealerships, inventory]);
 
     return (

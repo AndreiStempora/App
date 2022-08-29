@@ -41,9 +41,9 @@ const DealershipsPage = () => {
 		(async()=>{
 			if(await network.getCurrentNetworkStatus()){
 				const response = await pageRequest.requestFunction(requestTableContentDealerships);
-				setDealerships(response.dealerships);
+				setDealerships(response?.dealerships);
 				
-				const vehicleArrays = await requestTableContentVehicles(response.dealerships);
+				const vehicleArrays = await requestTableContentVehicles(response?.dealerships);
 				setCarInventory(vehicleArrays);
 			}
 		})()

@@ -46,7 +46,7 @@ const vehiclesService = {
     getAllVehiclesByDealershipId: async ([dealership_id]) => {
         return await vehiclesRepository.getAllVehiclesByDealerId([dealership_id]);
     }
-
+    
 }
 
 // make: "Jeep"

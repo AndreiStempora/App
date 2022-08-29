@@ -74,6 +74,21 @@ const tests = {
         console.log(vehicles6, "ALL vehicles by ab");
 
     },
+
+    testCascade : async () => {
+        dealershipsService.insertDealership([57,'dealership 57', 'logo']);
+        let deal1 = await dealershipsService.getAllDealerships();
+        console.log(deal1, "deal1");
+        vehiclesService.insertVehicle([57,'vin_57', 'vehicle_stock', "vehicle_date", "vehicle_make", "vehicle_model", "vehicle_trim", "vehicle_interior", "vehicle_exterior", "vehicle_hotspots"]);
+        let veh1 = await vehiclesService.getAllVehicles();
+        console.log(veh1, "veh1");
+        dealershipsService.deleteDealership([57]);
+        let deal2 = await dealershipsService.getAllDealerships();
+        console.log(deal2, "deal2");
+        let veh2 = await vehiclesService.getAllVehicles();
+        console.log(veh2, "veh2");
+        
+    }
 }
 
 export { tests };

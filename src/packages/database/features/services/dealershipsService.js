@@ -1,4 +1,5 @@
 import { dealershipsRepository } from "../repositories/dealershipsRepository";
+import { vehiclesService } from "./vehiclesService";
 
 const dealershipsService = {
 
@@ -41,8 +42,19 @@ const dealershipsService = {
         // console.log(elementsToDelete, "delete");
 
         console.log(await dealershipsRepository.getAllDealerships(), "updated");
+    },
 
-    }
+    // deleteDealershipByIdAndVehicles:async ([dealership_id]) =>{
+    //     // await vehiclesService.getAllVehiclesByDealershipId([dealership_id]).then((vehicles) => {
+    //     //     vehicles.map(async (vehicle) => {
+    //     //         await vehiclesService.deleteVehicleById([vehicle.vehicle_id]);
+    //     //         }).then(async () => {
+    //     //             await dealershipsRepository.deleteDealership([dealership_id]);
+    //     //         })
+    //     // })
+
+    // }
+
 }
 
 export { dealershipsService };

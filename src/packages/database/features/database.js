@@ -25,6 +25,7 @@ const DB = {
                 location: 'default',
                 androidDatabaseProvider: 'system'
             },(db)=>{
+                
                 resolve(db)
                 // return true;
             }, (error)=>{
@@ -161,6 +162,7 @@ const DB = {
                 console.log("Error creating index vehicle_vin: " + error.message);
             });
         });
+        
     },
     
     //drop a table
