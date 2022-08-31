@@ -69,8 +69,9 @@ const DB = {
                 image_status	INTEGER, 
                 image_type	INTEGER,
                 hotspot_id	INTEGER,
-                vehicle_id	INTEGER REFERENCES vehicles (vehicle_id) ON DELETE CASCADE,
-                image_data	BLOB,
+                vehicle_id	INTEGER REFERENCES vehicles (vehicle_id),
+                image_data	TEXT,
+                image_number INTEGER,
                 PRIMARY KEY(image_id AUTOINCREMENT)
             )`);
         }).then(()=>{
@@ -83,14 +84,16 @@ const DB = {
             )`);
         }).then(()=>{
             DB.createTable(db,"settings", `CREATE TABLE IF NOT EXISTS settings (
-                name	TEXT,
-                value	TEXT,
-                dealership_id	INTEGER REFERENCES dealerships (dealership_id) ON DELETE CASCADE
+                setting_id	INTEGER,
+                setting_name	TEXT,
+                setting_value	TEXT,
+                dealership_id	INTEGER REFERENCES dealerships (dealership_id)
+                PRIMARY KEY(setting_id AUTOINCREMENT)
             )`);
         }).then(()=>{
             DB.createTable(db,"vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
                 vehicle_id	INTEGER,
-                dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
+                dealership_id INTEGER REFERENCES dealerships(dealership_id),
                 vehicle_vin	TEXT,
                 vehicle_stock	TEXT,
                 vehicle_date	INTEGER,
@@ -106,7 +109,7 @@ const DB = {
         }).then(()=>{
             DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
                 hotspot_id	INTEGER,
-                dealership_id INTEGER REFERENCES dealerships(dealership_id) ON DELETE CASCADE,
+                dealership_id INTEGER REFERENCES dealerships(dealership_id),
                 hotspot_name TEXT,
                 PRIMARY KEY(hotspot_id AUTOINCREMENT)
             )`);

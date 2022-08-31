@@ -47,12 +47,21 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	
 
 	useEffect(() => {
-		// console.log(inventory,dealerships,'inventory');
-		// start db
+
 		(async ()=>{
 			if(serverHasNewDealerships()){
-				dealershipsToAdd();
-				dealershipsToDelete();
+				const newDealers = await dealershipsToAdd();
+				const simpleDealerArray = await simplifiedArray(newDealers);
+				simpleDealerArray?.forEach(async (dealership)=>{
+					await dbRequest.requestFunction(async ()=>dealershipsService.addDealership(dealership));					
+				})
+				newDealers?.forEach(async (dealership)=>{
+					const int = dealership.config.interior;
+					const ext = dealership.config.exterior;
+					const hotSpots = dealership.config.hotspots;					
+					
+				})
+				await dealershipsToDelete();
 			}
 		})();
 		// DB.dbInstance().then(async (db)=>{
