@@ -87,7 +87,7 @@ const DB = {
                 setting_id	INTEGER,
                 setting_name	TEXT,
                 setting_value	TEXT,
-                dealership_id	INTEGER REFERENCES dealerships (dealership_id)
+                dealership_id	INTEGER REFERENCES dealerships (dealership_id),
                 PRIMARY KEY(setting_id AUTOINCREMENT)
             )`);
         }).then(()=>{
