@@ -20,15 +20,12 @@ const DealershipSelector = ({info}) => {
 		const oldList = await dbRequest.requestFunction(async ()=>vehiclesService.getAllVehiclesByDealershipId([dealershipId]))
 		let newList;
 		//find in array of object the object with a key that has the value of dealershipId
-		info.vehicles.map((elem)=>{
-			console.log(elem[dealershipId],dealershipId,'red')
-			newList = elem[dealershipId]
-		})
-
-
-		
-
-		console.log(newList, "newList");
+		for(let i = 0; i < info.dealerships.length; i++){
+			if(info.vehicles[i][dealershipId] !== undefined){
+				newList = info.vehicles[i][dealershipId];
+			}
+		}
+	
 		const newVehicles = newList?.filter(elem => !oldList?.some(elem2 => parseInt(elem.id) === elem2.vehicle_id));
 		return newVehicles;
 	}
@@ -77,6 +74,7 @@ const DealershipSelector = ({info}) => {
 		currentDealerships?.map(async (dealership)=>{
 			//get all vehicles by dealership id
 			const newVehicles = await vehiclesToAdd([dealership.dealership_id]);
+			console.log(newVehicles,dealership,'newVehicles',"dealership");
 		})
 
 	

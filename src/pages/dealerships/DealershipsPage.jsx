@@ -41,6 +41,7 @@ const DealershipsPage = () => {
 			if(await network.getCurrentNetworkStatus()){
 				const response = await pageRequest.requestFunction(requestTableContentDealerships);
 				const vehicleArrays = await requestTableContentVehicles(response?.dealerships);
+				console.log(vehicleArrays, "vehicleArrays");
 				setRequestInfo({dealerships:response?.dealerships, vehicles:vehicleArrays});
 			}
 		})()
