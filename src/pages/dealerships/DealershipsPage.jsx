@@ -11,9 +11,8 @@ const DealershipsPage = () => {
 	const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
 	const [dealershipsURL] = useAtom(myUrl.dealership);
-	const [inventoryURL] = useAtom(myUrl.inventory);
-	const [dealerships, setDealerships] = useState(null);
-	const [carInventory, setCarInventory] = useState([]);
+	const [inventoryURL] = useAtom(myUrl.inventory); 
+	const [requestInfo, setRequestInfo] = useState(null);
 
 	const requestTableContentDealerships = async ()=>{
 		requestSetters.setUrl(dealershipsURL);
@@ -41,10 +40,8 @@ const DealershipsPage = () => {
 		(async()=>{
 			if(await network.getCurrentNetworkStatus()){
 				const response = await pageRequest.requestFunction(requestTableContentDealerships);
-				setDealerships(response?.dealerships);
-				
 				const vehicleArrays = await requestTableContentVehicles(response?.dealerships);
-				setCarInventory(vehicleArrays);
+				setRequestInfo({dealerships:response?.dealerships, vehicles:vehicleArrays});
 			}
 		})()
 	}, []);
@@ -57,7 +54,7 @@ const DealershipsPage = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<DealershipSelector dealerships={dealerships} inventory={carInventory} ></DealershipSelector>
+				<DealershipSelector info={requestInfo}></DealershipSelector>
 			</IonContent>
 		</Page>
 	)

@@ -88,7 +88,37 @@ const hotspotsRepository = {
             );
         });
     },
-        
+    //get all hotspots with dealership id
+    getAllHotspotsByDealershipId:async ([dealership_id]) =>{
+        return new Promise(async (resolve, reject)=>{
+            //transaction
+            (await DB.dbInstance())
+                .transaction((tx)=>{
+                    tx.executeSql(
+                        `SELECT * FROM hotspots WHERE dealership_id = ?`, 
+                        [dealership_id], 
+                        (tx, results)=>{
+                            let arr=[];
+                            for(let i = 0; i < results.rows.length; i++){
+                                arr.push(results.rows.item(i));
+                            }
+                            resolve(arr);
+                        }
+                    );
+                }, 
+                //transaction error
+                (error)=>{
+                    console.log(error);
+                    logService.insertLog([new Date().getTime(), [dealership_id], error]);
+                    reject(error);
+                },
+                //transaction success
+                ()=>{
+                    logService.insertLog([new Date().getTime(), [dealership_id], "Hotspots retrieved successfully"]);
+                }
+            );
+        });
+    }
 }
 
 export { hotspotsRepository };

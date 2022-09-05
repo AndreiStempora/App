@@ -95,7 +95,7 @@ const dealershipsRepository = {
     },
 
     //delete a dealership
-    deleteDealership:async ([dealership_id]) =>{
+    deleteDealershipById:async ([dealership_id]) =>{
         return new Promise(async (resolve, reject)=>{
             //transaction
             (await DB.dbInstance())

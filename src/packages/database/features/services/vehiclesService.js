@@ -1,4 +1,5 @@
 import { vehiclesRepository } from "../repositories/vehiclesRepository";
+import { imagesService } from "./imagesService";
 
 const vehiclesService = {
 
@@ -27,33 +28,26 @@ const vehiclesService = {
         return await vehiclesRepository.getAllVehiclesWithoutEmptyFields();
     },
 
-    //update local vehicles
-    updateLocalVehicles: async (newArray) => {
-        let oldArray = await vehiclesRepository.getAllVehicles();
-        console.log(oldArray,"currentvehicles");
-
-        let elementsToAdd = newArray.filter(elem => !oldArray.some(elem2 => elem.vin === elem2.vehicle_vin));
-        console.log(elementsToAdd, "addRED");
-        elementsToAdd.map(async (elem) => {await vehiclesRepository.insertVehicle([1, elem.vin, elem.stock, elem.year, elem.make, elem.model, elem.trim])});
-
-        let elementsToDelete = oldArray.filter(elem => !newArray.some(elem2 => elem2.vin === elem.vehicle_vin));
-        elementsToDelete.map(async (elem) => {await vehiclesRepository.deleteVehicleById([elem.vehicle_id])});
-        console.log(elementsToDelete, "deleteRED");
-
-        console.log(await vehiclesRepository.getAllVehicles(), "updated");
+    //delete a vehicle by id
+    deleteVehicleById: async ([vehicle_id]) => {
+        const images = await imagesService.getAllImagesByVehicleId([vehicle_id]);
+        images.map(async (image) => {
+            await imagesService.deleteImage([image.image_id]);
+        });
+        await vehiclesRepository.deleteVehicleById([vehicle_id]);
     },
 
     getAllVehiclesByDealershipId: async ([dealership_id]) => {
-        return await vehiclesRepository.getAllVehiclesByDealerId([dealership_id]);
+        return await vehiclesRepository.getAllVehiclesByDealershipId([dealership_id]);
+    },
+
+    deleteAllVehiclesByDealershipId: async ([dealership_id]) => {
+        const vehicles = await vehiclesService.getAllVehiclesByDealershipId([dealership_id]);
+        vehicles.map(async (vehicle) => {
+            await vehiclesService.deleteVehicleById([vehicle.vehicle_id]);
+        })
     }
     
 }
-
-// make: "Jeep"
-// model: "Wrangler Unlimited"
-// stock: "A13945"
-// trim: "Sahara"
-// vin: "1C4HJXEN0LW278766"
-// year: "2020"
 
 export { vehiclesService };

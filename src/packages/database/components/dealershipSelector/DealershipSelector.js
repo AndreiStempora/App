@@ -5,45 +5,39 @@ import { useState, useEffect } from 'react';
 import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, tests } from "../../";
 
 
-const DealershipSelector = ({dealerships, inventory}) => {
+const DealershipSelector = ({info}) => {
 	const dbRequest = useDbRequest();
 	const [dealershipElements , setDealershipElements] = useState([]);
 
-	const simplifiedArray = async (arr)=>{
-		try{
-			return await Promise.all(arr?.map(async (dealership)=>{
-					let logoBlob = await (await fetch(dealership.logo)).blob();
-					const base64string = await DB.blobToBase64(logoBlob);
-					return {id: parseInt(dealership.id), dealer: dealership.dealer, logo: base64string};
-				})
-			)
-		} catch(e){
-			console.log(e);
-		}
-	}
-
 	const dealershipsToAdd = async ()=>{
 		const oldList = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships())
-		const newList = dealerships;
+		const newList = info.dealerships;
 		const newDealerships = newList?.filter(elem => !oldList?.some(elem2 => parseInt(elem.id) === elem2.dealership_id));
-		console.log(newDealerships,'for adding');
 		return newDealerships;
+	}
+
+	const vehiclesToAdd = async ([dealershipId])=>{
+		const oldList = await dbRequest.requestFunction(async ()=>vehiclesService.getAllVehiclesByDealershipId([dealershipId]))
+		let newList;
+		//find in array of object the object with a key that has the value of dealershipId
+		info.vehicles.map((elem)=>{
+			console.log(elem[dealershipId],dealershipId,'red')
+			newList = elem[dealershipId]
+		})
+
+
+		
+
+		console.log(newList, "newList");
+		const newVehicles = newList?.filter(elem => !oldList?.some(elem2 => parseInt(elem.id) === elem2.vehicle_id));
+		return newVehicles;
 	}
 
 	const dealershipsToDelete = async ()=>{
 		const oldList = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships())
-		const newList = dealerships;
+		const newList = info.dealerships;
 		const dealershipsToDelete = oldList?.filter(elem => !newList?.some(elem2 => parseInt(elem2.id) === elem.dealership_id));
-		console.log(dealershipsToDelete,'for deleting');
 		return dealershipsToDelete;
-	}
-
-	const serverHasNewDealerships = () =>{
-		if(dealerships === undefined){
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	const setConfigs = async (dealership) =>{
@@ -58,30 +52,65 @@ const DealershipSelector = ({dealerships, inventory}) => {
 	}
 
 	useEffect(() => {
+		const databaseInitialOperations = async ()=>{
+			//new dealerships
+			const newDealerships = await dealershipsToAdd();
+			console.log(newDealerships,'newDealerships');
+			//add each to db 
+			newDealerships?.map(async (dealership)=>{
+				const logoBlob = await (await fetch(dealership.logo)).blob();
+				const base64string = await DB.blobToBase64(logoBlob);
+				await setConfigs(dealership)
+				await dbRequest.requestFunction(async ()=>dealershipsService.insertDealership([parseInt(dealership.id), dealership.dealer, base64string]));
+			})
 
+			// old dealerships
+			const oldDealerships = await dealershipsToDelete();
+			console.log(oldDealerships,'old dealerships');
+			//delete each from db
+			oldDealerships?.map(async (dealership)=>{
+				await dbRequest.requestFunction(async ()=>dealershipsService.deleteDealershipById([dealership.dealership_id]));
+			})
+
+		//get new list of dealerships
+		const currentDealerships = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships());
+		currentDealerships?.map(async (dealership)=>{
+			//get all vehicles by dealership id
+			const newVehicles = await vehiclesToAdd([dealership.dealership_id]);
+		})
+
+	
+		}
+
+		if(info !== null){
+			console.log(info,"info");
+			databaseInitialOperations();
+		} else {
+			console.log(info,'no info');
+		}
 		(async ()=>{
-			if(serverHasNewDealerships()){
-				//list of new dealerships
-				const newDealerships = await dealershipsToAdd();
-				//go through each new dealership and add it to the database
-				newDealerships?.map(async (dealership)=>{
-					console.log(dealership,'for adding');
-					const logoBlob = await (await fetch(dealership.logo)).blob();
-					const base64string = await DB.blobToBase64(logoBlob);
-					await setConfigs(dealership)
-					await dbRequest.requestFunction(async ()=>dealershipsService.insertDealership([parseInt(dealership.id), dealership.dealer, base64string]));
-				})
-				console.log(await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships()),'new list');
-				// await dbRequest.requestFunction(async ()=>dealershipsService.insertDealership([33, "dealership.dealer", "base64string"]))
-				//list of dealerships to delete
-				const oldDealerships = await dealershipsToDelete();
-				console.log(oldDealerships,'for deleting');
-				//go through each dealership to delete and delete it from the database
-				oldDealerships?.map(async (dealership)=>{
-						console.log(dealership,'for deleting');
-					// await dbRequest.requestFunction(async ()=>dealershipsService.deleteDealership([dealership.dealership_id]));
-				})
-			}
+			// if(serverHasNewDealerships()){
+			// 	//list of new dealerships
+			// 	const newDealerships = await dealershipsToAdd();
+			// 	//go through each new dealership and add it to the database
+			// 	newDealerships?.map(async (dealership)=>{
+			// 		console.log(dealership,'for adding');
+			// 		const logoBlob = await (await fetch(dealership.logo)).blob();
+			// 		const base64string = await DB.blobToBase64(logoBlob);
+			// 		await setConfigs(dealership)
+			// 		await dbRequest.requestFunction(async ()=>dealershipsService.insertDealership([parseInt(dealership.id), dealership.dealer, base64string]));
+			// 	})
+			// 	console.log(await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships()),'new list');
+			// 	// await dbRequest.requestFunction(async ()=>dealershipsService.insertDealership([33, "dealership.dealer", "base64string"]))
+			// 	//list of dealerships to delete
+			// 	const oldDealerships = await dealershipsToDelete();
+			// 	console.log(oldDealerships,'for deleting');
+			// 	//go through each dealership to delete and delete it from the database
+			// 	oldDealerships?.map(async (dealership)=>{
+			// 			console.log(dealership,'for deleting');
+			// 		// await dbRequest.requestFunction(async ()=>dealershipsService.deleteDealership([dealership.dealership_id]));
+			// 	})
+			// }
 		})();
 		// const newDealers = await dealershipsToAdd();
 		// const simpleDealerArray = await simplifiedArray(newDealers);
@@ -163,7 +192,7 @@ const DealershipSelector = ({dealerships, inventory}) => {
 			
 		
 		
-	}, [dealerships, inventory]);
+	}, [info]);
 
     return (
 		<IonGrid className="content-in-center vertical-centering">

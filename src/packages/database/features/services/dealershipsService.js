@@ -1,5 +1,8 @@
 import { dealershipsRepository } from "../repositories/dealershipsRepository";
 import { vehiclesService } from "./vehiclesService";
+import { hotspotsService } from "./hotspotsService";
+import { settingsService } from "./settingsService";
+
 
 const dealershipsService = {
 
@@ -19,8 +22,11 @@ const dealershipsService = {
     },
 
     //delete a dealership
-    deleteDealership:async ([dealership_id]) =>{
-        await dealershipsRepository.deleteDealership([dealership_id]);
+    deleteDealershipById:async ([dealership_id]) =>{
+        await hotspotsService.deleteAllHotspotsByDealershipId([dealership_id]);
+        await settingsService.deleteAllSettingsByDealershipId([dealership_id]);
+        await vehiclesService.deleteAllVehiclesByDealershipId([dealership_id]);
+        await dealershipsRepository.deleteDealershipById([dealership_id]);
     },
 
     //update a dealership
