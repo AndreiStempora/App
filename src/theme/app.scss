@@ -4,7 +4,7 @@
 }
 
 body{
-	--ion-background-color:black;
+	--ion-background-color:transparent;
 }
 @mixin context($old-context, $new-context) {
 	$parent : &;

@@ -10,7 +10,7 @@ const usePageRequest = ()=>{
 
     const givenFunctionWrapper = async(pageRequestFunction)=>{
         try{
-            setLoading(true);
+            // setLoading(true);
             const response = await pageRequestFunction();
             if(response?.status === "error" && response?.module ==="users-addon-2fa"){
                 history.push("/2fa");

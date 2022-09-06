@@ -5,19 +5,39 @@ import Page from '../../components/page/Page';
 import './cameraPage.scss';
 
 const CameraPage = () => {
+    const [cameraOn,setCameraOn] = useState(false);
+
     const cameraPreviewOptions = {
         position: 'rear',
         parent: 'cameraPreview',
         className: 'cameraPreview',
         toBack: true,
+        storeToFile: true,
     };
+    const startCamera = async () => {
+        try{
+            if(!cameraOn){
+            await CameraPreview.start(cameraPreviewOptions);
+            setCameraOn(true);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
     useEffect(() => {
-        CameraPreview.stop().then(() => {
-            CameraPreview.start(cameraPreviewOptions);
-        })
-        // console.log('red')
+        startCamera();
+
     }, []);
 
+    const takePicture = async () => {
+        try{
+            const image = await CameraPreview.capture({quality: 100});
+            console.log(image);
+            // console.log(x);
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <Page pageClass={"cameraPage"}>
@@ -26,7 +46,7 @@ const CameraPage = () => {
             </IonHeader> */}
             <IonContent>
                 <div id="cameraPreview" className='cameraPreview'></div>
-                <div className='checkmarks'>
+                {/* <div className='checkmarks'>
                     <IonList>
                         <IonItem>
                             <IonCheckbox indeterminate='true'  color="danger"></IonCheckbox>
@@ -39,8 +59,8 @@ const CameraPage = () => {
                             <IonCheckbox indeterminate='true'  color="danger"></IonCheckbox>
                         </IonItem>
                     </IonList>
-                </div>
-                <IonSegment  scrollable value="camera">
+                </div> */}
+                {/* <IonSegment  scrollable value="camera">
                     <IonSegmentButton value="aaa">
                         <IonLabel>AAA</IonLabel>
                     </IonSegmentButton>
@@ -65,7 +85,9 @@ const CameraPage = () => {
                     <IonSegmentButton value="hhh">
                         <IonLabel>hhhrrrr</IonLabel>
                     </IonSegmentButton>
-                </IonSegment>
+                </IonSegment> */}
+
+                <IonButton onClick={takePicture}>Take Pic</IonButton>
             </IonContent>
         </Page>
     )

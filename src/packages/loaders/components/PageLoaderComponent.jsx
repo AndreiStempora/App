@@ -14,7 +14,7 @@ const PageLoaderComponent = () => {
 			message="Please wait..."
 			spinner="lines-sharp-small"
 			show-backdrop="false"
-			duration={1000}
+			// duration={1000}
 		></IonLoading>
 	)
 }

@@ -10,7 +10,7 @@ const useDbRequest = ()=>{
     const [data,setData] = useState([]);
 
     const givenFunctionWrapper = async(dbRequestFunction)=>{
-        setLoading(true);
+        // setLoading(true);
         try{
             return DB.dbInstance().then(async (db)=>{
                 const result = await dbRequestFunction();
@@ -22,13 +22,13 @@ const useDbRequest = ()=>{
             setError("There was a problem with the database!");
             console.log(e)
         }finally{
-            setTimeout(()=>{
-                setLoading(false);
-            },200);
+            // setTimeout(()=>{
+            //     setLoading(false);
+            // },200);
         }
     }
 
-    return {loading:loading,requestFunction:givenFunctionWrapper,data:data}
+    return {loading:loading,setLoading:setLoading,requestFunction:givenFunctionWrapper,data:data}
 }
 
 export default useDbRequest;

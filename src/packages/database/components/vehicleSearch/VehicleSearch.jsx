@@ -5,6 +5,8 @@ import useDbRequest from "../../features/utils/databaseOperationsHook";
 import { useAtom } from 'jotai';
 import { user } from '../../../../services/user/user';
 
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
 
 const VehicleSearch = () => {
     const dbRequest = useDbRequest();
@@ -17,13 +19,13 @@ const VehicleSearch = () => {
         setFilteredVehicles(response);
     }
     useEffect(() => {
-        console.log(currentDealership);
+        // console.log(currentDealership);
         getVehicleList(currentDealership);
     }, []);
 
     useEffect(() => {
-        console.log(searchText);
-        console.log(filteredVehicles);
+        // console.log(searchText);
+        // console.log(filteredVehicles);
         
     }, [searchText]);
 

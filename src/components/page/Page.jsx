@@ -23,7 +23,7 @@ const Page = ({ children, pageClass }) => {
 	
 	return (
 		<>
-            {/* <PageLoaderComponent /> */}
+            <PageLoaderComponent />
 		<IonPage className={`${pageClass} app-page`}>
 			<NetworkConnectionComponent />
 					{children}
