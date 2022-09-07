@@ -63,7 +63,6 @@ const DealershipSelector = ({info}) => {
 		}
 
 		const vehiclesToDelete = vehiclesWithoutPics?.filter(elem => !newList?.some(elem2 => elem.vehicle_vin === elem2.vin));
-		console.log(vehiclesWithoutPics, newList, vehiclesToDelete, "vehiclesToDelete");
 		return vehiclesToDelete;
 	}
 
