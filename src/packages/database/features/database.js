@@ -199,7 +199,22 @@ const DB = {
                 resolve(reader.result);
             };
         });
-    }
+    },
+    
+    //get contents of each table
+    getTableContents:async (tableName) =>{
+        let db = await DB.dbInstance();
+        return new Promise((resolve, reject)=>{
+            db.transaction((tx)=>{
+                tx.executeSql("SELECT * FROM " + tableName, [], function(tx, res){
+                    resolve(res.rows);
+                }, function(tx, error){
+                    reject(error);
+                });
+            });
+        });
+    },
+    
 }
 
 export default DB;

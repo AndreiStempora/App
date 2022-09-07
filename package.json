@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@awesome-cordova-plugins/camera-preview": "^5.45.0",
     "@awesome-cordova-plugins/core": "^5.43.0",
     "@awesome-cordova-plugins/screen-orientation": "^5.43.0",
     "@awesome-cordova-plugins/sqlite": "^5.43.0",

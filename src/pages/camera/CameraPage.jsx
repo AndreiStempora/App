@@ -1,42 +1,89 @@
-import { IonPage, IonItem,IonList, IonCheckbox, IonHeader, IonLabel, IonContent, IonButton, IonFab, IonFabButton, IonIcon, IonItemSliding, IonSegment, IonSegmentButton } from '@ionic/react';
-import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
+import { IonPage, IonItem, IonList, IonCheckbox, IonHeader, IonLabel, IonContent, IonButton, IonFab, IonFabButton, IonIcon, IonItemSliding, IonSegment, IonSegmentButton } from '@ionic/react';
+// import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
 import { useEffect, useState } from 'react';
+import { useIonViewDidEnter, useIonViewWillLeave } from '@ionic/react';
+import { CameraPreview } from "@awesome-cordova-plugins/camera-preview";
+import { FS } from '../../packages/filesystem';
 import Page from '../../components/page/Page';
+
+// import 
 import './cameraPage.scss';
 
 const CameraPage = () => {
-    const [cameraOn,setCameraOn] = useState(false);
+    const [cameraOn, setCameraOn] = useState(false);
 
     const cameraPreviewOptions = {
-        position: 'rear',
-        parent: 'cameraPreview',
-        className: 'cameraPreview',
+        x: 0,
+        y: 0,
+        width: window.screen.width,
+        height: window.screen.height,
+        camera: CameraPreview.CAMERA_DIRECTION.BACK,
         toBack: true,
-        storeToFile: true,
+        tapPhoto: false,
+        tapFocus: true,
+        previewDrag: false,
+        storeToFile: false,
+        disableExifHeaderStripping: false
+
     };
-    const startCamera = async () => {
-        try{
-            if(!cameraOn){
-            await CameraPreview.start(cameraPreviewOptions);
+
+    useIonViewDidEnter(async () => {
+        if (!cameraOn) {
+            await CameraPreview.startCamera(cameraPreviewOptions);
             setCameraOn(true);
-            }
-        } catch (e) {
-            console.log(e);
+            console.log("cameraStarted")
         }
-    }
-    useEffect(() => {
-        startCamera();
+    })
+    useIonViewWillLeave(async () => {
+        await CameraPreview.stopCamera();
+        console.log("cameraStopped")
+        setCameraOn(false);
+    })
 
-    }, []);
+    
 
+    // useEffect(() => {
+
+    // }, []);
+
+    let options3 = {
+        x: 0,
+        y: 0,
+        width: window.screen.width,
+        height: window.screen.height,
+        camera: CameraPreview.CAMERA_DIRECTION.BACK,
+        toBack: false,
+        tapPhoto: true,
+        tapFocus: false,
+        previewDrag: false,
+        storeToFile: false,
+        disableExifHeaderStripping: false
+    };
     const takePicture = async () => {
-        try{
-            const image = await CameraPreview.capture({quality: 100});
-            console.log(image);
-            // console.log(x);
-        } catch (e) {
-            console.log(e);
-        }
+        // try {
+        //     let x = await CameraPreview.takePicture({ options3 });
+        //     let y = "file://" +x[0];
+
+        //     // const blob = await y.blob();
+        //     // console.log(blob, "blob");
+        //     const reader = new FileReader();
+        //     reader.readAsDataURL(y);
+        //     let r = new Promise(resolve => {
+        //         reader.onloadend = () => {
+        //             resolve(reader.result);
+        //         };
+        //     });
+
+        //     console.log(await r)
+            
+        //     //get absolute path
+        //     // let z = await FS.getUri(y);
+        //     // console.log(z);
+        
+
+        // } catch (e) {
+        //     console.log(e);
+        // }
     }
 
     return (

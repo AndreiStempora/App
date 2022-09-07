@@ -16,8 +16,41 @@ const FS = {
             directory: Directory.Data
         });
         return result.files;
-    }
-
+    },
+    appendFile: async(path, data) => {
+        await Filesystem.appendFile({
+            path: path,
+            data: data,
+            directory: Directory.Data,
+        });
+    },
+    renameFile: async(path, newPath) => {
+        await Filesystem.rename({
+            path: path,
+            newPath: newPath,
+            directory: Directory.Data,
+        });
+    },
+    deleteFile: async(path) => {
+        await Filesystem.deleteFile({
+            path: path,
+            directory: Directory.Data,
+        });
+    },
+    copyFile: async(path, newPath) => {
+        await Filesystem.copy({
+            path: path,
+            newPath: newPath,
+            directory: Directory.Data,
+        });
+    },
+    readFile: async(path) => {
+        const result = await Filesystem.readFile({
+            path: path,
+            directory: Directory.Data,
+        });
+        return result.data;
+    },
 }
 
 export { FS };

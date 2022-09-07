@@ -2,12 +2,26 @@ import './dealershipSelector.scss'
 import { IonGrid, IonRow, IonCol, IonList,IonItem } from '@ionic/react';
 import DealershipElement from './DealershipElement';
 import { useState, useEffect } from 'react';
-import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, tests } from "../../";
+import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService ,tests } from "../../";
 
 
 const DealershipSelector = ({info}) => {
 	const dbRequest = useDbRequest();
 	const [dealershipElements , setDealershipElements] = useState([]);
+
+	const deleteDatabase = async () => {
+		await dbRequest.requestFunction(DB.dropAllTables());
+	}
+
+	const getAllDBContents = async () => {
+		const a = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships());
+		const b = await dbRequest.requestFunction(async ()=>vehiclesService.getAllVehicles());
+		const c = await dbRequest.requestFunction(async ()=>hotspotsService.getAllHotspots());
+		const d1 = await dbRequest.requestFunction(async ()=>settingsService.getAllSettingsByDealershipId([1]));
+		const d2 = await dbRequest.requestFunction(async ()=>settingsService.getAllSettingsByDealershipId([2]));
+		const e = await dbRequest.requestFunction(async ()=>imagesService.getAllImages());
+		console.log(a, b, c, d1, d2,e, "all");
+	}
 
 	const dealershipsToAdd = async ()=>{
 		const oldList = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships())
@@ -65,17 +79,17 @@ const DealershipSelector = ({info}) => {
 		const interior = dealership?.config?.interior;
 		const exterior = dealership?.config?.exterior;
 		const hotspots = dealership?.config?.hotspots;
-		await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['interior', interior, dealership.id]));
-		await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['exterior', exterior, dealership.id]));
+		await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['interior', interior?.default, dealership.id]));
+		await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['exterior', exterior?.default, dealership.id]));
 		hotspots?.map(async (hotspot)=>{
-			await dbRequest.requestFunction(async ()=>hotspotsService.insertHotspot([dealership.id, hotspot]));
+			await dbRequest.requestFunction(async ()=>hotspotsService.insertHotspot([dealership.id, hotspot.name]));
 		})
 	}
 
 	useEffect(() => {
 		const databaseInitialOperations = async ()=>{
 			dbRequest.setLoading(true);
-
+			// await dbRequest.requestFunction(async ()=>DB.dropAllTables());
 			const newDealerships = await dealershipsToAdd();
 			newDealerships?.map(async (dealership)=>{
 				const logoBlob = await (await fetch(dealership.logo)).blob();
@@ -110,6 +124,8 @@ const DealershipSelector = ({info}) => {
 			})
 			const allDealerships = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships());
 			setDealershipElements(allDealerships);
+
+			
 			dbRequest.setLoading(false);
 		}
 
