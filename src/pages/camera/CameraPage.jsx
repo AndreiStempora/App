@@ -3,7 +3,7 @@ import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera
 import { useEffect, useState } from 'react';
 import { useIonViewDidEnter, useIonViewWillLeave } from '@ionic/react';
 // import { CameraPreview } from '@capacitor-community/camera-preview';
-// import { FS } from '../../packages/filesystem';
+import { FS } from '../../packages/filesystem';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import Page from '../../components/page/Page';
 
@@ -13,11 +13,12 @@ import './cameraPage.scss';
 const CameraPage = () => {
     const [cameraOn, setCameraOn] = useState(false);
     const [src,setSrc] = useState(null);
+    const [pic,setPic] = useState(null);
 
     const cameraPreviewOptions = {
         // position: 'rear',
         toBack: true,
-
+        
 
         // parent: 'cameraPreview',
         // className: 'cameraPreview',
@@ -34,41 +35,70 @@ const CameraPage = () => {
     };
 
     useIonViewDidEnter(async () => {
-        
+        await CameraPreview.start(cameraPreviewOptions);
+        console.log('Camera started');
     });
 
     useIonViewWillLeave(async () => {
-        try{
-            if(cameraOn){
-                await CameraPreview.stop();
-                setCameraOn(false);
-            }
-        } catch (e) {
-            console.log(e);
-        }
-
-                
+        await CameraPreview.stop();   
+        console.log('Camera stopped');
     });
 
-    
-
     useEffect(() => {
-        (async() => {
-            try{
-                if(!cameraOn){
-                    await CameraPreview.start(cameraPreviewOptions);
-                    setCameraOn(true);
-                }
-            } catch (e) {
-                console.log(e);
-            }  
+        (async()=>{
+            // await Filesystem.mkdir({path: 'photos', directory: Directory.Data, recursive: true});
+            // let x = await Filesystem.getUri({directory: Directory.Data, path: 'photos'});
+            // console.log(x);
+            // setSrc(x.uri);
+            // await Filesystem.readdir({path: 'photos', directory: Directory.Data});
+            // let x = await CameraPreview.get();
+            // console.log(x)
+            // await Filesystem.readFileResult({path: 'file:///data/user/0/io.ionic.starter/files/photos/alfa2.jpg'});
+
         })()
-    }, []);
+    },[])
+
+    // useEffect(() => {
+    //     (async() => {
+    //         try{
+    //             if(!cameraOn){
+                    
+    //                 setCameraOn(true);
+    //             }
+    //         } catch (e) {
+    //             console.log(e);
+    //         }  
+    //     })()
+    // }, []);
 
     
     const takePicture = async () => {
-        let result = await CameraPreview.capture({ quality: 100 });
+        const result = await CameraPreview.capture({quality:100});
         console.log(result.value);
+        // setPic("data:image/jpg;base64"+base64PictureData);
+        // let result = await CameraPreview.capture({ quality: 100 });
+        let res = 'file://' + result.value;
+        let x = (await Filesystem.getUri({directory: Directory.Data, path: 'photos'})).uri
+        // console.log(x,res);
+        let newUri = (await Filesystem.copy({from:res,to:x+`/${(new Date()).getTime()}.jpg`})).uri;
+        console.log(newUri);
+        // let x = await Filesystem.readFile({path: newUri, directory: Directory.Data, encoding: Encoding.UTF8});
+        var request = new XMLHttpRequest();
+        request.open('GET', newUri, true);
+        request.responseType = 'blob';
+        request.onload = function() {
+            var reader = new FileReader();
+            reader.readAsDataURL(request.response);
+            reader.onload =  function(e){
+                console.log('DataURL:', e.target.result);
+            };
+        };
+        request.send();
+        // console.log(res);
+        // let a = await Filesystem.copy({from:res,to:src+'/alfa2.jpg'});
+        // setPic(result.value);
+        // console.log(a.uri);
+
         
         // console.log(window.location)
         // console.log(result);
@@ -161,7 +191,7 @@ const CameraPage = () => {
                 </IonSegment> */}
 
                 <IonButton onClick={takePicture}>Take Pic</IonButton>
-                <img src={src}/>
+                <img src={pic}/>
             </IonContent>
         </Page>
     )
