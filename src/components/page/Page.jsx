@@ -30,6 +30,8 @@ const Page = ({ children, pageClass }) => {
             <ErrorComponent />
 		</IonPage>
 		</>
+
+		
 	)
 }
 

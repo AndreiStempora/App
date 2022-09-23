@@ -34,66 +34,74 @@ const CameraPage = () => {
         storeToFile: true,
     };
 
-    useIonViewDidEnter(async () => {
-        await CameraPreview.start(cameraPreviewOptions);
-        console.log('Camera started');
-    });
+    // useIonViewDidEnter(async () => {
+    //     // CameraPreview.start(cameraPreviewOptions);
+    //     console.log('Camera started');
+    // });
 
-    useIonViewWillLeave(async () => {
-        await CameraPreview.stop();   
-        console.log('Camera stopped');
-    });
+    // useIonViewWillLeave(async () => {
+    //     // CameraPreview.stop();   
+    //     console.log('Camera stopped');
+    // });
 
     useEffect(() => {
         (async()=>{
-            // await Filesystem.mkdir({path: 'photos', directory: Directory.Data, recursive: true});
-            // let x = await Filesystem.getUri({directory: Directory.Data, path: 'photos'});
-            // console.log(x);
-            // setSrc(x.uri);
-            // await Filesystem.readdir({path: 'photos', directory: Directory.Data});
-            // let x = await CameraPreview.get();
-            // console.log(x)
-            // await Filesystem.readFileResult({path: 'file:///data/user/0/io.ionic.starter/files/photos/alfa2.jpg'});
-
+            if(!cameraOn){
+                await CameraPreview.start(cameraPreviewOptions);
+                setCameraOn(true);
+            }
         })()
+        return async() => {
+            if(cameraOn){
+                await CameraPreview.stop();
+                setCameraOn(false);
+            }
+        }
     },[])
-
-    // useEffect(() => {
-    //     (async() => {
-    //         try{
-    //             if(!cameraOn){
-                    
-    //                 setCameraOn(true);
-    //             }
-    //         } catch (e) {
-    //             console.log(e);
-    //         }  
-    //     })()
-    // }, []);
 
     
     const takePicture = async () => {
         const result = await CameraPreview.capture({quality:100});
+        
         console.log(result.value);
         // setPic("data:image/jpg;base64"+base64PictureData);
         // let result = await CameraPreview.capture({ quality: 100 });
         let res = 'file://' + result.value;
-        let x = (await Filesystem.getUri({directory: Directory.Data, path: 'photos'})).uri
-        // console.log(x,res);
-        let newUri = (await Filesystem.copy({from:res,to:x+`/${(new Date()).getTime()}.jpg`})).uri;
-        console.log(newUri);
+        const contents = await Filesystem.readFile({
+            path: res
+        });
+        console.log(contents);
+        const base64PictureData = "data:image/jpg;base64," + contents.data;
+        setPic(base64PictureData);
+        // let x = (await Filesystem.getUri({directory: Directory.Data, path: 'photos'})).uri
+        // // console.log(x,res);
+        // let newUri = (await Filesystem.copy({from:res,to:x+`/${(new Date()).getTime()}.jpg`})).uri;
+        // console.log(newUri);
+        // async function createFile(){
+        //     let response = await fetch(newUri);
+        //     let data = await response.blob();
+        //     let metadata = {
+        //       type: 'image/jpg'
+        //     };
+        //     let file = new File([data], "test.jpg", metadata);
+        //     console.log(file);
+        //     // ... do something with the file or return it
+        //   }
+        //   createFile();
+
+        
         // let x = await Filesystem.readFile({path: newUri, directory: Directory.Data, encoding: Encoding.UTF8});
-        var request = new XMLHttpRequest();
-        request.open('GET', newUri, true);
-        request.responseType = 'blob';
-        request.onload = function() {
-            var reader = new FileReader();
-            reader.readAsDataURL(request.response);
-            reader.onload =  function(e){
-                console.log('DataURL:', e.target.result);
-            };
-        };
-        request.send();
+        // var request = new XMLHttpRequest();
+        // request.open('GET', newUri, true);
+        // request.responseType = 'blob';
+        // request.onload = function() {
+        //     var reader = new FileReader();
+        //     reader.readAsDataURL(request.response);
+        //     reader.onload =  function(e){
+        //         console.log('DataURL:', e.target.result);
+        //     };
+        // };
+        // request.send();
         // console.log(res);
         // let a = await Filesystem.copy({from:res,to:src+'/alfa2.jpg'});
         // setPic(result.value);
