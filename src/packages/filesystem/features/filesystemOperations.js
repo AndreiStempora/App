@@ -2,7 +2,7 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 const FS = {
     createDirectory : async(path) => {
-        if(await FS.readDirectory(path) === null || await FS.readDirectory(path) === undefined){
+        if(await FS.readDirectory(path) === null){
             await Filesystem.mkdir({
                 path: path,
                 directory: Directory.Data,
@@ -11,11 +11,17 @@ const FS = {
         }
     },
     readDirectory : async(path) => {
-        const result = await Filesystem.readdir({
-            path: path,
-            directory: Directory.Data
-        });
-        return result.files;
+        try{
+            const result = await Filesystem.readdir({
+                path: path,
+                directory: Directory.Data
+            });
+            return result.files;
+
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
     },
     appendFile: async(path, data) => {
         await Filesystem.appendFile({

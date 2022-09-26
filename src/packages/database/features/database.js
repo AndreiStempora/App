@@ -32,8 +32,8 @@ const DB = {
                 console.log(error);            
             });
         })
-        .then((db)=>{
-            DB.createTables(db);
+        .then(async(db)=>{
+            await DB.createTables(db);
             return db;
         }).then((db)=>{
             DB.createIndexes(db);
@@ -56,15 +56,15 @@ const DB = {
 
     //createTables
     createTables: async (db) =>{ 
-        DB.createTable(db,"dealerships", `CREATE TABLE IF NOT EXISTS dealerships (
+        await DB.createTable(db,"dealerships", `CREATE TABLE IF NOT EXISTS dealerships (
             dealership_id	INTEGER,
             dealership_name	TEXT,
             dealership_logo	MEDIUMBLOB,
             PRIMARY KEY (dealership_id)
             UNIQUE (dealership_id)
         )`)
-        .then(()=>{
-            DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
+        // .then(()=>{
+        await DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
                 image_id	INTEGER,
                 image_status	INTEGER, 
                 image_type	INTEGER,
@@ -74,24 +74,24 @@ const DB = {
                 image_number INTEGER,
                 PRIMARY KEY(image_id AUTOINCREMENT)
             )`);
-        }).then(()=>{
-            DB.createTable(db,"log", `CREATE TABLE IF NOT EXISTS log (
+        // }).then(()=>{
+        await DB.createTable(db,"log", `CREATE TABLE IF NOT EXISTS log (
                 log_id	    INTEGER,
                 log_date	INTEGER,
                 log_body    TEXT,
                 log_event	INTEGER,
                 PRIMARY KEY(log_id AUTOINCREMENT)
             )`);
-        }).then(()=>{
-            DB.createTable(db,"settings", `CREATE TABLE IF NOT EXISTS settings (
+        // }).then(()=>{
+        await DB.createTable(db,"settings", `CREATE TABLE IF NOT EXISTS settings (
                 setting_id	INTEGER,
                 setting_name	TEXT,
                 setting_value	TEXT,
                 dealership_id	INTEGER REFERENCES dealerships (dealership_id),
                 PRIMARY KEY(setting_id AUTOINCREMENT)
             )`);
-        }).then(()=>{
-            DB.createTable(db,"vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
+        // }).then(()=>{
+        await DB.createTable(db,"vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
                 vehicle_id	INTEGER,
                 dealership_id INTEGER REFERENCES dealerships(dealership_id),
                 vehicle_vin	TEXT,
@@ -106,14 +106,15 @@ const DB = {
                 vehicle_hotspots	INTEGER,
                 PRIMARY KEY(vehicle_id AUTOINCREMENT)
             )`);
-        }).then(()=>{
-            DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
+        // }).then(()=>{
+        await DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
                 hotspot_id	INTEGER,
                 dealership_id INTEGER REFERENCES dealerships(dealership_id),
                 hotspot_name TEXT,
                 PRIMARY KEY(hotspot_id AUTOINCREMENT)
             )`);
-        });
+        // });
+        return db;
     },
 
     //create indexes
