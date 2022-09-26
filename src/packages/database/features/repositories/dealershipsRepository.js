@@ -150,6 +150,7 @@ const dealershipsRepository = {
             );
         });
     },
+    
 }
 
 export { dealershipsRepository };

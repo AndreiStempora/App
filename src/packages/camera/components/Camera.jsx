@@ -8,8 +8,6 @@ const CameraComponent = () => {
     const history = useHistory();
     const openCamera = async () => {
         history.push('/camera');
-
-        
     }
 
     return (

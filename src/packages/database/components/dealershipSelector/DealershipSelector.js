@@ -10,7 +10,7 @@ const DealershipSelector = ({info}) => {
 	const [dealershipElements , setDealershipElements] = useState([]);
 
 	const deleteDatabase = async () => {
-		await dbRequest.requestFunction(DB.dropAllTables());
+		await dbRequest.requestFunction(()=>DB.dropAllTables());
 	}
 
 	const getAllDBContents = async () => {
@@ -88,7 +88,7 @@ const DealershipSelector = ({info}) => {
 	useEffect(() => {
 		const databaseInitialOperations = async ()=>{
 			dbRequest.setLoading(true);
-			// await dbRequest.requestFunction(async ()=>DB.dropAllTables());
+
 			const newDealerships = await dealershipsToAdd();
 			newDealerships?.map(async (dealership)=>{
 				const logoBlob = await (await fetch(dealership.logo)).blob();
@@ -117,11 +117,17 @@ const DealershipSelector = ({info}) => {
 					]));
 				})
 				const listToDelete = await vehiclesToDelete([dealership.dealership_id]);
+				// console.log(listToDelete, "listToDelete");
 				listToDelete?.map(async (vehicle)=>{
 					await dbRequest.requestFunction(async ()=>vehiclesService.deleteVehicleById([vehicle.vehicle_id]));
 				})
 			})
-			const allDealerships = await dbRequest.requestFunction(async ()=>dealershipsService.getAllDealerships());
+
+			//after all operations above are done, request the data from the database
+
+
+			const allDealerships = await dbRequest.requestFunction(async ()=>await dealershipsService.getAllDealerships());
+			console.log(allDealerships, "allDealerships");
 			setDealershipElements(allDealerships);
 
 			
@@ -129,6 +135,7 @@ const DealershipSelector = ({info}) => {
 		}
 
 		if(info !== null){		
+			// deleteDatabase();
 			databaseInitialOperations();
 		} 
 	}, [info]);

@@ -10,7 +10,6 @@ import './cameraPage.scss';
 
 const CameraPage = () => {
     const [cameraOn, setCameraOn] = useState(false);
-    const [src,setSrc] = useState(null);
     const [pic,setPic] = useState(null);
 
     const cameraPreviewOptions = {
@@ -42,11 +41,11 @@ const CameraPage = () => {
     const takePicture = async () => {
         const result = await CameraPreview.capture({quality:100});      
         console.log(result);
-        // let res = 'file://' + result.value;
-        // console.log(res);
-        // const contents = await Filesystem.readFile({path: res});
-        // const base64PictureData = "data:image/jpg;base64," + contents.data;
-        // setPic(base64PictureData);
+        let res = 'file://' + result.value;
+        console.log(res);
+        const contents = await Filesystem.readFile({path: res});
+        const base64PictureData = "data:image/jpg;base64," + contents.data;
+        setPic(base64PictureData);
         // let x = (await Filesystem.getUri({directory: Directory.Data, path: 'photos'})).uri
         // console.log(x,res);
         // let newUri = (await Filesystem.copy({from:res,to:x+`/${(new Date()).getTime()}.jpg`})).uri;
