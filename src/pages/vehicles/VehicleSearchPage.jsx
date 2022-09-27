@@ -3,7 +3,7 @@ import Page from '../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../services/user/user';
 import { VehicleSearch } from '../../packages/database';
-import { CameraComponent } from '../../packages/camera';
+import { CameraButton } from '../../packages/camera';
 import { useEffect, useState } from 'react';
 import './vehicleSearchPage.scss';
 
@@ -34,7 +34,7 @@ const VehicleSearchPage = () => {
             </IonHeader>
             <IonContent>
                 <VehicleSearch></VehicleSearch>
-                <CameraComponent></CameraComponent>
+                <CameraButton/>
             </IonContent>
         </Page>
     )

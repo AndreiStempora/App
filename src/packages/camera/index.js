@@ -1,3 +1,5 @@
-import CameraComponent from "./components/Camera";
+import CameraButton from "./components/Camera";
+import ExteriorCamera from "./components/ExteriorCamera";
+import PictureSwiper from "./components/PictureSwiper";
 
-export { CameraComponent };
+export { CameraButton, ExteriorCamera, PictureSwiper };

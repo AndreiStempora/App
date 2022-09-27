@@ -1,10 +1,8 @@
 import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
 import { useHistory } from 'react-router';
 import './camera.scss';
 
-const CameraComponent = () => {
+const CameraButton = () => {
     const history = useHistory();
     const openCamera = async () => {
         history.push('/camera');
@@ -19,4 +17,4 @@ const CameraComponent = () => {
     )
 }
 
-export default CameraComponent;
+export default CameraButton;
