@@ -1,21 +1,29 @@
 import { IonPage, IonGrid, IonRow, IonCol, IonItem, IonList, IonCheckbox, IonHeader, IonLabel, IonContent, IonFooter, IonButton, IonFab, IonFabButton, IonIcon, IonItemSliding, IonSegment, IonSegmentButton } from '@ionic/react';
 import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { FS } from '../../../packages/filesystem';
 import { useEffect, useState } from 'react';
 import { SwiperCarousel } from '../../swiper';
+import { useDbRequest, imagesService } from "../../../packages/database";
 import './cameraControls.scss';
 
 const CameraControls = ({ filesPath }) => {
     const [src, setSrc] = useState(null);
     const [swiperInstance, setSwiperInstance] = useState(null);
+    const dbRequest = useDbRequest();
 
     const takePicture = async () => {
-        console.log(swiperInstance);
-        // const result = await CameraPreview.capture({ quality: 100 });
+        
+        const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100 })).value;
+        const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesPath + '/' + Date.now() + '.jpg')).uri;
+        await dbRequest.requestFunction(async() => await imagesService.insertImage([1, 1, null, 'vehicle_id', copiedPictureUri]));
+        const dirContent = await FS.readDirectory('images');
+        console.log(dirContent);
+
+        let x = await dbRequest.requestFunction(() => imagesService.getAllImages());
+        console.log(x);
         // console.log(filesPath, 'filesPath');
         // console.log(result);
-        // let res = 'file://' + result.value;
-        // console.log(res);
         // const contents = await Filesystem.readFile({ path: res });
         // const base64PictureData = "data:image/jpg;base64," + contents.data;
 
@@ -37,6 +45,9 @@ const CameraControls = ({ filesPath }) => {
         //     // ... do something with the file or return it
         //   }
         //   createFile();
+
+        // console.log(swiperInstance);
+        // swiperInstance.slideNext();
     }
     // const startCamera = async () => {
     //     await CameraPreview.start(cameraPreviewOptions);

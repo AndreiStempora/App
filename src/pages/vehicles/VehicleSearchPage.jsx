@@ -9,10 +9,10 @@ import './vehicleSearchPage.scss';
 
 const VehicleSearchPage = () => {
     const [userInfo]= useAtom(user.userDetails);
-    // console.log(userInfo.avatar);
 
     useEffect(() => {
     }, []);
+    
     return (
         <Page pageClass={'vehiclesSearch'}>
             <IonHeader>

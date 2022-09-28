@@ -1,4 +1,4 @@
-import { IonSearchbar } from "@ionic/react";
+import { IonSearchbar, IonList, IonItem } from "@ionic/react";
 import { useState, useEffect } from "react";
 import { vehiclesService } from "../../features/services/vehiclesService";
 import useDbRequest from "../../features/utils/databaseOperationsHook";
@@ -15,22 +15,35 @@ const VehicleSearch = () => {
     const [filteredVehicles,setFilteredVehicles] = useState(null);
 
     const getVehicleList = async (dealershipId) => {
-        const response = await dbRequest.requestFunction(()=>vehiclesService.getAllVehiclesByDealershipId([dealershipId]));
+        const response = await dbRequest.requestFunction(async()=>await vehiclesService.getAllVehiclesByDealershipId([dealershipId]));
+        console.log(response,'rrr');
         setFilteredVehicles(response);
     }
+
     useEffect(() => {
-        // console.log(currentDealership);
+
         getVehicleList(currentDealership);
     }, []);
 
     useEffect(() => {
-        // console.log(searchText);
-        // console.log(filteredVehicles);
+        (async()=>{
+            const newFilter = await dbRequest.requestFunction(async()=>await vehiclesService.getAllVehiclesByVin([currentDealership,searchText]));
+            setFilteredVehicles(newFilter);
+            // console.log(newFilter,'newFilter');
+        })()
         
     }, [searchText]);
 
     return (
-        <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
+        <>
+            <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
+            <IonList>
+                { filteredVehicles && filteredVehicles?.map((vehicle,index) => (
+                    <IonItem key={index}>{vehicle.vehicle_vin}</IonItem>
+                ))}
+
+            </IonList>
+        </>
     )
 }
 

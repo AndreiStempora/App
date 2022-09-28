@@ -44,10 +44,9 @@ const FS = {
         });
     },
     copyFile: async(path, newPath) => {
-        await Filesystem.copy({
-            path: path,
-            newPath: newPath,
-            directory: Directory.Data,
+        return await Filesystem.copy({
+            from: path,
+            to: newPath,
         });
     },
     readFile: async(path) => {

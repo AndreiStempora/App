@@ -30,7 +30,7 @@ const CameraPage = () => {
             </IonHeader>
             <IonContent>
                 {/* <ExteriorCamera filesPath={filesUrl} /> */}
-                {/* <Camera/> */}
+                <Camera/>
             </IonContent>
             <IonFooter>
                 <CameraControls filesPath={filesUrl} />
