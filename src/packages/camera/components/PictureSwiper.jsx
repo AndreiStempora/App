@@ -18,6 +18,10 @@ const PictureSwiper = () => {
         }
         return slides;
     }
+
+    
+
+
     useEffect(() => {
         (async() => {
             //get userSelectedDealership from local storage
@@ -25,8 +29,11 @@ const PictureSwiper = () => {
             const settings = await dbRequest.requestFunction(async() =>await settingsService.getAllSettingsByDealershipId([userSelectedDealership]));
             //find setting with setting_name exterior and return setting_value
             const exteriorSetting = settings.find(setting => setting.setting_name === 'exterior');
-            const slides = createSlides(exteriorSetting.setting_value);;
+            console.log(settings);
+            const slides = createSlides(exteriorSetting.setting_value);
+            console.log(slides)
             setNumberOfSlides(slides);
+            console.log(numberOfSlides)
         })()
     }, []);
 
