@@ -1,10 +1,10 @@
-import { IonPage, IonItem, IonList, IonCheckbox, IonHeader, IonLabel, IonContent, IonButton, IonFab, IonFabButton, IonIcon, IonItemSliding, IonSegment, IonSegmentButton } from '@ionic/react';
+import { IonPage, IonItem, IonList, IonCheckbox, IonHeader, IonFooter, IonLabel, IonContent, IonButton, IonFab, IonFabButton, IonIcon, IonItemSliding, IonSegment, IonSegmentButton } from '@ionic/react';
 import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
 import { useEffect, useState } from 'react';
 import { FS } from '../../packages/filesystem';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import Page from '../../components/page/Page';
-import { ExteriorCamera } from '../../packages/camera';
+import { CameraControls, Camera } from '../../packages/camera';
 
 
 import './cameraPage.scss';
@@ -29,8 +29,12 @@ const CameraPage = () => {
                 <div>CameraPage</div>
             </IonHeader>
             <IonContent>
-                <ExteriorCamera filesPath={filesUrl} />
+                {/* <ExteriorCamera filesPath={filesUrl} /> */}
+                {/* <Camera/> */}
             </IonContent>
+            <IonFooter>
+                <CameraControls filesPath={filesUrl} />
+            </IonFooter>
         </Page>
     )
 }

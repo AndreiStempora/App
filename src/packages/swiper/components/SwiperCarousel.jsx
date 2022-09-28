@@ -1,27 +1,20 @@
-import { IonSlides, IonSlide, IonContent } from '@ionic/react';
-import { useEffect, useState } from 'react';
-import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService } from "../../../packages/database";
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService } from "../../../packages/database";
+import { useState, useEffect } from 'react';
+import { SlideElement } from './SlideElement';
 
-const PictureSwiper = () => {
-    const dbRequest = useDbRequest();
+const SwiperCarousel = ({slideProps,setSwiper}) => {	
+	const dbRequest = useDbRequest();
     const [numberOfSlides, setNumberOfSlides] = useState(null);
-
-    
 
     const createSlides = (val) => {
         let slides = [];
         for (let i = 1; i <= val; i++) {
-            slides.push(<SwiperSlide className='ion-text-center' key={i}>Slide {i}</SwiperSlide>)
+            slides.push(<SwiperSlide key={i} className='ion-text-center'>Slide {i}</SwiperSlide>)
         }
         return slides;
     }
-
-    
-
 
     useEffect(() => {
         (async() => {
@@ -38,15 +31,17 @@ const PictureSwiper = () => {
         })()
     }, []);
 
-    return (
-        <Swiper
-            modules={[Navigation]}
-            navigation
-            slidesPerView={1}
+	return (
+		<Swiper
+		modules={[Navigation]}
+		navigation
+		slidesPerView={1}
+		onSlideChange={(slide) => console.log(slide.activeIndex,'slide change')}
+        onSwiper={(swiper) => setSwiper(swiper)}
         >
             {numberOfSlides}
         </Swiper>
-    )
+	)
 }
 
-export default PictureSwiper
+export default SwiperCarousel;
