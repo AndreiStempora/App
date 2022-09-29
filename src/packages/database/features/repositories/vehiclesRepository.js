@@ -145,7 +145,7 @@ const vehiclesRepository = {
                 .transaction((tx) => {
                     tx.executeSql(
                         `SELECT * FROM vehicles WHERE dealership_id = ? AND vehicle_vin LIKE ?`,
-                        [dealership_id, `%${vehicle_vin}%`],
+                        [dealership_id, `${vehicle_vin}%`],
                         (tx, results) => {
                             let arr = [];
                             for (let i = 0; i < results.rows.length; i++) {
@@ -168,35 +168,6 @@ const vehiclesRepository = {
             );
         });
     },
-    // getAllVehiclesByVin: async ([vin]) => {
-    //     return new Promise(async (resolve, reject) => {
-    //         (await DB.dbInstance())
-    //             .transaction((tx) => {
-    //                 tx.executeSql(
-    //                     `SELECT * FROM vehicles WHERE vehicle_vin LIKE '%${vin}%'`,
-    //                     [],
-    //                     (tx, results) => {
-    //                         let arr = [];
-    //                         for (let i = 0; i < results.rows.length; i++) {
-    //                             arr.push(results.rows.item(i));
-    //                         }
-    //                         resolve(arr);
-    //                     }
-    //                 );
-    //             },
-    //             //transaction error
-    //             (error) => {
-    //                 console.log(error);
-    //                 logService.insertLog([new Date().getTime(), [vin], error]);
-    //                 reject(error);
-    //             },
-    //             //transaction success
-    //             () => {
-    //                 logService.insertLog([new Date().getTime(), [vin], "Vehicles retrieved successfully"]);
-    //             }
-    //         );
-    //     });
-    // },
     //get all vehicles by dealership id
     getAllVehiclesByDealershipId: async ([dealership_id]) => {
         return new Promise(async (resolve, reject) => {

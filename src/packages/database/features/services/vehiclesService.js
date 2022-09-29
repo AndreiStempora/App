@@ -19,8 +19,8 @@ const vehiclesService = {
     },
 
     //get all vehicles by vin
-    getAllVehiclesByVin: async ([vehicle_vin]) => {
-        return await vehiclesRepository.getAllVehiclesByVin([vehicle_vin]);
+    getAllVehiclesByVin: async ([dealership_id,vehicle_vin]) => {
+        return await vehiclesRepository.getAllVehiclesByVin([dealership_id,vehicle_vin]);
     },
     
     //get all vehicles that don't have empty fields

@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonBackButton } from '@ionic/react';
+import {IonGrid, IonLabel, IonRow, IonCol, IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonBackButton } from '@ionic/react';
 import Page from '../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../services/user/user';
@@ -32,11 +32,10 @@ const VehicleSearchPage = () => {
                     </IonButtons>
 				</IonToolbar>
             </IonHeader>
-            <IonContent>
-                <VehicleSearch></VehicleSearch>
-                <CameraButton/>
-            </IonContent>
+            <VehicleSearch></VehicleSearch> 
+            {/* <CameraButton/> */}
         </Page>
+
     )
 }
 

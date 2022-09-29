@@ -3,10 +3,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService } from "../../../packages/database";
 import { useState, useEffect } from 'react';
 import { SlideElement } from './SlideElement';
+import { useAtom } from 'jotai';
 
 const SwiperCarousel = ({slideProps,setSwiper}) => {	
 	const dbRequest = useDbRequest();
     const [numberOfSlides, setNumberOfSlides] = useState(null);
+    const currentDealershipId = useAtom('userSelectedDealership');
 
     const createSlides = (val) => {
         let slides = [];
@@ -18,9 +20,8 @@ const SwiperCarousel = ({slideProps,setSwiper}) => {
 
     useEffect(() => {
         (async() => {
-            //get userSelectedDealership from local storage
-            const userSelectedDealership = localStorage.getItem('userSelectedDealership');
-            const settings = await dbRequest.requestFunction(async() =>await settingsService.getAllSettingsByDealershipId([userSelectedDealership]));
+    
+            const settings = await dbRequest.requestFunction(async() =>await settingsService.getAllSettingsByDealershipId([currentDealershipId]));
             //find setting with setting_name exterior and return setting_value
             const exteriorSetting = settings.find(setting => setting.setting_name === 'exterior');
             console.log(settings);
