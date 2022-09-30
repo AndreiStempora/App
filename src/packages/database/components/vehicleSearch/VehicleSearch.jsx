@@ -13,25 +13,47 @@ const VehicleSearch = () => {
     const [searchText, setSearchText] = useState('');
     const [filteredVehicles, setFilteredVehicles] = useState(null);
     const [spinnerOn, setSpinnerOn] = useState(true);
+    const [allVehicles, setAllVehicles] = useState(null);
 
     const getVehicleList = async (dealershipId) => {
         const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([dealershipId]));
-        setFilteredVehicles(response);
+        setAllVehicles(response);
     }
 
     useEffect(() => {
         getVehicleList(currentDealership);
     }, []);
 
+    const filterFunc =async ()=> {
+        const startTime = new Date().getTime();
+        if (searchText.length > 0) {
+            const filteredVehicles = await allVehicles.filter((vehicle) => {
+                return vehicle.vehicle_vin.toLowerCase().startsWith(searchText.toLowerCase());
+            });
+            setFilteredVehicles(filteredVehicles);
+        } else {
+            setFilteredVehicles(null);
+        }
+        
+        const finishTime = new Date().getTime();
+        console.log(finishTime - startTime, 'timeFilter');
+    }
+
     useEffect(() => {
         (async () => {
+            const startTime = new Date().getTime();
             setSpinnerOn(true);
             const newFilter = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByVin([currentDealership, searchText]));
             setFilteredVehicles(newFilter);
             // console.log(newFilter, 'newFilter');
             // console.log(filteredVehicles, searchText, 'filteredVehicles');
             setSpinnerOn(false);
-        })()
+            const finishTime = new Date().getTime();
+            console.log(finishTime - startTime, 'timeDB');
+            return true
+        })().then((el) => {
+            filterFunc();
+        })
 
     }, [searchText]);
 
