@@ -24,75 +24,52 @@ const VehicleSearch = () => {
         getVehicleList(currentDealership);
     }, []);
 
-    const filterFunc =async ()=> {
-        const startTime = new Date().getTime();
-        if (searchText.length > 0) {
-            const filteredVehicles = await allVehicles.filter((vehicle) => {
-                return vehicle.vehicle_vin.toLowerCase().startsWith(searchText.toLowerCase());
-            });
-            setFilteredVehicles(filteredVehicles);
+    const filterFunc = async () => {
+        //filter all vehicles by search text where the search text matches the vin or the stock of the vehicle, do it asynchronously
+        const filtered = await Promise.all(allVehicles.filter(vehicle => 
+            vehicle.vehicle_vin.startsWith(searchText.toUpperCase()) || vehicle.vehicle_stock.startsWith(searchText.toUpperCase())));
+        return filtered;
+    }
+
+    const transformStringMatch = (string) => {
+        //if string starts with searchText, return the string with the searchText in bold
+        if(searchText.length > 0){
+            if (string.startsWith(searchText.toUpperCase())) {
+                const stringArray = string.split(searchText.toUpperCase());
+                return <>{stringArray[0]}<span className="matched">{searchText.toUpperCase()}</span>{stringArray[1]}</>
+            } else {
+                return string;
+            }
         } else {
-            setFilteredVehicles(null);
+            return string;
         }
-        
-        const finishTime = new Date().getTime();
-        console.log(finishTime - startTime, 'timeFilter');
     }
 
     useEffect(() => {
         (async () => {
-            const startTime = new Date().getTime();
-            setSpinnerOn(true);
-            const newFilter = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByVin([currentDealership, searchText]));
-            setFilteredVehicles(newFilter);
-            // console.log(newFilter, 'newFilter');
-            // console.log(filteredVehicles, searchText, 'filteredVehicles');
-            setSpinnerOn(false);
-            const finishTime = new Date().getTime();
-            console.log(finishTime - startTime, 'timeDB');
-            return true
-        })().then((el) => {
-            filterFunc();
-        })
+            if(searchText.length > 0){
+                const filteredList = await filterFunc();
+                console.log(filteredList);
+                setFilteredVehicles(filteredList);
+            } else {
+                setFilteredVehicles(null);
+            }
+        })()
 
     }, [searchText]);
 
     return (
         <>
-            <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
             <IonContent className="search-content">
                 <IonGrid>
                     <IonRow>
                         <IonCol size="12">
-                            <IonList>
-                                <IonRadioGroup>
-                                    <IonRow>
-                                        <IonCol size="6">
-                                            <IonItem>
-                                                <IonRadio color='danger' slot="start" value={'red'}></IonRadio>
-                                                <IonLabel>Red</IonLabel>
-                                            </IonItem>
-                                        </IonCol>
-                                        <IonCol size="6">
-                                            <IonItem>
-                                                <IonRadio slot="start" value={'blue'}></IonRadio>
-                                                <IonLabel>blue</IonLabel>
-                                            </IonItem>
-                                        </IonCol>
-                                    </IonRow>
-                                </IonRadioGroup>
-                            </IonList>
+                            <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
                         </IonCol>
                         <IonCol className="inner-scroll scroll-y" size="12">
                             <IonList >
-                                {spinnerOn &&
-                                    <div className="ion-text-center">
-                                        <IonLabel>Loading Data
-                                            <IonSpinner name="lines" text="loading" />
-                                        </IonLabel>
-                                    </div>
-                                }
-                                {(!spinnerOn && filteredVehicles) && filteredVehicles?.map((vehicle, index) => (
+                                {searchText.length == 0 && <div className="ion-text-center">Search by Vin or Stock number</div>}
+                                {filteredVehicles && filteredVehicles?.map((vehicle, index) => (
                                     <IonItem key={index} className='search-result-element'>
                                         <IonLabel>
                                             <div className="element-name">
@@ -104,7 +81,7 @@ const VehicleSearch = () => {
                                                         Vin:
                                                     </span>
                                                     <span className="value">
-                                                        {vehicle.vehicle_vin}
+                                                        {transformStringMatch(vehicle.vehicle_vin)}
                                                     </span>
                                                 </span>
                                                 <span className="element-stock">
@@ -112,7 +89,7 @@ const VehicleSearch = () => {
                                                         Stock:
                                                     </span>
                                                     <span className="value">
-                                                        {vehicle.vehicle_stock}
+                                                        {transformStringMatch(vehicle.vehicle_stock)}
                                                     </span>
                                                 </span>
                                             </div>

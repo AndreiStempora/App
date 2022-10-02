@@ -33,7 +33,7 @@ const VehicleSearchPage = () => {
 				</IonToolbar>
             </IonHeader>
             <VehicleSearch></VehicleSearch> 
-            {/* <CameraButton/> */}
+            <CameraButton/>
         </Page>
 
     )

@@ -4,11 +4,12 @@ import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService,
 import { useState, useEffect } from 'react';
 import { SlideElement } from './SlideElement';
 import { useAtom } from 'jotai';
+import { user } from '../../../services';
 
 const SwiperCarousel = ({slideProps,setSwiper}) => {	
 	const dbRequest = useDbRequest();
     const [numberOfSlides, setNumberOfSlides] = useState(null);
-    const currentDealershipId = useAtom('userSelectedDealership');
+    const currentDealershipId = useAtom(user.userSelectedDealership);
 
     const createSlides = (val) => {
         let slides = [];
@@ -23,8 +24,8 @@ const SwiperCarousel = ({slideProps,setSwiper}) => {
     
             const settings = await dbRequest.requestFunction(async() =>await settingsService.getAllSettingsByDealershipId([currentDealershipId]));
             //find setting with setting_name exterior and return setting_value
+            console.log(settings, "xx");
             const exteriorSetting = settings.find(setting => setting.setting_name === 'exterior');
-            console.log(settings);
             const slides = createSlides(exteriorSetting.setting_value);
             console.log(slides)
             setNumberOfSlides(slides);
