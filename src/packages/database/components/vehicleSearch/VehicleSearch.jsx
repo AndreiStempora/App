@@ -67,6 +67,7 @@ const VehicleSearch = () => {
                             <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
                         </IonCol>
                         <IonCol className="inner-scroll scroll-y" size="12">
+
                             <IonList >
                                 {searchText.length == 0 && <div className="ion-text-center">Search by Vin or Stock number</div>}
                                 {filteredVehicles && filteredVehicles?.map((vehicle, index) => (
@@ -102,6 +103,7 @@ const VehicleSearch = () => {
                                     </div>
                                 }
                             </IonList>
+
                         </IonCol>
                     </IonRow>
                 </IonGrid>

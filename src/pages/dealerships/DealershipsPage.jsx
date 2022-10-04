@@ -6,6 +6,9 @@ import { useAtom } from 'jotai';
 import "./dealershipsPage.scss";
 import { DealershipSelector } from '../../packages/database';
 import { network } from '../../packages/network';
+import CustomHeader from '../../components/pageMainComponents/CustomHeader';
+import CustomContent  from '../../components/pageMainComponents/CustomContent';
+import CustomFooter from '../../components/pageMainComponents/CustomFooter';
 
 const DealershipsPage = () => {
 	const pageRequest = usePageRequest();
@@ -48,14 +51,13 @@ const DealershipsPage = () => {
 
 	return (
 		<Page pageClass={'dealersipSelect'}>
-			<IonHeader>
-				<IonToolbar>
-					<IonTitle className='ion-text-center'>Dealerships</IonTitle>
-				</IonToolbar>
-			</IonHeader>
+			<CustomHeader>
+				<IonTitle className='ion-text-center'>Dealerships</IonTitle>
+			</CustomHeader>
 			<IonContent>
 				<DealershipSelector info={requestInfo}></DealershipSelector>
 			</IonContent>
+			
 		</Page>
 	)
 }

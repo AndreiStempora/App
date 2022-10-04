@@ -35,4 +35,20 @@
         }
     }
 }
+ion-searchbar{
+    &.sc-ion-searchbar-md-h{
+        padding-inline-start: 0;
+        padding-inline-end: 0;
+        .sc-ion-searchbar-md{
+            &.searchbar-search-icon{
+                left:0;
+            }
+        }
+        input{
+            &.searchbar-input{
+                padding-inline-start: 40px;
 
+            }
+        }
+    }
+}
