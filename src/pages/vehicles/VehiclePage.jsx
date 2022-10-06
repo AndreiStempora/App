@@ -1,4 +1,4 @@
-import {IonGrid, IonLabel, IonRow, IonCol, IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonBackButton } from '@ionic/react';
+import {IonGrid, IonLabel, IonRow, IonCol, IonContent, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonButtons, IonButton, IonIcon, IonBackButton } from '@ionic/react';
 import Page from '../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../services/user/user';
@@ -8,9 +8,11 @@ import { useEffect, useState } from 'react';
 import CustomHeader from '../../components/pageMainComponents/CustomHeader';
 import CustomContent from '../../components/pageMainComponents/CustomContent';
 import './vehiclePage.scss';
+import CustomFooter from '../../components/pageMainComponents/CustomFooter';
 
 const VehiclePage = () => {
     const [userInfo]= useAtom(user.userDetails);
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
     }, []);
@@ -32,10 +34,34 @@ const VehiclePage = () => {
                 </IonButtons>
             </CustomHeader>
 
-            {/* <CustomContent> */}
-                <VehicleSearch></VehicleSearch> 
-            {/* </CustomContent> */}
+            <CustomContent colSizesArr={[12,12]}>
+                <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
+
+            </CustomContent>
+            {/* <VehicleSearch></VehicleSearch>  */}
             {/* <CameraButton/> */}
+            <CustomFooter>
+                <IonButtons>
+                    <IonButton className='icon-over-text'>
+                        <div className="container">
+                            <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
+                            <IonLabel>Vehicle</IonLabel>
+                        </div>
+                    </IonButton>
+                    <IonButton className='icon-over-text' href="/dealerships">
+                        <div className="container">
+                            <IonIcon icon='/assets/svgs/car.svg'></IonIcon>
+                            <IonLabel>Dealerships</IonLabel>
+                        </div>
+                    </IonButton>
+                    <IonButton className='icon-over-text'>
+                        <div className="container">
+                            <IonIcon icon='/assets/svgs/user.svg'/>
+                            <IonLabel>Profile</IonLabel>
+                        </div>
+                    </IonButton>
+                </IonButtons>
+            </CustomFooter>
         </Page>
 
     )
