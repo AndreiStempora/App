@@ -1,4 +1,4 @@
-import Page from '../../components/page/Page';
+import { Page } from '../../components/page/Page';
 // import usePageRequest from "../../services/customHooks/pageRequestHook";
 // import usePageSetters from '../../services/customHooks/pageRequestSettersHook';
 // import { URL } from '../../services/Requests/importantUrls';

@@ -1,4 +1,4 @@
-import Page from '../../components/page/Page';
+import { Page } from '../../components/page/Page';
 import { IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, IonGrid, IonTitle, IonCol, IonRow } from '@ionic/react';
 import { TwoFaCode,TwoFA } from '../../packages/TwoFA';
 import { useAtom } from 'jotai';

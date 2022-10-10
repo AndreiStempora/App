@@ -3,7 +3,7 @@ import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera
 import { useEffect, useState } from 'react';
 import { FS } from '../../packages/filesystem';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import Page from '../../components/page/Page';
+import { Page } from '../../components/page/Page';
 import { CameraControls, Camera } from '../../packages/camera';
 
 

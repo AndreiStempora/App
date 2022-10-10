@@ -1,14 +1,11 @@
-import Page from '../../components/page/Page';
+import { Page, CustomContent, CustomFooter, CustomHeader } from '../../components/page/Page';
 import { URL as myUrl, usePageRequest, usePageSetters } from "../../services"
 import { IonContent, IonHeader, IonToolbar,IonTitle} from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import "./dealershipsPage.scss";
 import { DealershipSelector } from '../../packages/database';
 import { network } from '../../packages/network';
-import CustomHeader from '../../components/pageMainComponents/CustomHeader';
-import CustomContent  from '../../components/pageMainComponents/CustomContent';
-import CustomFooter from '../../components/pageMainComponents/CustomFooter';
+import "./dealershipsPage.scss";
 
 const DealershipsPage = () => {
 	const pageRequest = usePageRequest();

@@ -1,14 +1,12 @@
 import {IonGrid, IonLabel, IonRow, IonCol, IonContent, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonButtons, IonButton, IonIcon, IonBackButton } from '@ionic/react';
-import Page from '../../components/page/Page';
+import { Page, CustomHeader, CustomContent, CustomFooter } from '../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../services/user/user';
 import { VehicleSearch } from '../../packages/database';
 import { CameraButton } from '../../packages/camera';
 import { useEffect, useState } from 'react';
-import CustomHeader from '../../components/pageMainComponents/CustomHeader';
-import CustomContent from '../../components/pageMainComponents/CustomContent';
 import './vehiclePage.scss';
-import CustomFooter from '../../components/pageMainComponents/CustomFooter';
+
 
 const VehiclePage = () => {
     const [userInfo]= useAtom(user.userDetails);

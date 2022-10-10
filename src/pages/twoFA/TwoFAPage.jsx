@@ -1,4 +1,4 @@
-import Page from '../../components/page/Page';
+import { Page } from '../../components/page/Page';
 import { IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonGrid, IonCol, IonRow } from '@ionic/react';
 import { TwoFaSelector } from '../../packages/TwoFA';
 import './twoFAPage.scss';

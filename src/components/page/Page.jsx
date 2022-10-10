@@ -2,6 +2,9 @@ import { IonPage, useIonViewWillEnter, useIonViewWillLeave, useIonViewDidEnter }
 import { ErrorComponent } from "../../packages/errors";
 import { PageLoaderComponent } from '../../packages/loaders';
 import { NetworkConnectionComponent } from "../../packages/network/index";
+import CustomContent from "../pageMainComponents/CustomContent";
+import CustomFooter from "../pageMainComponents/CustomFooter";
+import CustomHeader from "../pageMainComponents/CustomHeader";
 import './page.scss';
 
 const Page = ({ children, pageClass }) => {
@@ -35,4 +38,4 @@ const Page = ({ children, pageClass }) => {
 	)
 }
 
-export default Page;
+export  {Page, CustomHeader, CustomContent, CustomFooter};
