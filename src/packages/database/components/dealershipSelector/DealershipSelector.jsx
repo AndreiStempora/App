@@ -1,8 +1,8 @@
-import './dealershipSelector.scss'
-import { IonGrid, IonRow, IonCol, IonList,IonItem } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonList, IonItem } from '@ionic/react';
 import DealershipElement from './DealershipElement';
 import { useState, useEffect } from 'react';
 import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService ,tests } from "../../";
+import './dealershipSelector.scss'
 
 
 const DealershipSelector = ({info}) => {

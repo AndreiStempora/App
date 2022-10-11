@@ -5,12 +5,18 @@ import { user } from '../../services/user/user';
 import { VehicleSearch } from '../../packages/database';
 import { CameraButton } from '../../packages/camera';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import './vehiclePage.scss';
 
 
 const VehiclePage = () => {
+    const history = useHistory();
     const [userInfo]= useAtom(user.userDetails);
     const [searchText, setSearchText] = useState('');
+
+    const addVehicleHandler = () => {
+        history.push("/add-vehicle");
+    }
 
     useEffect(() => {
     }, []);
@@ -32,15 +38,15 @@ const VehiclePage = () => {
                 </IonButtons>
             </CustomHeader>
 
-            <CustomContent colSizesArr={[12,12]}>
+            <CustomContent colSizesArr={[12]}>
                 <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
-
+                {/* <IonButton></IonButton> */}
             </CustomContent>
             {/* <VehicleSearch></VehicleSearch>  */}
             {/* <CameraButton/> */}
             <CustomFooter>
                 <IonButtons>
-                    <IonButton className='icon-over-text'>
+                    <IonButton onClick={addVehicleHandler} className='icon-over-text'>
                         <div className="container">
                             <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
                             <IonLabel>Vehicle</IonLabel>
