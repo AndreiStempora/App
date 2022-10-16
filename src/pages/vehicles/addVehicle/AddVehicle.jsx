@@ -1,4 +1,4 @@
-import { Page, CustomHeader, CustomContent, CustomFooter } from "../../components/page/Page"
+import { Page, CustomHeader, CustomContent, CustomFooter } from "../../../components/page/Page"
 import { IonButtons, IonTitle, IonButton,IonLabel, IonIcon, IonSearchbar } from "@ionic/react"
 import { useHistory } from "react-router";
 import "./addVehicle.scss"
@@ -30,6 +30,9 @@ const AddVehicle = () => {
 
                 </IonButtons>
                 <IonSearchbar></IonSearchbar>
+                <IonButtons className="ion-justify-content-center">
+                    <IonButton onClick={()=>{history.push('/vehicle-details')}}>go to vehicle details</IonButton>
+                </IonButtons>
             </CustomContent>
 
             {/* <CustomFooter>

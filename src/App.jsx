@@ -25,8 +25,9 @@ import ProtectedRoute from "./components/page/restrictedPages/ProtectedRoute"
 import TwoFAPage from './pages/twoFA/TwoFAPage';
 import TwoFACodePage from './pages/twoFA/TwoFACodePage';
 import CameraPage from './pages/camera/CameraPage';
-import VehiclePage from './pages/vehicles/VehiclePage';
-import AddVehicle from './pages/addVehicle/AddVehicle';
+import VehiclePage from './pages/vehicles/searchVehicle/VehiclePage';
+import AddVehicle from './pages/vehicles/addVehicle/AddVehicle';
+import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetails';
 setupIonicReact();
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
 							<ProtectedRoute exact={true} path="/camera" component={CameraPage} />
 							<ProtectedRoute exact={true} path="/vehicle-search" component={VehiclePage} />
 							<ProtectedRoute exact={true} path="/add-vehicle" component={AddVehicle} />
+							<ProtectedRoute exact={true} path="/vehicle-details" component={VehicleDetails} />
 							<Route render={() => <Redirect to="/dealerships" />} />
 						</IonRouterOutlet>
 					</IonReactRouter>
