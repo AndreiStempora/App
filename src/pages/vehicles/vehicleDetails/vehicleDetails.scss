@@ -1,0 +1,44 @@
+.vehicleDetails{
+    ion-row{
+        height:100%;
+        flex-direction: column;
+        ion-col{
+            flex:0 0 auto!important;
+            &:nth-of-type(2){
+                text-align: right;
+                flex:1 0 auto!important;
+                ion-buttons{
+                    &.camera-buttons{
+                        height: 100%;
+                        margin:0 auto;
+                        display: inline-flex;
+                        flex-direction: column;
+                        justify-content:center;
+                        ion-button{
+                            align-self: flex-start;
+                            height:50px;
+                            margin:35px 0;
+                            text-transform: capitalize;
+                            ion-icon{
+                                font-size: 50px;
+                                margin-right:15px;
+                            }
+                        }
+                    }
+                }
+                .car-image{
+                    height: 100%;
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    padding:25px 0 40px 0;
+                    transform: translate(-38%);
+                    img{
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

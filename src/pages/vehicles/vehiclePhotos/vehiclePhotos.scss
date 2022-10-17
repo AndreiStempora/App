@@ -1,0 +1,28 @@
+.vehiclePhotos{
+    ion-row{
+        height: 100%;
+        .centered-camera-button{
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            justify-content: center;
+            ion-buttons{
+                justify-content: center;
+                ion-button{
+                    height: 50px;
+                    margin-bottom:30px;
+                    ion-icon{
+                        font-size: 50px;
+                 
+                    }
+                }
+            }
+            ion-label{
+                width:50%;
+                text-align: center;
+            }
+        }
+    }
+}

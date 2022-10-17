@@ -28,6 +28,7 @@ import CameraPage from './pages/camera/CameraPage';
 import VehiclePage from './pages/vehicles/searchVehicle/VehiclePage';
 import AddVehicle from './pages/vehicles/addVehicle/AddVehicle';
 import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetails';
+import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotos';
 setupIonicReact();
 
 const App = () => {
@@ -37,14 +38,15 @@ const App = () => {
 				<Suspense fallback="Loading">
 					<IonReactRouter>
 						<IonRouterOutlet animated={false}>
-							<Route path="/login" component={LoginPage} />
+							<Route 						 path="/login" component={LoginPage} />
 							<Route 			exact={true} path="/2fa"  component={TwoFAPage} />
-							<Route 			exact={true}path="/2fa/code"  component={TwoFACodePage} />
+							<Route 			exact={true} path="/2fa/code"  component={TwoFACodePage} />
 							<ProtectedRoute exact={true} path="/dealerships" component={DealershipsPage} />
 							<ProtectedRoute exact={true} path="/camera" component={CameraPage} />
 							<ProtectedRoute exact={true} path="/vehicle-search" component={VehiclePage} />
 							<ProtectedRoute exact={true} path="/add-vehicle" component={AddVehicle} />
 							<ProtectedRoute exact={true} path="/vehicle-details" component={VehicleDetails} />
+							<ProtectedRoute exact={true} path="/vehicle-photos" component={VehiclePhotos} />
 							<Route render={() => <Redirect to="/dealerships" />} />
 						</IonRouterOutlet>
 					</IonReactRouter>
