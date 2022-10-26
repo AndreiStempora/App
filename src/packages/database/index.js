@@ -8,8 +8,8 @@ import { hotspotsService } from "./features/services/hotspotsService";
 import { settingsService } from "./features/services/settingsService";
 import useDbRequest from "./features/utils/databaseOperationsHook";
 import DealershipSelector from "./components/dealershipSelector/DealershipSelector";
-import VehicleSearch from "./components/vehicleSearch/VehicleSearch";
 
 
 
-export { DB, dealershipsService, logService, vehiclesService, tests, imagesService, hotspotsService, settingsService, useDbRequest, DealershipSelector, VehicleSearch };
+
+export { DB, dealershipsService, logService, vehiclesService, tests, imagesService, hotspotsService, settingsService, useDbRequest, DealershipSelector };
