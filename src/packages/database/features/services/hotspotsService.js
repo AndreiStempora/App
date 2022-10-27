@@ -2,8 +2,8 @@ import { hotspotsRepository } from "../repositories/hotspotsRepository";
 
 const hotspotsService = {
     //insert a new hotspot
-    insertHotspot:async ([dealership_id,hotspot_name]) =>{
-        await hotspotsRepository.insertHotspot([dealership_id,hotspot_name]);
+    insertHotspot:async ([dealership_id,hotspot_name, hotspot_type]) =>{
+        await hotspotsRepository.insertHotspot([dealership_id,hotspot_name, hotspot_type]);
     },
     //get all hotspots
     getAllHotspots:async () =>{
@@ -13,8 +13,8 @@ const hotspotsService = {
     deleteHotspotById:async ([hotspot_id]) =>{
         await hotspotsRepository.deleteHotspotById([hotspot_id]);
     },
-    getAllHotspotsWithDealershipId:async ([dealership_id]) =>{
-        return await hotspotsRepository.getAllHotspotsWithDealershipId([dealership_id]);
+    getAllHotspotsByDealershipId:async ([dealership_id]) =>{
+        return await hotspotsRepository.getAllHotspotsByDealershipId([dealership_id]);
     },
     //delete all hotspots by dealership id
     deleteAllHotspotsByDealershipId:async ([dealership_id]) =>{

@@ -223,7 +223,86 @@ const vehiclesRepository = {
                 }
             );
         });
+    },
+    //get vehicle by vin    
+    getVehicleByVin: async ([vehicle_vin]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM vehicles WHERE vehicle_vin = ?`,
+                        [vehicle_vin],
+                        (tx, results) => {
+                            resolve(results.rows.item(0));
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    console.log(error);
+                    logService.insertLog([new Date().getTime(), [vehicle_vin], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [vehicle_vin], "Vehicle retrieved successfully"]);
+                }
+            );
+        });
+    },
+    //get vehicle by stock number
+    getVehicleByStock: async ([vehicle_stock]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM vehicles WHERE vehicle_stock = ?`,
+                        [vehicle_stock],
+                        (tx, results) => {
+                            resolve(results.rows.item(0));
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    console.log(error);
+                    logService.insertLog([new Date().getTime(), [vehicle_stock], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [vehicle_stock], "Vehicle retrieved successfully"]);
+                }
+            );
+        });
+    },
+    //update vehicle by id
+    updateVehicleById([vehicle_id,vehicle_hotspots,vehicle_interior]){
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `UPDATE vehicles SET vehicle_hotspots = ?, vehicle_interior = ? WHERE vehicle_id = ?`,
+                        [vehicle_hotspots,vehicle_interior,vehicle_id],
+                        (tx, results) => {
+                            resolve(results);
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    console.log(error);
+                    logService.insertLog([new Date().getTime(), [vehicle_id,vehicle_hotspots,vehicle_interior], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [vehicle_id,vehicle_hotspots,vehicle_interior], "Vehicle updated successfully"]);
+                }
+            );
+        });
     }
+
 
 
 

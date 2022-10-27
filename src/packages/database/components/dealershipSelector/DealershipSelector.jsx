@@ -75,13 +75,13 @@ const DealershipSelector = ({info}) => {
 	}
 
 	const setConfigs = async (dealership) =>{
-		const interior = dealership?.config?.interior;
-		const exterior = dealership?.config?.exterior;
+		// const interior = dealership?.config?.interior;
+		// const exterior = dealership?.config?.exterior;
 		const hotspots = dealership?.config?.hotspots;
-		await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['interior', interior?.default, dealership.id]));
-		await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['exterior', exterior?.default, dealership.id]));
+		// await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['interior', interior?.default, dealership.id]));
+		// await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['exterior', exterior?.default, dealership.id]));
 		hotspots?.map(async (hotspot)=>{
-			await dbRequest.requestFunction(async ()=>hotspotsService.insertHotspot([dealership.id, hotspot.name]));
+			await dbRequest.requestFunction(async ()=>hotspotsService.insertHotspot([dealership.id, hotspot.name, hotspot.type]));
 		})
 	}
 

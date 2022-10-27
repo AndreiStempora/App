@@ -46,8 +46,19 @@ const vehiclesService = {
         vehicles.map(async (vehicle) => {
             await vehiclesService.deleteVehicleById([vehicle.vehicle_id]);
         })
+    },
+    getVehicleByVin: async ([vehicle_vin]) => {
+        return await vehiclesRepository.getVehicleByVin([vehicle_vin]);
+    },
+
+    getVehicleByStock: async ([vehicle_stock]) => {
+        return await vehiclesRepository.getVehicleByStock([vehicle_stock]);
+    },
+
+    updateVehicleById: async ([vehicle_id, vehicle_hotspots, vehicle_interior]) =>{
+        return await vehiclesRepository.updateVehicleById([vehicle_id, vehicle_hotspots, vehicle_interior]);
     }
-    
+
 }
 
 export { vehiclesService };

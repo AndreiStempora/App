@@ -111,6 +111,7 @@ const DB = {
                 hotspot_id	INTEGER,
                 dealership_id INTEGER REFERENCES dealerships(dealership_id),
                 hotspot_name TEXT,
+                hotspot_type TEXT,
                 PRIMARY KEY(hotspot_id AUTOINCREMENT)
             )`);
         // });

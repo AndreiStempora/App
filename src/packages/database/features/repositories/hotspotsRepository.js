@@ -3,14 +3,14 @@ import { logService } from "../services/logService";
 
 const hotspotsRepository = {
     //insert a new hotspot
-    insertHotspot:async ([dealership_id,hotspot_name]) =>{
+    insertHotspot:async ([dealership_id,hotspot_name,hotspot_type]) =>{
         return new Promise(async (resolve, reject)=>{
             //transaction
             (await DB.dbInstance())
                 .transaction((tx)=>{
                     tx.executeSql(    
-                        `INSERT OR REPLACE INTO hotspots (dealership_id, hotspot_name) VALUES (?, ?)`,
-                        [dealership_id, hotspot_name], 
+                        `INSERT OR REPLACE INTO hotspots (dealership_id, hotspot_name, hotspot_type) VALUES (?, ?, ?)`,
+                        [dealership_id, hotspot_name, hotspot_type], 
                         (tx, res)=>{
                             resolve(res);
                         }
@@ -19,12 +19,12 @@ const hotspotsRepository = {
                 //transaction error
                 (error)=>{
                     console.log(error,'transaction error')
-                    logService.insertLog([new Date().getTime(), [dealership_id, hotspot_name], error]);
+                    logService.insertLog([new Date().getTime(), [dealership_id, hotspot_name, hotspot_type], error]);
                     reject(error);
                 },
                 //transaction success
                 ()=>{
-                    logService.insertLog([new Date().getTime(), [dealership_id, hotspot_name], "Hotspot inserted successfully"]);
+                    logService.insertLog([new Date().getTime(), [dealership_id, hotspot_name, hotspot_type], "Hotspot inserted successfully"]);
                 }
             );
         });

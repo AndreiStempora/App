@@ -8,7 +8,7 @@ import './vehicleSearch.scss';
 import VehicleSearchItem from "./VehicleSearchItem";
 
 
-const VehicleSearch = ({disableSave}) => {
+const VehicleSearch = ({disableSave, newCar}) => {
     const dbRequest = useDbRequest();
     const [currentDealership] = useAtom(user.userSelectedDealership);
     const [searchText, setSearchText] = useState('');
@@ -62,10 +62,12 @@ const VehicleSearch = ({disableSave}) => {
     
     useEffect(() => {
         disableSave(true);
+        
         (async () => {
             if (searchText.length > 0) {
                 const filteredList = await filterFunc();
                 setFilteredVehicles(filteredList);
+                newCar(searchText);
             } else {
                 setFilteredVehicles(null);
             }
