@@ -20,29 +20,39 @@ const AddVehicle = () => {
         history.push("/vehicle-search");
     }
     
+    const extractIdAndUpdate = async (vehicle) => {
+        await dbRequest.requestFunction(async () => await vehiclesService.updateVehicleById([vehicle.vehicle_id, 1, 1]));
+    }
+
     const searchInDbForVehicle = async (keyword) => {
+        const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([currentDealership]));
         const vinCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByVin([keyword]));
         console.log(vinCar);
-        const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([currentDealership]));
         console.log(hotspots);
-        // if(vinCar === undefined){
-        //     const stockCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByStock([keyword]));
-        //     if(stockCar === undefined){
-        //         await dbRequest.requestFunction(async () => await vehiclesService.insertVehicle([keyword]));
-        //     }
-        // } 
+
+        if(vinCar === undefined){
+            const stockCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByStock([keyword]));
+            if(stockCar === undefined){
+                await dbRequest.requestFunction(async () => await vehiclesService.addVehicle([currentDealership, keyword, 1, 1]));
+            } else {
+                await extractIdAndUpdate(stockCar);
+            }
+        } else {
+            console.log("vin else");
+            await extractIdAndUpdate(vinCar);
+        }
 
     }
 
     const saveVehicleHandler = async (e) => {
-        searchInDbForVehicle(newCar);
-
+        await searchInDbForVehicle(newCar).then(() => {
+            history.push("/vehicle-search");
+        });
     }
 
     useEffect(() => {
 
     }, [disabledSave]);
-
 
     return (
         <Page pageClass={'addVehicle'}>

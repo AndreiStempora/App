@@ -27,6 +27,32 @@ const vehiclesRepository = {
             );
         });
     },
+
+    addVehicle : async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `INSERT OR REPLACE INTO vehicles (dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior) VALUES (?,?,?,?)`,
+                        [dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior],
+                        (tx, res) => {
+                            resolve(res);
+                        });
+                },
+                //transaction error
+                (error) => {
+                    console.log(error, 'transaction error');
+                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior], "Vehicle inserted successfully"]);
+                }
+            );
+        });
+    },
     
     //get all vehicles
     getAllVehicles: async () => {
@@ -276,32 +302,64 @@ const vehiclesRepository = {
             );
         });
     },
-    //update vehicle by id
-    updateVehicleById([vehicle_id,vehicle_hotspots,vehicle_interior]){
+    //update vehicle hotspots and interior by id
+    updateVehicleById: async ([vehicle_id, vehicle_hotspots, vehicle_interior]) => {
         return new Promise(async (resolve, reject) => {
             (await DB.dbInstance())
                 .transaction((tx) => {
                     tx.executeSql(
                         `UPDATE vehicles SET vehicle_hotspots = ?, vehicle_interior = ? WHERE vehicle_id = ?`,
-                        [vehicle_hotspots,vehicle_interior,vehicle_id],
-                        (tx, results) => {
-                            resolve(results);
+                        [vehicle_hotspots, vehicle_interior, vehicle_id],
+                        (tx, res) => {
+                            resolve(res);
                         }
                     );
                 },
                 //transaction error
                 (error) => {
                     console.log(error);
-                    logService.insertLog([new Date().getTime(), [vehicle_id,vehicle_hotspots,vehicle_interior], error]);
+                    logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_hotspots, vehicle_interior], error]);
                     reject(error);
                 },
                 //transaction success
                 () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_id,vehicle_hotspots,vehicle_interior], "Vehicle updated successfully"]);
+                    logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_hotspots, vehicle_interior], "Vehicle updated successfully"]);
+                }
+            );
+        });
+    },
+
+    //get all vehicles that have vehicle_hotspots or vehicle_interior 1 from a dealership id
+    getVehiclesWithPics: async ([dealership_id]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM vehicles WHERE dealership_id = ? AND (vehicle_hotspots = 1 OR vehicle_interior = 1)`,
+                        [dealership_id],
+                        (tx, results) => {
+                            let arr = [];
+                            for (let i = 0; i < results.rows.length; i++) {
+                                arr.push(results.rows.item(i));
+                            }
+                            resolve(arr);
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    console.log(error);
+                    logService.insertLog([new Date().getTime(), [dealership_id], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [dealership_id], "Vehicles retrieved successfully"]);
                 }
             );
         });
     }
+   
 
 
 

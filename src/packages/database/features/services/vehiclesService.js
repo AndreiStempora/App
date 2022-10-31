@@ -8,6 +8,10 @@ const vehiclesService = {
         return await vehiclesRepository.insertVehicle([dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim, vehicle_interior, vehicle_exterior, vehicle_hotspots]);
     },
 
+    addVehicle: async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior ]) => {
+        return await vehiclesRepository.addVehicle([dealership_id, vehicle_vin,vehicle_hotspots, vehicle_interior ]);
+    },
+
     //get all vehicles
     getAllVehicles: async () => {
         return await vehiclesRepository.getAllVehicles();
@@ -34,7 +38,7 @@ const vehiclesService = {
         images.map(async (image) => {
             await imagesService.deleteImage([image.image_id]);
         });
-        await vehiclesRepository.deleteVehicleById([vehicle_id]);
+        return await vehiclesRepository.deleteVehicleById([vehicle_id]);
     },
 
     getAllVehiclesByDealershipId: async ([dealership_id]) => {
@@ -57,7 +61,10 @@ const vehiclesService = {
 
     updateVehicleById: async ([vehicle_id, vehicle_hotspots, vehicle_interior]) =>{
         return await vehiclesRepository.updateVehicleById([vehicle_id, vehicle_hotspots, vehicle_interior]);
-    }
+    },
+    getVehiclesWithPics: async ([dealership_id]) => {
+        return await vehiclesRepository.getVehiclesWithPics([dealership_id]);
+    },
 
 }
 

@@ -8,13 +8,19 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import './vehiclePage.scss';
+import AdedVehiclesSearch from '../../../components/vehicleComponents/adedVehicleSearch/AdedVehiclesSearch';
+import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
 
 
 const VehiclePage = () => {
     
     const [userInfo]= useAtom(user.userDetails);
     const [searchText, setSearchText] = useState('');
+    const [showCheckbox, setShowCheckbox] = useState(false);
 
+    const editVehicleHandler = () => {
+        setShowCheckbox(!showCheckbox);
+    }
     
 
     useEffect(() => {
@@ -31,19 +37,19 @@ const VehiclePage = () => {
                 
                 <IonTitle className='ion-text-center'>Vehicles</IonTitle>
                 <IonButtons slot="end" >
-                    <IonButton>
-                        <IonIcon icon='/assets/svgs/edit1.svg'></IonIcon>
+                    <IonButton onClick={editVehicleHandler}>
+                        {showCheckbox? <IonIcon icon='/assets/svgs/SelectAll.svg'/> : <IonIcon icon='/assets/svgs/edit1.svg'></IonIcon>}
+                        
                     </IonButton>
                 </IonButtons>
             </CustomHeader>
 
             <CustomContent colSizesArr={[12]}>
                 <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
-                {/* <IonButton></IonButton> */}
+                <AdedVehiclesSearch showCheckbox={showCheckbox}></AdedVehiclesSearch>
             </CustomContent>
-            {/* <VehicleSearch></VehicleSearch>  */}
-            {/* <CameraButton/> */}
-            <FooterAddVehicle/>
+            {showCheckbox?<FooterDeleteUpload/> : <FooterAddVehicle></FooterAddVehicle>}
+            {/* <FooterAddVehicle/> */}
         </Page>
 
     )

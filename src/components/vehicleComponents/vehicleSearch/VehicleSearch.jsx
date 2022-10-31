@@ -4,8 +4,8 @@ import { vehiclesService } from "../../../packages/database/features/services/ve
 import { useAtom } from 'jotai';
 import { user } from '../../../services/user/user';
 import useDbRequest from "../../../packages/database/features/utils/databaseOperationsHook";
-import './vehicleSearch.scss';
 import VehicleSearchItem from "./VehicleSearchItem";
+import './vehicleSearch.scss';
 
 
 const VehicleSearch = ({disableSave, newCar}) => {
@@ -64,7 +64,7 @@ const VehicleSearch = ({disableSave, newCar}) => {
         disableSave(true);
         
         (async () => {
-            if (searchText.length > 0) {
+            if (searchText.length >= 3) {
                 const filteredList = await filterFunc();
                 setFilteredVehicles(filteredList);
                 newCar(searchText);
@@ -80,7 +80,7 @@ const VehicleSearch = ({disableSave, newCar}) => {
             <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
 
             <IonList >
-                {searchText.length == 0 && <div className="ion-text-center">Search by Vin or Stock number</div>}
+                {searchText.length < 3 && <div className="ion-text-center">Search by Vin or Stock number, write at least 3 characters to see the filtered vehicles</div>}
                 {filteredVehicles && filteredVehicles?.map((vehicle, index) => (
                     
                     <VehicleSearchItem key={index} vehicle={vehicle} match={transformStringMatch} click={searcFieldCompletionHandler}></VehicleSearchItem>
