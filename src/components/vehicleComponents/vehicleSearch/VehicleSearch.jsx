@@ -10,7 +10,7 @@ import './vehicleSearch.scss';
 
 const VehicleSearch = ({disableSave, newCar}) => {
     const dbRequest = useDbRequest();
-    const [currentDealership] = useAtom(user.userSelectedDealership);
+    const [currentDealership] = useAtom(user.userCurrentSelections);
     const [searchText, setSearchText] = useState('');
     const [filteredVehicles, setFilteredVehicles] = useState(null);
     const [spinnerOn, setSpinnerOn] = useState(true);
@@ -24,7 +24,7 @@ const VehicleSearch = ({disableSave, newCar}) => {
 
     useEffect(() => {
         (async () => {
-            await getVehicleList(currentDealership);
+            await getVehicleList(currentDealership.dealership_id);
         })();
     }, []);
 
@@ -75,6 +75,7 @@ const VehicleSearch = ({disableSave, newCar}) => {
 
     }, [searchText]);
 
+    
     return (
         <>
             <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>

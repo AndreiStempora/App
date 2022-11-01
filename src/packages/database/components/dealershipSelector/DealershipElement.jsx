@@ -6,10 +6,10 @@ import './dealershipElement.scss'
 
 // const [selectedDealershipId, setSelectedDealershipId] = atomWithStorage('selectedDealershipId', null);
 const DealershipElement = ({dealership}) => {
-    const [selectedDealershipId , setSelectedDealershipId] = useAtom(user.userSelectedDealership);
+    const [selectedDealershipId , setSelectedDealershipId] = useAtom(user.userCurrentSelections);
     const history = useHistory();
     const clickHandler = () => {
-        setSelectedDealershipId(dealership.dealership_id);
+        setSelectedDealershipId({dealership_id:dealership.dealership_id});
         history.push("/vehicle-search");
     }
 

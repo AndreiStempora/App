@@ -81,7 +81,15 @@ const DealershipSelector = ({info}) => {
 		// await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['interior', interior?.default, dealership.id]));
 		// await dbRequest.requestFunction(async ()=>settingsService.insertSetting(['exterior', exterior?.default, dealership.id]));
 		hotspots?.map(async (hotspot)=>{
-			await dbRequest.requestFunction(async ()=>hotspotsService.insertHotspot([dealership.id, hotspot.name, hotspot.type]));
+			//HOTSPOT INTERIOR  = 1
+			//HOTSPOT EXTERIOR = 2
+			let hotspotType;
+			if(hotspot.type === "interior"){
+				hotspotType = 1;
+			} else {
+				hotspotType = 2;
+			}
+			await dbRequest.requestFunction(async ()=>hotspotsService.insertHotspot([dealership.id, hotspot.name, hotspotType]));
 		})
 	}
 
@@ -126,7 +134,7 @@ const DealershipSelector = ({info}) => {
 			}))
 		
 			const allDealerships = await dbRequest.requestFunction(async ()=>await dealershipsService.getAllDealerships());
-			console.log(allDealerships, "allDealerships");
+			// console.log(allDealerships, "allDealerships");
 			setDealershipElements(allDealerships);
 			dbRequest.setLoading(false);
 		}

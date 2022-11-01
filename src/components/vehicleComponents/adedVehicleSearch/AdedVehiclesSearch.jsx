@@ -9,12 +9,13 @@ import AdedVehiclesSearchItem from "./AdedVehiclesSearchItem";
 const AdedVehiclesSearch = ({showCheckbox}) => {
     const dbRequest = useDbRequest();
     const [carsWithPics, setCarsWithPics] = useState([]);
-    const [currentDealership] = useAtom(user.userSelectedDealership);
+    const [currentDealership] = useAtom(user.userCurrentSelections);
 
     useEffect(() => {
         (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([currentDealership]));
+            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([currentDealership.dealership_id]));
             setCarsWithPics(cars);
+            // console.log(cars)
         })();
     }, [carsWithPics]);
 
