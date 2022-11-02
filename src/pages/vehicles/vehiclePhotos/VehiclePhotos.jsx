@@ -6,15 +6,18 @@ import "./vehiclePhotos.scss";
 import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
 import useCamera from "../../../packages/camera/features/CameraCustomHook";
 import OpenedCameraTakePhoto from "../../../components/camera/OpenedCameraTakePhoto";
+import { ScreenOrientation } from "@awesome-cordova-plugins/screen-orientation";
 
 const VehiclePhotos = () => {
     const [photosOfVehicle, setPhotosOfVehicle] = useState([]);
     const [hidePageContent, setHidePageContent] = useState(false);
     const camera = useCamera();
+    
 
     const cameraHandler = async () => {
         setHidePageContent(true);
         await camera.startCamera();
+        // ScreenOrientation.unlock();
     };
 
 
@@ -36,7 +39,7 @@ const VehiclePhotos = () => {
                                 <IonButton onClick={cameraHandler}><IonIcon icon='/assets/svgs/camera.svg'></IonIcon></IonButton>
                             </IonButtons>
                             <IonLabel>Start taking photos of your vehicle</IonLabel>
-                            <h1>RED</h1>
+                            
                         </div>
                         {/* :null */}
                         {/* } */}

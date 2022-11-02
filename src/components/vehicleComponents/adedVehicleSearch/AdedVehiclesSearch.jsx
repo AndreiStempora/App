@@ -17,7 +17,7 @@ const AdedVehiclesSearch = ({showCheckbox}) => {
             setCarsWithPics(cars);
             // console.log(cars)
         })();
-    }, [carsWithPics]);
+    }, []);
 
     return (
             <IonList>

@@ -1,12 +1,16 @@
 import { IonHeader, IonButtons, IonFooter, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonContent } from "@ionic/react"
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 import { useEffect, useState } from "react";
+import HotspotSwiper from "./HotspotSwiper";
+import "./openedCameraTakePhoto.scss";
 
 const OpenedCameraTakePhoto = ({camera,setHidePageContent}) => {
+    const [hotspot_id, setHotspot_id] = useState(3);
+    const [forcedOrientation, setForcedOrientation] = useState(false);
 
     const closeCameraHandler = async() => {
-        setHidePageContent(false);
         await camera.stopCamera();
+        setHidePageContent(false);
     }
 
     const takePictureHandler = async() => {
@@ -14,16 +18,15 @@ const OpenedCameraTakePhoto = ({camera,setHidePageContent}) => {
     }
 
     useEffect(() => {
-        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
+        // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
         // console.log(ScreenOrientation.onChange(console.log('changed')));
-        // window.addEventListener("orientationchange", function(){
-        //     console.log(Screen.orientation.type); // e.g. portrait
-        // });
+        // setHotspot_id(3);
+
     }, []);
 
     return (
         <>
-            <IonHeader>
+            <IonHeader className="opaque-bg">
                 <IonButtons>
                     <IonButton onClick={closeCameraHandler}><IonIcon src='/assets/svgs/previous.svg'/></IonButton>
                 </IonButtons>
@@ -31,7 +34,7 @@ const OpenedCameraTakePhoto = ({camera,setHidePageContent}) => {
             <IonContent>
 
             </IonContent>
-            <IonFooter>
+            <IonFooter className="opaque-bg">
                 <IonGrid>
                     <IonRow className="ion-align-items-center">
                         <IonCol size='3'>
@@ -46,7 +49,7 @@ const OpenedCameraTakePhoto = ({camera,setHidePageContent}) => {
                             ></IonButton>
                         </IonCol>
                         <IonCol size='12'>
-                            {/* <SwiperCarousel setSrc={setSrc} setSwiper={setSwiperInstance} /> */}
+                            <HotspotSwiper hotspot_id={hotspot_id} setHotspot_id={setHotspot_id}></HotspotSwiper>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

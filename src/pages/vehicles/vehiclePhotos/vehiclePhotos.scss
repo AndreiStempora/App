@@ -60,5 +60,10 @@
             }
         }
     }
+    &:not(.camera-open){
+        ion-header,ion-content,ion-footer{
+            opacity:1;
+        }
+    }
 }
 
