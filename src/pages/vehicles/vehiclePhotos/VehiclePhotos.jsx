@@ -1,24 +1,37 @@
 import { Page, CustomHeader, CustomContent, CustomFooter,  } from "../../../components/page/Page";
-import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonIcon, IonHeader, IonFooter, IonGrid, IonContent, IonCol, IonRow, } from "@ionic/react";
+import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonList, IonIcon, IonHeader, IonFooter, IonGrid, IonContent, IonCol, IonRow, } from "@ionic/react";
 import { useHistory } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./vehiclePhotos.scss";
 import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
 import useCamera from "../../../packages/camera/features/CameraCustomHook";
 import OpenedCameraTakePhoto from "../../../components/camera/OpenedCameraTakePhoto";
-import { ScreenOrientation } from "@awesome-cordova-plugins/screen-orientation";
+import { useDbRequest, hotspotsService, imagesService } from "../../../packages/database";
+import { useAtom } from "jotai";
+import { user } from "../../../services";
+import HotspotItemWithImage from "../../../components/vehicleComponents/hotspotsComponents/HotspotWithPic";
+
 
 const VehiclePhotos = () => {
-    const [photosOfVehicle, setPhotosOfVehicle] = useState([]);
+    const dbRequest = useDbRequest();
+    const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
     const [hidePageContent, setHidePageContent] = useState(false);
+    const [hotspots, setHotspots] = useState([]);
+
     const camera = useCamera();
-    
 
     const cameraHandler = async () => {
         setHidePageContent(true);
         await camera.startCamera();
-        // ScreenOrientation.unlock();
     };
+
+    useEffect(() => {
+        (async () => {
+            const existingHotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([currentSelection.dealership_id, currentSelection.hotspot_type]));
+            setHotspots(existingHotspots);
+
+        })();
+    }, []);
 
 
     return (
@@ -30,10 +43,14 @@ const VehiclePhotos = () => {
                         <IonButtons slot="start">
                             <IonBackButton defaultHref="/dealerships" icon="assets/svgs/previous.svg"></IonBackButton>
                         </IonButtons>
-                        <IonTitle className='ion-text-center'> Capture</IonTitle>
+                        <IonTitle className='ion-text-center'>Vehicle Photos</IonTitle>
                     </CustomHeader>
                     <CustomContent>
-                        {/* {!photosOfVehicle? */}
+                        <IonList>
+                            {hotspots?.map((hotspot,index) => (
+                                <HotspotItemWithImage key={index} hotspot={hotspot}></HotspotItemWithImage>
+                            ))}
+                        </IonList>
                         <div className="centered-camera-button">
                             <IonButtons >
                                 <IonButton onClick={cameraHandler}><IonIcon icon='/assets/svgs/camera.svg'></IonIcon></IonButton>
@@ -41,8 +58,7 @@ const VehiclePhotos = () => {
                             <IonLabel>Start taking photos of your vehicle</IonLabel>
                             
                         </div>
-                        {/* :null */}
-                        {/* } */}
+                        
                     </CustomContent>
                     <FooterAddVehicle photoBtn={true} />
                 </>

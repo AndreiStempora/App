@@ -176,6 +176,38 @@ const imagesRepository = {
             );
         });
     },
+    //get image by vehicle id and hotspot id
+    getImageByVehicleIdAndHotspotId: async ([vehicle_id, hotspot_id]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM images WHERE vehicle_id = ? AND hotspot_id = ?`,
+                        [vehicle_id, hotspot_id],
+                        (tx, results) => {
+                            let arr = [];
+                            for (let i = 0; i < results.rows.length; i++) {
+                                arr.push(results.rows.item(i));
+                            }
+                            resolve(arr);
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    // console.log(error, 'getImageByVehicleIdAndHotspotId error');
+                    logService.insertLog([new Date().getTime(), [vehicle_id, hotspot_id], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [vehicle_id, hotspot_id], "Image retrieved successfully"]);
+                }
+            );
+        });
+    }
+    
+
 
 }
 

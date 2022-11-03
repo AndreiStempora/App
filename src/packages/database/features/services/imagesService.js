@@ -18,13 +18,18 @@ const imagesService = {
         return await imagesRepository.getAllImagesByHotspotId([hotspot_id]);
     },
     //delete an image
-    deleteImage: async ([image_id]) => {
-        await imagesRepository.deleteImage([image_id]);
+    deleteImageById: async ([image_id]) => {
+        await imagesRepository.deleteImageById([image_id]);
     },
     //delete all images by vehicle id
     deleteAllImagesByVehicleId: async ([vehicle_id]) => {
         await imagesRepository.deleteAllImagesByVehicleId([vehicle_id]);
-    }
+    },
+    //get image by vehicle id and hotspot id
+    getImageByVehicleIdAndHotspotId: async ([vehicle_id, hotspot_id]) => {
+        return await imagesRepository.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot_id]);
+    },
+
 }
 
 export { imagesService };

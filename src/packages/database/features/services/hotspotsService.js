@@ -22,6 +22,10 @@ const hotspotsService = {
         hotspots.map(async (hotspot) => {
             await hotspotsRepository.deleteHotspotById([hotspot.hotspot_id]);
         })
+    },
+    // get all hotspots by dealership id and hotspot type
+    getAllHotspotsByDealershipIdAndHotspotType: async ([dealership_id, hotspot_type]) => {
+        return await hotspotsRepository.getAllHotspotsByDealershipIdAndHotspotType([dealership_id, hotspot_type]);
     }
 }
 

@@ -36,15 +36,26 @@ const useCamera = () => {
         setCameraPreview(false);
     };
     
-    const takePicture = async () => {
+    const takePicture = async (hotspot_id,vehicle_id) => {
+        const existingImage = await dbRequest.requestFunction(async ()=>await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id,hotspot_id]));
+        if(existingImage!==null){
+            await FS.deleteFile(`images/${existingImage.image_data}`);
+            await dbRequest.requestFunction(async ()=>await imagesService.deleteImageById([existingImage.image_id]));
+        }
         const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100 })).value;
         const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesUrl + '/' + Date.now() + '.jpg')).uri;
-        await dbRequest.requestFunction(async() => await imagesService.insertImage([1, 1, null, 'vehicle_id', copiedPictureUri]));
-        const dirContent = await FS.readDirectory('images');
-        console.log(dirContent);
+        await dbRequest.requestFunction(async() => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, copiedPictureUri]));
+        // const dirContent = await FS.readDirectory('images');
+        
 
-        let x = await dbRequest.requestFunction(() => imagesService.getAllImages());
-        console.log(x);
+         // console.log(filesPath, 'filesPath');
+        // console.log(result);
+        // const contents = await Filesystem.readFile({ path: copiedPictureUri });
+        // const base64PictureData = "data:image/jpg;base64," + contents.data;
+        // console.log(base64PictureData);
+
+        // let x = await dbRequest.requestFunction(() => imagesService.getAllImages());
+        // console.log(x, 'x');
     };
     
     return {
