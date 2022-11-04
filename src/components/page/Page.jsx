@@ -27,14 +27,12 @@ const Page = ({ children, pageClass }) => {
 	return (
 		<>
             <PageLoaderComponent />
-		<IonPage className={`${pageClass} app-page`}>
-			<NetworkConnectionComponent />
-					{children}
-            <ErrorComponent />
-		</IonPage>
+			<IonPage className={`${pageClass} app-page`}>
+				<NetworkConnectionComponent />
+						{children}
+				<ErrorComponent />
+			</IonPage>
 		</>
-
-		
 	)
 }
 

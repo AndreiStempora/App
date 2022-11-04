@@ -1,34 +1,26 @@
 import { Page } from '../../components/page/Page';
-import { IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonGrid, IonCol, IonRow } from '@ionic/react';
-import { TwoFaSelector } from '../../packages/TwoFA';
+import { IonButtons, IonBackButton, IonTitle } from '@ionic/react';
+import { TwoFaSelector } from './TwoFA';
+import { CustomHeader, CustomContent } from '../../components/page/Page';
 import './twoFAPage.scss';
 
 const TwoFAPage = () => {
     return (
         <Page pageClass={'twoFaSelect'}>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start" >
-                        <IonBackButton defaultHref="/login" icon="assets/svgs/previous.svg"/>
-                    </IonButtons>
-                    <IonTitle class="ion-text-center page-title">Two-Factor Authentication</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent class={'twofa'}>
-                <IonGrid className="content-in-center">
-                    <IonRow>
-                        <IonCol size='12' class="ion-text-center">
-                            <span className='title'>Choose your security method</span>
-                        </IonCol>
-                        <IonCol size='12'>
-                            <p>Choose the way you want to get the security code when we need to confirm that it’s you logging in.</p>
-                        </IonCol>
-                        <IonCol size='12'>
-                            <TwoFaSelector></TwoFaSelector>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            </IonContent>
+            <CustomHeader>
+                <IonButtons slot="start" >
+                    <IonBackButton defaultHref="/login" icon="assets/svgs/previous.svg" />
+                </IonButtons>
+                <IonTitle class="ion-text-center page-title">Two-Factor Authentication</IonTitle>
+            </CustomHeader>
+            <CustomContent
+                gridClassStr={"content-in-center"}
+                colSizesArr={[[12, "ion-text-center"], [12], [12]]}
+            >
+                <span className='title'>Choose your security method</span>
+                <p>Choose the way you want to get the security code when we need to confirm that it’s you logging in.</p>
+                <TwoFaSelector></TwoFaSelector>
+            </CustomContent>
         </Page>
     )
 }

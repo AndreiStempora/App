@@ -38,7 +38,8 @@ const useCamera = () => {
     
     const takePicture = async (hotspot_id,vehicle_id) => {
         const existingImage = await dbRequest.requestFunction(async ()=>await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id,hotspot_id]));
-        if(existingImage!==null){
+        console.log(existingImage.length);
+        if(existingImage.length !== 0){
             await FS.deleteFile(`images/${existingImage.image_data}`);
             await dbRequest.requestFunction(async ()=>await imagesService.deleteImageById([existingImage.image_id]));
         }

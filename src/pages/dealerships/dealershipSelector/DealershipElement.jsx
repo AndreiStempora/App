@@ -1,6 +1,6 @@
 import { IonIcon, IonLabel, IonItem } from '@ionic/react';
 import { useAtom } from "jotai";
-import { user } from '../../../../services';
+import { user } from '../../../services';
 import { useHistory } from 'react-router';
 import './dealershipElement.scss'
 

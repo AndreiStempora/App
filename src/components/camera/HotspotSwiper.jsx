@@ -33,13 +33,19 @@ const HotspotSwiper = ({ camera }) => {
 
     useEffect(() => {
         (async () => {
-
             const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([currentSelection.dealership_id, currentSelection.hotspot_type]));
             setSlides(hotspots);
             getPicture();
         })();
-        console.log()
     }, []);
+
+
+    useEffect(() => {
+            (async () => {
+                await getPicture();
+            })();
+        
+    }, [currentSelection]);
 
     return (
         <>

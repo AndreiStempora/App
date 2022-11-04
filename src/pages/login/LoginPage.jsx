@@ -1,12 +1,9 @@
-import { Page } from '../../components/page/Page';
-// import usePageRequest from "../../services/customHooks/pageRequestHook";
-// import usePageSetters from '../../services/customHooks/pageRequestSettersHook';
-// import { URL } from '../../services/Requests/importantUrls';
+import { CustomContent, Page } from '../../components/page/Page';
 import { URL, usePageRequest, usePageSetters } from "../../services"
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { IonGrid, IonRow, IonCol, IonIcon, IonContent } from '@ionic/react';
-import { CustomForm, formAtoms } from '../../packages/form';
+import { IonIcon} from '@ionic/react';
+import { CustomForm, formAtoms } from './form';
 import "./loginPage.scss";
 
 const LoginPage = () => {
@@ -38,7 +35,7 @@ const LoginPage = () => {
 
         let response = await requestSetters.fetch();       //make request
         requestSetters.setToken(response?.token);
-        requestSetters.setUserDetails(response?.profile);     
+        requestSetters.setUserDetails(response?.profile);
         requestSetters.setFormData('RESET');                //reset body
 
         if (response.status === "error") {                  //if error
@@ -63,21 +60,19 @@ const LoginPage = () => {
 
     return (
         <Page pageClass={'loginPage'}>
-            <IonContent>
-                <IonGrid className="content-in-center vertical-centering">
-                    <IonRow >
-                        <IonCol size='12' class="ion-text-center">
-                            <IonIcon
-                                className="logo"
-                                icon="assets/svgs/logo.svg"
-                            ></IonIcon>
-                        </IonCol>
-                        <IonCol size='12' class="ion-text-center">
-                            <CustomForm submitForm={submitLogin} autofocus={true} />
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            </IonContent>
+            <CustomContent
+                gridClassStr={"content-in-center vertical-centering"}
+                colSizesArr={[[12,"ion-text-center"], [12,"ion-text-center"]]}
+            >
+                <IonIcon
+                    className="logo"
+                    icon="assets/svgs/logo.svg"
+                ></IonIcon>
+                <CustomForm 
+                    submitForm={submitLogin} 
+                    autofocus={true} 
+                />
+            </CustomContent>
         </Page>
     )
 }

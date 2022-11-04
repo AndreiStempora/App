@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { request } from "../Requests/request";
 import { reqBody } from "../Requests/requestBody";
 import { error } from "../../packages/errors";
-import { formAtoms } from "../../packages/form";
+import { formAtoms } from "../../pages/login/form";
 import { useHistory } from "react-router";
 import { user } from "../user/user";
 
@@ -20,15 +20,6 @@ const usePageSetters = ()=>{
     const push = (str)=>{
         history.push(str)
     }
-
-    // (()=>{
-    //     setTimeout(()=>{
-    //         setThisPath(
-    //             window.location.pathname
-    //         )
-    //     },1000)
-    // })()
-    
 
     return{
         url:url,

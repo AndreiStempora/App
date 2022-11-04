@@ -9,7 +9,7 @@ import OpenedCameraTakePhoto from "../../../components/camera/OpenedCameraTakePh
 import { useDbRequest, hotspotsService, imagesService } from "../../../packages/database";
 import { useAtom } from "jotai";
 import { user } from "../../../services";
-import HotspotItemWithImage from "../../../components/vehicleComponents/hotspotsComponents/HotspotWithPic";
+import HotspotWithPic from "../../../components/vehicleComponents/hotspotsComponents/HotspotWithPic";
 
 
 const VehiclePhotos = () => {
@@ -48,7 +48,7 @@ const VehiclePhotos = () => {
                     <CustomContent>
                         <IonList>
                             {hotspots?.map((hotspot,index) => (
-                                <HotspotItemWithImage key={index} hotspot={hotspot}></HotspotItemWithImage>
+                                <HotspotWithPic key={index} hotspot={hotspot}></HotspotWithPic>
                             ))}
                         </IonList>
                         <div className="centered-camera-button">

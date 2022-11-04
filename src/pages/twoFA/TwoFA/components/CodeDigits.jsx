@@ -1,7 +1,7 @@
-import useDigitInput from 'react-digit-input';
 import { useState, useEffect } from 'react';
-import { usePageRequest } from '../../../services';
-import { usePageSetters } from '../../../services';
+import { usePageRequest } from '../../../../services';
+import { usePageSetters } from '../../../../services';
+import useDigitInput from 'react-digit-input';
 
 const CodeDigits = ({fields}) => {
     const [value, onChange] = useState('');
@@ -61,7 +61,6 @@ const CodeDigits = ({fields}) => {
 
     return (
         <>
-            
             {digitForm(fields)}
         </>
     )

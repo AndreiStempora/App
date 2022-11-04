@@ -25,10 +25,9 @@ const AddVehicle = () => {
     }
 
     const searchInDbForVehicle = async (keyword) => {
-        const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([currentDealership.dealership_id]));
+        // const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([currentDealership.dealership_id]));
         const vinCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByVin([keyword]));
-        console.log(vinCar);
-        console.log(hotspots);
+
 
         if(vinCar === undefined){
             const stockCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByStock([keyword]));
@@ -38,16 +37,15 @@ const AddVehicle = () => {
                 await extractIdAndUpdate(stockCar);
             }
         } else {
-            console.log("vin else");
+            // console.log("vin else");
             await extractIdAndUpdate(vinCar);
         }
 
     }
 
     const saveVehicleHandler = async (e) => {
-        await searchInDbForVehicle(newCar).then(() => {
+        await searchInDbForVehicle(newCar);
             history.push("/vehicle-search");
-        });
     }
 
     useEffect(() => {

@@ -15,7 +15,7 @@ const AdedVehiclesSearch = ({showCheckbox}) => {
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([currentDealership.dealership_id]));
             setCarsWithPics(cars);
-            // console.log(cars)
+
         })();
     }, []);
 

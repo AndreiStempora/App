@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import usePageRequest from '../../../services/customHooks/pageRequestHook';
-import usePageSetters from '../../../services/customHooks/pageRequestSettersHook';
-import TwoFaElements from './TwoFaElements';
 import { TwoFA } from '../features/TwoFA';
 import { useAtom } from 'jotai';
+import usePageRequest from '../../../../services/customHooks/pageRequestHook';
+import usePageSetters from '../../../../services/customHooks/pageRequestSettersHook';
+import TwoFaElements from './TwoFaElements';
 
 const TwoFaSelector = () => {
     const pageRequest = usePageRequest();
@@ -13,16 +13,13 @@ const TwoFaSelector = () => {
     const [,setTwoFAURL] = useAtom(TwoFA.url);
     const [, getTheUrl] = useAtom(TwoFA.getTheUrl);
 
-    
     const twoFAPageRequest = async ()=>{
-        // console.log(twoFAURL,'selectedOption',requestSetters.data);
         requestSetters.setUrl(getTheUrl());
         requestSetters.setRequestBody();
         const response = await requestSetters.fetch();
         if(response?.services.length === 1){
             setSelectedOption(response?.services[0]);
             setServices(response?.services);
-            // requestSetters.push("/2fa/code");
         } else {
             setServices(response?.services);
             }

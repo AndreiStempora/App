@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { TwoFA } from '../features/TwoFA';
-import usePageRequest from '../../../services/customHooks/pageRequestHook';
-import usePageSetters from '../../../services/customHooks/pageRequestSettersHook';
-import parser from 'html-react-parser';
 import { IonIcon, IonButton } from '@ionic/react';
+import usePageRequest from '../../../../services/customHooks/pageRequestHook';
+import usePageSetters from '../../../../services/customHooks/pageRequestSettersHook';
+import parser from 'html-react-parser';
 import CodeDigits from './CodeDigits';
 import './twoFaCode.scss';
 
@@ -62,7 +62,6 @@ const TwoFaCode = () => {
 			<IonIcon className="big-icon" icon={`/assets/svgs/${getIcon()}.svg`}></IonIcon>
 			{ pageInfo && parser(pageInfo)}
 			<div className="input-group">
-				{/* {digitForm(fields)} */}
 				<CodeDigits fields={fields} />
 			</div>
 			{buttonResend && <IonButton fill='clear' className="resend-button" onClick={clickHandler}>Didn't get a code?</IonButton>}

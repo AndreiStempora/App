@@ -56,6 +56,13 @@ const FS = {
         });
         return result.data;
     },
+    deleteDirectory: async(path) => {
+        await Filesystem.rmdir({
+            path: path,
+            directory: Directory.Data,
+            recursive: true
+        });
+    },
     showPicture: async(path) => {
         try{
             if(path !== null){

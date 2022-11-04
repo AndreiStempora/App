@@ -1,6 +1,5 @@
-import React from 'react'
 import { IonItem, IonList,IonLabel, IonIcon } from '@ionic/react';
-import { usePageSetters } from '../../../services';
+import { usePageSetters } from '../../../../services';
 import { useAtom } from 'jotai';
 import { TwoFA } from '../features/TwoFA';
 import './twoFaElements.scss';

@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { error } from "../../packages/errors/index";
 import { user } from "../user/user";
-import { formAtoms } from "../../packages/form";
+import { formAtoms } from "../../pages/login/form";
 
 const reqBody = {
     methodAtom : atom("POST"),
