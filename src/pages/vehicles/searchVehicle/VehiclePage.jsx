@@ -1,37 +1,34 @@
-import { IonGrid, useIonViewWillEnter, IonLabel, IonRow, IonCol, IonContent, IonHeader, IonList, IonSearchbar, IonTitle, IonButtons, IonButton, IonIcon, IonBackButton } from '@ionic/react';
+import { useIonViewWillEnter, IonList, IonTitle, IonButtons, IonButton, IonIcon } from '@ionic/react';
 import { Page, CustomHeader, CustomContent } from '../../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../../services/user/user';
-import { VehicleSearch } from '../../../packages/database';
-import { CameraButton } from '../../../packages/camera';
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
-import './vehiclePage.scss';
-import AdedVehiclesSearch from '../../../components/vehicleComponents/adedVehicleSearch/AdedVehiclesSearch';
-import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
 import { useDbRequest, vehiclesService } from '../../../packages/database';
+import { useRSelection } from '../../../packages/database/features/utils/utilityHooks';
+import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
+import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
 import AdedVehiclesSearchItem from '../../../components/vehicleComponents/adedVehicleSearch/AdedVehiclesSearchItem';
+import './vehiclePage.scss';
 
 
 const VehiclePage = () => {
     const dbRequest = useDbRequest();
     const [carsWithPics, setCarsWithPics] = useState([]);
-    const [currentDealership] = useAtom(user.userCurrentSelections);
+    const [, getCurrentSelection] = useRSelection();
     const [userInfo] = useAtom(user.userDetails);
-    const [searchText, setSearchText] = useState('');
     const [showCheckbox, setShowCheckbox] = useState(false);
 
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
     }
-
+    
     useIonViewWillEnter(() => {
         (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([currentDealership.dealership_id]));
+            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCarsWithPics(cars);
         })();
     });
+    
     useEffect(() => {
     }, []);
 

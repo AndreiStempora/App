@@ -1,15 +1,14 @@
 import { IonIcon, IonLabel, IonItem } from '@ionic/react';
-import { useAtom } from "jotai";
-import { user } from '../../../services';
 import { useHistory } from 'react-router';
+import { useRSelection } from '../../../packages/database/features/utils/utilityHooks';
 import './dealershipElement.scss'
 
-// const [selectedDealershipId, setSelectedDealershipId] = atomWithStorage('selectedDealershipId', null);
 const DealershipElement = ({dealership}) => {
-    const [selectedDealershipId , setSelectedDealershipId] = useAtom(user.userCurrentSelections);
+    const [editSelection, getSelection] = useRSelection();
     const history = useHistory();
+
     const clickHandler = () => {
-        setSelectedDealershipId({dealership_id:dealership.dealership_id});
+        editSelection({dealership_id:dealership.dealership_id});
         history.push("/vehicle-search");
     }
 

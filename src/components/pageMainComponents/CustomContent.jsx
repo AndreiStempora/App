@@ -1,10 +1,10 @@
 import {IonContent, IonGrid, IonRow, IonCol} from '@ionic/react';
 
-const CustomContent = ({children, colSizesArr, colClassStr, gridClassStr}) => {
+const CustomContent = ({children, colSizesArr, gridClassStr}) => {
 
     const renderCols = (colSizesArr) => {
         let arr = [];
-        if(colSizesArr?.length > 1){
+        if(colSizesArr?.length >= 1){
             for (let i = 0; i < colSizesArr.length; i++) {
                 if(colSizesArr[i][1] !== undefined){
                     arr.push(
