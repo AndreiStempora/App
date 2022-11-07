@@ -27,7 +27,7 @@ const FooterAddVehicle = ({ photoBtn }) => {
                     <IonButton onClick={addVehicleHandler} className='icon-over-text'>
                         <div className="container">
                             <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
-                            <IonLabel>Vehicle</IonLabel>
+                            <IonLabel>Add Vehicle</IonLabel>
                         </div>
                     </IonButton>
                 }

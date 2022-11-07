@@ -1,4 +1,4 @@
-import { IonImg, IonItem, IonLabel, IonIcon } from '@ionic/react'
+import { IonImg, IonItem, IonLabel, IonIcon,IonCheckbox } from '@ionic/react'
 import { useHistory } from 'react-router';
 import { useState } from 'react';
 import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
@@ -31,7 +31,13 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox }) => {
                     <h2>{car.vehicle_vin}</h2>
                     <h3>{car.vehicle_make} {car.vehicle_model} {car.vehicle_trim}</h3>
                 </IonLabel>
-                {showCheckbox ? <input type="checkbox" checked={markChecked} /> : <IonIcon icon={'/assets/svgs/next.svg'}></IonIcon>}
+                {showCheckbox ? 
+                    <IonCheckbox
+                        slot="end"
+                        onChange={checkboxClickHandler}
+                    /> : 
+                    <IonIcon icon={'/assets/svgs/next.svg'}></IonIcon>
+                }
         </IonItem>
     )
 }

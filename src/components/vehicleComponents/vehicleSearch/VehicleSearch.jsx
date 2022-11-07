@@ -92,7 +92,6 @@ const VehicleSearch = ({disableSave, newCar}) => {
                     </div>
                 }
             </IonList>
-
         </>
     )
 }
