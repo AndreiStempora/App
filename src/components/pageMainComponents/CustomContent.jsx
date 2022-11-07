@@ -2,31 +2,23 @@ import {IonContent, IonGrid, IonRow, IonCol} from '@ionic/react';
 
 const CustomContent = ({children, colSizesArr, gridClassStr}) => {
 
-    const renderCols = (colSizesArr) => {
-        let arr = [];
-        if(colSizesArr?.length >= 1){
-            for (let i = 0; i < colSizesArr.length; i++) {
-                if(colSizesArr[i][1] !== undefined){
-                    arr.push(
-                        <IonCol size={colSizesArr[i][0]} key={i} className={colSizesArr[i][1]}>
-                            {children[i]}
-                        </IonCol>
-                    )
-                } else {
-                    arr.push(
-                        <IonCol size={colSizesArr[i][0]} key={i}>
-                            {children[i]}
-                        </IonCol>
-                    )
-                }
+    const renderCols = (colSizesArr,children) => {
+        const arr = [];
+            if(colSizesArr === undefined){
+                colSizesArr = [[12]];
             }
-        }else{
-            arr.push(
-                <IonCol size={'12'} key={0}>
-                    {children}
-                </IonCol>
-            )
-        }
+
+            for (let i = 0; i < colSizesArr?.length; i++) {
+                arr.push(
+                    <IonCol 
+                        key={i}
+                        size={colSizesArr[i][0]}  
+                        className={colSizesArr[i][1]?colSizesArr[i][1]:''}
+                    >
+                        {children[i] ? children[i] : children}
+                    </IonCol>
+                )
+            }
         return arr;
     }
 
@@ -34,7 +26,7 @@ const CustomContent = ({children, colSizesArr, gridClassStr}) => {
         <IonContent>
             <IonGrid className={gridClassStr}>
                 <IonRow>
-                    {renderCols(colSizesArr)}
+                    {renderCols(colSizesArr,children)}
                 </IonRow>
             </IonGrid>
         </IonContent>

@@ -7,6 +7,7 @@ import "./twoFACodePage.scss";
 
 const TwoFACodePage = () => {
     const [selectedOption] = useAtom(TwoFA.selectedOption);
+
     return (
         <Page pageClass={'twoFaCode'}>
             <CustomHeader>
@@ -17,9 +18,8 @@ const TwoFACodePage = () => {
             </CustomHeader>
             <CustomContent
                 gridClassStr={"content-in-center"}
-                colSizesArr={[[12]]}
             >
-                <TwoFaCode></TwoFaCode>
+                <TwoFaCode />
             </CustomContent>
         </Page>
     )

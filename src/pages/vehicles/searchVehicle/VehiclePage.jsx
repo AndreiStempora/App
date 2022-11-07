@@ -7,7 +7,7 @@ import { useDbRequest, vehiclesService } from '../../../packages/database';
 import { useRSelection } from '../../../packages/database/features/utils/utilityHooks';
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
-import AdedVehiclesSearchItem from '../../../components/vehicleComponents/adedVehicleSearch/AdedVehiclesSearchItem';
+import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
 import './vehiclePage.scss';
 
 
@@ -28,6 +28,10 @@ const VehiclePage = () => {
             setCarsWithPics(cars);
         })();
     });
+
+    const selectAllHandler = () => {
+        
+    }
     
     useEffect(() => {
     }, []);
@@ -50,15 +54,13 @@ const VehiclePage = () => {
                 </IonButtons>
             </CustomHeader>
 
-            <CustomContent colSizesArr={[12]}>
-                {/* <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar> */}
-                {/* <AdedVehiclesSearch showCheckbox={showCheckbox}></AdedVehiclesSearch> */}
+            <CustomContent colSizesArr={[[12],[12]]}>
+            {showCheckbox && <input type="checkbox" checked={false} onClick={selectAllHandler}/>}
                 <IonList>
                     {carsWithPics?.map((car, index) => <AdedVehiclesSearchItem key={index} showCheckbox={showCheckbox} car={car}></AdedVehiclesSearchItem>)}
                 </IonList>
             </CustomContent>
             {showCheckbox ? <FooterDeleteUpload /> : <FooterAddVehicle></FooterAddVehicle>}
-            {/* <FooterAddVehicle/> */}
         </Page>
 
     )

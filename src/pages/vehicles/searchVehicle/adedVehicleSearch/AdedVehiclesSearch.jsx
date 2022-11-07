@@ -1,21 +1,20 @@
-import { IonSearchbar, IonLabel, IonList } from "@ionic/react";
-import {useDbRequest, vehiclesService } from "../../../packages/database";
+import { IonList } from "@ionic/react";
 import { useState, useEffect } from "react";
-import { useAtom } from 'jotai';
-import { user } from '../../../services/user/user';
+import { useRSelection } from "../../../../packages/database/features/utils/utilityHooks";
+import { useDbRequest, vehiclesService } from "../../../../packages/database";
 import AdedVehiclesSearchItem from "./AdedVehiclesSearchItem";
 
 
 const AdedVehiclesSearch = ({showCheckbox}) => {
     const dbRequest = useDbRequest();
     const [carsWithPics, setCarsWithPics] = useState([]);
-    const [currentDealership] = useAtom(user.userCurrentSelections);
+    const [, getCurrentSelection] = useRSelection();
 
     useEffect(() => {
         (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([currentDealership.dealership_id]));
+            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection.dealership_id]));
             setCarsWithPics(cars);
-
+            console.log(cars, 'cars');
         })();
     }, []);
 
