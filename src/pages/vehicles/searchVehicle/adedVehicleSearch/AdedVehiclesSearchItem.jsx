@@ -17,6 +17,7 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox }) => {
 
     const checkboxClickHandler = () => {
         setMarkChecked(!markChecked);
+        
     }
 
     return (
