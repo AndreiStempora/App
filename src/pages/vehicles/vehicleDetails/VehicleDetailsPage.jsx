@@ -1,17 +1,16 @@
 import { IonBackButton, IonButtons, IonLabel, IonTitle, IonButton, IonIcon } from "@ionic/react";
-import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
-import { Page, CustomHeader, CustomContent, CustomFooter } from "../../../components/page/Page";
+import { Page, CustomHeader, CustomContent } from "../../../components/page/Page";
 import { useHistory } from "react-router";
-import { useAtom } from "jotai";
-import { user } from '../../../services/user/user';
 import { useDbRequest, vehiclesService, imagesService, hotspotsService } from "../../../packages/database";
 import { useEffect, useState } from "react";
+import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
+import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
 import './vehicleDetails.scss';
 
 const VehicleDetails = () => {
     const dbRequest = useDbRequest();
     const history = useHistory();
-    const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
+    const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [vehicle, setVehicle] = useState({});
     const [interiorHotspots, setInteriorHotspots] = useState([]);
     const [exteriorHotspots, setExteriorHotspots] = useState([]);
@@ -35,7 +34,7 @@ const VehicleDetails = () => {
     const getPicturesFromHotspots = (hotspots) => {
         const pictures = [];
         hotspots.map(async(hotspot) => {
-            const pic = await dbRequest(async ()=> imagesService.getImageByVehicleIdAndHotspotId([currentSelection.vehicle_id, hotspot.hotspot_id])) ;
+            const pic = await dbRequest.requestFunction(async ()=> imagesService.getImageByVehicleIdAndHotspotId([getCurrentSelection().vehicle_id, hotspot.hotspot_id])) ;
             pictures.push(pic);
         })
         return pictures;
@@ -43,14 +42,14 @@ const VehicleDetails = () => {
 
     useEffect(() => {
         (async () => {
-            const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([currentSelection.dealership_id]));
+            const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([getCurrentSelection().dealership_id]));
             separateHotspots(hotspots);
             const intPics = getPicturesFromHotspots(interiorHotspots);
             const extPics = getPicturesFromHotspots(exteriorHotspots);
             setInteriorPictures(intPics);
             setExteriorPictures(extPics);
             // const photoSlots = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([currentSelection.vehicle_id]));
-            const vehicle = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleById([currentSelection.vehicle_id]));
+            const vehicle = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id]));
             setVehicle(vehicle);
             // console.log(hotspots);
         })();
@@ -59,7 +58,7 @@ const VehicleDetails = () => {
     }, []);
 
     const goToPhotosHandler = (type) => {
-        setCurrentSelection({...currentSelection, hotspot_type: type});
+        setCurrentSelection({hotspot_type: type});
         history.push('/vehicle-photos');
     }
 

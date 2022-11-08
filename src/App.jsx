@@ -26,9 +26,9 @@ import TwoFAPage from './pages/twoFA/TwoFAPage';
 import TwoFACodePage from './pages/twoFA/TwoFACodePage';
 import CameraPage from './pages/camera/CameraPage';
 import VehiclePage from './pages/vehicles/searchVehicle/VehiclePage';
-import AddVehicle from './pages/vehicles/addVehicle/AddVehicle';
-import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetails';
-import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotos';
+import AddVehicle from './pages/vehicles/addVehicle/AddVehiclePage';
+import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetailsPage';
+import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotosPage';
 setupIonicReact();
 
 const App = () => {

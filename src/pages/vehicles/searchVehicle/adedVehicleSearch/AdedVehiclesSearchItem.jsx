@@ -1,14 +1,13 @@
 import { IonImg, IonItem, IonLabel, IonIcon,IonCheckbox } from '@ionic/react'
 import { useHistory } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
 import './adedVehiclesSearchItem.scss'
 
-const AdedVehiclesSearchItem = ({ car, showCheckbox }) => {
+const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAll }) => {
     const [editSelection, getCurrentSelection] = useRSelection();
     const [markChecked, setMarkChecked] = useState(false);
     const history = useHistory();
-
 
     const itemClickHandler = async () => {
         editSelection({vehicle_id:car.vehicle_id});
@@ -17,8 +16,19 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox }) => {
 
     const checkboxClickHandler = () => {
         setMarkChecked(!markChecked);
-        
     }
+
+    useEffect(() => {
+        setCheckedElements({[car.vehicle_id]:markChecked});
+    }, [markChecked]);
+
+    useEffect(() => {
+        setMarkChecked(checkAll); 
+    }, [checkAll]);
+
+    useEffect(() => {
+        setCheckedElements({[car.vehicle_id]:markChecked});
+    }, []);
 
     return (
         <IonItem 
@@ -35,6 +45,7 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox }) => {
                 {showCheckbox ? 
                     <IonCheckbox
                         slot="end"
+                        checked={markChecked}
                         onChange={checkboxClickHandler}
                     /> : 
                     <IonIcon icon={'/assets/svgs/next.svg'}></IonIcon>

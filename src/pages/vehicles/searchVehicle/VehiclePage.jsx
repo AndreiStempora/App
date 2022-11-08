@@ -16,10 +16,15 @@ const VehiclePage = () => {
     const [, getCurrentSelection] = useRSelection();
     const [userInfo] = useAtom(user.userDetails);
     const [showCheckbox, setShowCheckbox] = useState(false);
-    const [checkedElements, setCheckedElements] = useState([]);
+    const [checkedElements, setCheckedElements] = useState({});
+    const [checkAll,setCheckAll] = useState(false);
 
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
+    }
+
+    const changeCheckedElements = (element)=>{
+            setCheckedElements({...checkedElements, ...element});
     }
     
     useIonViewWillEnter(() => {
@@ -30,59 +35,66 @@ const VehiclePage = () => {
     });
 
     const deleteVehicleHandler = async () => {}
+
     const updateVehicleHandler = async () => {}
-    const selectAllHandler = () => {}
-    
+
+    const selectAllHandler = () => {
+        setCheckAll(!checkAll);
+    }
+
     useEffect(() => {
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCarsWithPics(cars);
+            console.log(cars, 'carsWithPics');
         })();
-        console.log(carsWithPics, 'carsWithPics');
     }, []);
+
+    useEffect(() => {
+    }, [checkedElements]);
 
     return (
         <Page pageClass={'vehiclesSearch'}>
             <CustomHeader>
                 <IonButtons slot="start" >
-                    <IonButton defaultHref="/profile" >
-                        {userInfo.avatar ? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg' />}
-                    </IonButton>
+                    {showCheckbox ? <IonButton onClick={editVehicleHandler}>Cancel</IonButton> :
+                        <IonButton defaultHref="/profile" >
+                            {userInfo.avatar ? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg' />}
+                        </IonButton>
+                    }
                 </IonButtons>
 
                 <IonTitle className='ion-text-center'>Vehicles Page</IonTitle>
                 <IonButtons slot="end" >
-                    <IonButton onClick={editVehicleHandler}>
+                    <IonButton onClick={showCheckbox ? selectAllHandler : editVehicleHandler}>
                         {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg' /> : <IonIcon icon='/assets/svgs/edit1.svg'></IonIcon>}
 
                     </IonButton>
                 </IonButtons>
             </CustomHeader>
             <CustomContent colSizesArr={[[12]]}>
-                <>
-                    {showCheckbox &&
+                
+                    {/* {showCheckbox &&
                         <IonItem>
                             <IonLabel>Select All</IonLabel>
                             <IonCheckbox 
-                                checked={false}
-                                onChange={selectAllHandler} 
+                                onIonChange={(e)=>selectAllHandler()}
                                 slot="end" 
-                                name={'selectAll'}
                             >
                             </IonCheckbox>
                         </IonItem>
-                    }
+                    } */}
                     <IonList>
                         {carsWithPics?.map((car, index) => 
                             <AdedVehiclesSearchItem 
                                 key={index} 
                                 car={car} 
                                 showCheckbox={showCheckbox} 
-                                checkedElements={checkedElements}
-                                setCheckedElements={setCheckedElements}
+                                checkAll={checkAll}
+                                setCheckedElements={changeCheckedElements}
                             ></AdedVehiclesSearchItem>)}
                     </IonList>
-                </>
+                
             </CustomContent>
             {!showCheckbox ? <FooterAddVehicle></FooterAddVehicle> : 
                 <CustomFooter>
@@ -102,7 +114,6 @@ const VehiclePage = () => {
                     </IonButtons>
                 </CustomFooter>}
         </Page>
-
     )
 }
 

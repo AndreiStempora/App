@@ -2,17 +2,16 @@ import { Page, CustomHeader, CustomContent, CustomFooter } from "../../../compon
 import { IonButtons, IonTitle, IonButton, IonLabel, IonIcon, IonSearchbar, IonToolbar } from "@ionic/react"
 import { useHistory } from "react-router";
 import { useState, useEffect } from "react";
-import { useAtom } from 'jotai';
-import { user } from '../../../services/user/user';
 import { useDbRequest, vehiclesService, hotspotsService } from "../../../packages/database";
 import VehicleSearch from "../../../components/vehicleComponents/vehicleSearch/VehicleSearch";
 import "./addVehicle.scss"
+import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 
 const AddVehicle = () => {
     const history = useHistory();
     const dbRequest = useDbRequest();
     const [newCar, setNewCar] = useState('');
-    const [currentDealership] = useAtom(user.userCurrentSelections);
+    const [setCurrentSelection, getCurrentSelection] = useRSelection;
     const [disabledSave, setDisabledSave] = useState(true);
 
     const backToSelectVehiclesHandler = () => {
@@ -24,14 +23,12 @@ const AddVehicle = () => {
     }
 
     const searchInDbForVehicle = async (keyword) => {
-        // const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([currentDealership.dealership_id]));
         const vinCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByVin([keyword]));
-
 
         if (vinCar === undefined) {
             const stockCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByStock([keyword]));
             if (stockCar === undefined) {
-                await dbRequest.requestFunction(async () => await vehiclesService.addVehicle([currentDealership.dealership_id, keyword, 1, 1]));
+                await dbRequest.requestFunction(async () => await vehiclesService.addVehicle([getCurrentSelection().dealership_id, keyword, 1, 1]));
             } else {
                 await extractIdAndUpdate(stockCar);
             }
