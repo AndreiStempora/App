@@ -1,15 +1,17 @@
 import { IonBackButton, IonButtons, IonLabel, IonTitle, IonButton, IonIcon } from "@ionic/react";
 import { Page, CustomHeader, CustomContent } from "../../../components/page/Page";
 import { useHistory } from "react-router";
-import { useDbRequest, vehiclesService, imagesService, hotspotsService } from "../../../packages/database";
+import { useDbRequest, vehiclesService, imagesService } from "../../../packages/database";
 import { useEffect, useState } from "react";
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
+import { useHotspot } from "../../../packages/database/features/utils/utilityHooks";
 import './vehicleDetails.scss';
 
 const VehicleDetails = () => {
     const dbRequest = useDbRequest();
     const history = useHistory();
+    const [getAllHotspots] = useHotspot();
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [vehicle, setVehicle] = useState({});
     const [interiorHotspots, setInteriorHotspots] = useState([]);
@@ -31,30 +33,31 @@ const VehicleDetails = () => {
         setInteriorHotspots(interior);
     }
 
-    const getPicturesFromHotspots = (hotspots) => {
-        const pictures = [];
-        hotspots.map(async(hotspot) => {
-            const pic = await dbRequest.requestFunction(async ()=> imagesService.getImageByVehicleIdAndHotspotId([getCurrentSelection().vehicle_id, hotspot.hotspot_id])) ;
-            pictures.push(pic);
-        })
+    const getPicturesFromHotspots = async(hotspots) => {
+        let pictures = 0;
+        await Promise.all(
+            hotspots.map(async(hotspot) => {
+                const pic = await dbRequest.requestFunction(async ()=> imagesService.getImageByVehicleIdAndHotspotId([getCurrentSelection().vehicle_id, hotspot.hotspot_id]));
+                if(pic[0] !== undefined){
+                    pictures++;
+                }
+                return true;
+            })
+        )
         return pictures;
     }
 
     useEffect(() => {
         (async () => {
-            const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipId([getCurrentSelection().dealership_id]));
+            const hotspots = await getAllHotspots();
             separateHotspots(hotspots);
-            const intPics = getPicturesFromHotspots(interiorHotspots);
-            const extPics = getPicturesFromHotspots(exteriorHotspots);
+            const intPics = await getPicturesFromHotspots(interiorHotspots);
+            const extPics = await getPicturesFromHotspots(exteriorHotspots);
             setInteriorPictures(intPics);
             setExteriorPictures(extPics);
-            // const photoSlots = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([currentSelection.vehicle_id]));
             const vehicle = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id]));
             setVehicle(vehicle);
-            // console.log(hotspots);
         })();
-
-        
     }, []);
 
     const goToPhotosHandler = (type) => {
@@ -83,7 +86,7 @@ const VehicleDetails = () => {
                             <IonIcon icon='/assets/svgs/camera-button.svg'></IonIcon>
                             <IonLabel>
                                 <h2>Interior</h2>
-                                <h3>{interiorPictures.length} / {interiorHotspots.length}</h3>
+                                <h3>{interiorPictures} / {interiorHotspots.length}</h3>
                             </IonLabel>
                         </IonButton>
                         <IonButton onClick={()=>{goToPhotosHandler(3)}}>
@@ -94,7 +97,7 @@ const VehicleDetails = () => {
                             <IonIcon icon='/assets/svgs/camera-button.svg'></IonIcon>
                             <IonLabel>
                                 <h2>Exterior</h2>
-                                <h3>{exteriorPictures.length} / {exteriorHotspots.length}</h3>
+                                <h3>{exteriorPictures} / {exteriorHotspots.length}</h3>
                             </IonLabel>
                         </IonButton>
                     </IonButtons>

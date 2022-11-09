@@ -11,7 +11,7 @@ const AddVehicle = () => {
     const history = useHistory();
     const dbRequest = useDbRequest();
     const [newCar, setNewCar] = useState('');
-    const [setCurrentSelection, getCurrentSelection] = useRSelection;
+    const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [disabledSave, setDisabledSave] = useState(true);
 
     const backToSelectVehiclesHandler = () => {

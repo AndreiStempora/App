@@ -1,37 +1,36 @@
-import { Page, CustomHeader, CustomContent, CustomFooter,  } from "../../../components/page/Page";
-import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonList, IonIcon, IonHeader, IonFooter, IonGrid, IonContent, IonCol, IonRow, } from "@ionic/react";
-import { useHistory } from "react-router";
+import { Page, CustomHeader, CustomContent } from "../../../components/page/Page";
+import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonList, IonIcon } from "@ionic/react";
 import { useState, useEffect } from "react";
-import "./vehiclePhotos.scss";
-import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
-import useCamera from "../../../packages/camera/features/CameraCustomHook";
-import OpenedCameraTakePhoto from "../../../components/camera/OpenedCameraTakePhoto";
 import { useDbRequest, hotspotsService, imagesService } from "../../../packages/database";
-import { useAtom } from "jotai";
-import { user } from "../../../services";
-import HotspotWithPic from "../../../components/vehicleComponents/hotspotsComponents/HotspotWithPic";
+import { useRSelection, useHotspot } from "../../../packages/database/features/utils/utilityHooks";
+import OpenedCameraTakePhoto from "../../../components/camera/OpenedCameraTakePhoto";
+import useCamera from "../../../packages/camera/features/CameraCustomHook";
+import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
+import HotspotWithPic from "./hotspotWithPhotoItem/HotspotWithPic";
+import "./vehiclePhotos.scss";
 
 
 const VehiclePhotos = () => {
     const dbRequest = useDbRequest();
-    const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
+    const [ , getCurrentHotspotsByType, getCurrentHotspotPhoto, getHotspotsWithPhoto ] = useHotspot();
+    const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [hidePageContent, setHidePageContent] = useState(false);
-    const [hotspots, setHotspots] = useState([]);
-
+    const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState([]);
     const camera = useCamera();
 
-    const cameraHandler = async () => {
+    const openCameraHandler = async () => {
         setHidePageContent(true);
         await camera.startCamera();
     };
 
     useEffect(() => {
-        (async () => {
-            const existingHotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([currentSelection.dealership_id, currentSelection.hotspot_type]));
-            setHotspots(existingHotspots);
-
-        })();
-    }, []);
+        if(hidePageContent === false){
+            (async () => {
+                const currentHotspotsWithPhotos = await getHotspotsWithPhoto(getCurrentSelection().hotspot_type);
+                setHotspotsWithPhotos(currentHotspotsWithPhotos);
+            })();
+        }
+    }, [hidePageContent]);
 
 
     return (
@@ -43,17 +42,22 @@ const VehiclePhotos = () => {
                         <IonButtons slot="start">
                             <IonBackButton defaultHref="/dealerships" icon="assets/svgs/previous.svg"></IonBackButton>
                         </IonButtons>
-                        <IonTitle className='ion-text-center'>Vehicle Photos</IonTitle>
+                        <IonTitle className='ion-text-center'>Vehicle Photosred</IonTitle>
                     </CustomHeader>
                     <CustomContent>
                         <IonList>
-                            {hotspots?.map((hotspot,index) => (
-                                <HotspotWithPic key={index} hotspot={hotspot}></HotspotWithPic>
+                            {hotspotsWithPhoto?.map((hotspotWithPhoto,index) => (
+                                <HotspotWithPic 
+                                    key={index} 
+                                    hotspotWithPhoto={hotspotWithPhoto} 
+                                    openCamera={openCameraHandler}
+                                >
+                                </HotspotWithPic>
                             ))}
                         </IonList>
                         <div className="centered-camera-button">
                             <IonButtons >
-                                <IonButton onClick={cameraHandler}><IonIcon icon='/assets/svgs/camera.svg'></IonIcon></IonButton>
+                                <IonButton onClick={openCameraHandler}><IonIcon icon='/assets/svgs/camera.svg'></IonIcon></IonButton>
                             </IonButtons>
                             <IonLabel>Start taking photos of your vehicle</IonLabel>
                             
@@ -65,9 +69,6 @@ const VehiclePhotos = () => {
             ) : (
             <OpenedCameraTakePhoto setHidePageContent={setHidePageContent} camera={camera}/>
             )}
-            
-
-            
         </Page>
     )
 }

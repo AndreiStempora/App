@@ -24,7 +24,7 @@ const VehiclePage = () => {
     }
 
     const changeCheckedElements = (element)=>{
-            setCheckedElements({...checkedElements, ...element});
+        setCheckedElements({...checkedElements, ...element});
     }
     
     useIonViewWillEnter(() => {
@@ -34,12 +34,21 @@ const VehiclePage = () => {
         })();
     });
 
-    const deleteVehicleHandler = async () => {}
+    const deleteVehicleHandler = async () => {
+        console.log("delete: " , checkedElements);
+    }
 
-    const updateVehicleHandler = async () => {}
+    const uploadVehicleHandler = async () => {
+        console.log("upload: " , checkedElements);
+    }
 
     const selectAllHandler = () => {
         setCheckAll(!checkAll);
+        const newCheckedElements = {};
+        carsWithPics.forEach((car)=>{
+            newCheckedElements[car.vehicle_id] = !checkAll;
+        });
+        setCheckedElements(newCheckedElements);
     }
 
     useEffect(() => {
@@ -49,9 +58,6 @@ const VehiclePage = () => {
             console.log(cars, 'carsWithPics');
         })();
     }, []);
-
-    useEffect(() => {
-    }, [checkedElements]);
 
     return (
         <Page pageClass={'vehiclesSearch'}>
@@ -73,17 +79,6 @@ const VehiclePage = () => {
                 </IonButtons>
             </CustomHeader>
             <CustomContent colSizesArr={[[12]]}>
-                
-                    {/* {showCheckbox &&
-                        <IonItem>
-                            <IonLabel>Select All</IonLabel>
-                            <IonCheckbox 
-                                onIonChange={(e)=>selectAllHandler()}
-                                slot="end" 
-                            >
-                            </IonCheckbox>
-                        </IonItem>
-                    } */}
                     <IonList>
                         {carsWithPics?.map((car, index) => 
                             <AdedVehiclesSearchItem 
@@ -105,7 +100,7 @@ const VehiclePage = () => {
                                 <IonLabel>delete</IonLabel>
                             </div>
                         </IonButton> 
-                        <IonButton className='icon-over-text' onClick={updateVehicleHandler}>
+                        <IonButton className='icon-over-text' onClick={uploadVehicleHandler}>
                             <div className="container">
                                 <IonIcon icon='/assets/svgs/upload.svg'></IonIcon>
                                 <IonLabel>upload</IonLabel>

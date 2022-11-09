@@ -1,9 +1,5 @@
-import { IonHeader, IonButtons, IonFooter, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonContent } from "@ionic/react"
-import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
-import { useEffect, useState } from "react";
+import { IonHeader, IonButtons, IonFooter, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonContent } from "@ionic/react";
 import HotspotSwiper from "./HotspotSwiper";
-import { useAtom } from "jotai";
-import { user } from "../../services/user/user";
 import "./openedCameraTakePhoto.scss";
 
 const OpenedCameraTakePhoto = ({camera,setHidePageContent}) => {
