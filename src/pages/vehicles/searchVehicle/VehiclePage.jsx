@@ -3,7 +3,7 @@ import { Page, CustomHeader, CustomContent, CustomFooter } from '../../../compon
 import { useAtom } from 'jotai';
 import { user } from '../../../services/user/user';
 import { useEffect, useState } from 'react';
-import { useDbRequest, vehiclesService } from '../../../packages/database';
+import { imagesService, useDbRequest, vehiclesService } from '../../../packages/database';
 import { useRSelection } from '../../../packages/database/features/utils/utilityHooks';
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
@@ -36,6 +36,10 @@ const VehiclePage = () => {
 
     const deleteVehicleHandler = async () => {
         console.log("delete: " , checkedElements);
+        let x = sortVehicles(checkedElements);
+        let y = await getAllPicturesForEachVehicle(x);
+        console.log(x);
+        console.log(y);
     }
 
     const uploadVehicleHandler = async () => {
@@ -51,11 +55,26 @@ const VehiclePage = () => {
         setCheckedElements(newCheckedElements);
     }
 
+    const sortVehicles = (elements) => {
+        const selectedElements = [];
+        Object.keys(elements).forEach((key)=>{
+            if(elements[key]){
+                selectedElements.push(parseInt(key));
+            }
+        });
+        return selectedElements;
+    }
+
+    const getAllPicturesForEachVehicle = async (vehicles) => {
+        return await Promise.all(vehicles.map(async (vehicle) => {
+            return await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle]));
+        }));
+    }
+
     useEffect(() => {
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCarsWithPics(cars);
-            console.log(cars, 'carsWithPics');
         })();
     }, []);
 

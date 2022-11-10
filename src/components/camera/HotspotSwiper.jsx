@@ -1,63 +1,68 @@
-import { IonSlides, IonSlide, IonContent, IonCol, IonImg, IonButton } from '@ionic/react';
+import { IonCol, IonImg, IonButton } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService } from "../../packages/database";
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useAtom } from 'jotai';
+import { useRSelection } from '../../packages/database/features/utils/utilityHooks';
+import { Navigation } from 'swiper';
+import { useHotspot } from '../../packages/database/features/utils/utilityHooks';
 import { FS } from '../../packages/filesystem';
-import { user } from '../../services/user/user';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
 const HotspotSwiper = ({ camera }) => {
-    const dbRequest = useDbRequest();
+    const hotspotHook = useHotspot();
+    const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [slides, setSlides] = useState(null);
-    const [allHotspots, setAllHotspots] = useState(null);
-    const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
-    const [, getSelections] = useAtom(user.getCurrentSelections);
     const [swiper,setSwiper] = useState(null);
-    const [currentSlidePic, setCurrentSlidePic] = useState(0);
     const [image,setImage] = useState(null);
 
     const getPicture = async () => {
-        const imageObj = await dbRequest.requestFunction(async () => await imagesService.getImageByVehicleIdAndHotspotId([getSelections().vehicle_id, getSelections().hotspot_id]));
-        const img = await FS.showPicture(imageObj[0].image_data);
-        setImage(img);
+        const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
+        if(imageObj.length > 0){
+            const img = await FS.showPicture(imageObj[0].image_data);
+            setImage(img);
+        } else {
+            setImage(null);
+        }
     }
 
     const takePictureHandler = async () => {
-        await camera.takePicture(getSelections().hotspot_id, getSelections().vehicle_id);
+        await camera.takePicture(getCurrentSelection().hotspot_id, getCurrentSelection().vehicle_id);
         swiper.slideNext();
     }
 
+    const selectInitialSlide = async (hotspots) => {
+        const currentHotspot = await getCurrentSelection().hotspot_id;
+        const index = hotspots.findIndex((hotspot) => hotspot.hotspot_id === currentHotspot);
+        await swiper.slideTo(index);
+    }
 
     useEffect(() => {
         (async () => {
-            const hotspots = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([currentSelection.dealership_id, currentSelection.hotspot_type]));
+            const hotspots = await hotspotHook.getCurrentHotspotsByType();
             setSlides(hotspots);
-            getPicture();
+            await getPicture();
         })();
     }, []);
 
-
     useEffect(() => {
-            (async () => {
-                await getPicture();
-            })();
-        
-    }, [currentSelection]);
+        (async () => {
+            if(swiper !== null){
+                const hotspots = await hotspotHook.getCurrentHotspotsByType();
+                await selectInitialSlide(hotspots);
+            }
+        })();
+    }, [swiper]);
 
     return (
         <>
             <IonCol size='3'>
                 <div className="img-container" onClick={() => { console.log('click') }}>
-                    <IonImg src={image} ></IonImg>
+                    <IonImg src={image===null ? '/assets/img/carPicPlaceholder.png' : image} ></IonImg>
                 </div>
             </IonCol>
             <IonCol size='6' className="ion-text-center">
                 <IonButton className='take-picture-btn'
                     onClick={takePictureHandler}
-                //</IonCol>onClick={takePicture}
                 ></IonButton>
             </IonCol>
 
@@ -67,14 +72,13 @@ const HotspotSwiper = ({ camera }) => {
                     navigation
                     slidesPerView={1}
                     initialSlide={0}
-                    onSlideChange={(swiper) => {
+                    onSlideChange={async (swiper) => {
                         const id = swiper.slides[swiper.activeIndex].getAttribute('data-id');
-                        setCurrentSelection({ ...currentSelection, hotspot_id: parseInt(id) });
-
+                        editCurrentSelection({hotspot_id: parseInt(id)});
+                        await getPicture();
                     }}
                     onInit={(swiper) => {
                         setSwiper(swiper);
-                        // getPicture();
                     }}
                 >
                     {slides?.map((hotspot) =>

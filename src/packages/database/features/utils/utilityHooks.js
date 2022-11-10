@@ -34,11 +34,17 @@ const useHotspot = () => {
         })
     }
 
-    const getCurrentHotspotPhoto = (hotspot_id) => {
+    const getCurrentHotspotsByGivenType = async (hotspot_type) =>{
+        const dealership_id = getCurrentSelection().dealership_id;
+        return await dbRequest.requestFunction(async () => {
+            return await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([dealership_id, hotspot_type]);
+        })
+    }
+
+    const getCurrentHotspotPhoto = async (hotspot_id) => {
         const vehicle_id = getCurrentSelection().vehicle_id;
-        // const hotspot_id = getCurrentSelection().hotspot_id;
-        return dbRequest.requestFunction(async () => {
-            await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot_id]);
+        return await dbRequest.requestFunction(async () => {
+            return await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot_id]);
         })
     }
 
@@ -49,24 +55,37 @@ const useHotspot = () => {
             return await Promise.all(
                 hotspots?.map(async (hotspot) => {
                     const photo = await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot.hotspot_id]);
-                    return [hotspot, photo]
+                    return [hotspot, ...photo]
                 })
             )
         } else {
             const vehicle_id = getCurrentSelection().vehicle_id;
-            const hotspots = await getCurrentHotspotsByType();
+            const hotspots = await getCurrentHotspotsByGivenType(hotspot_type);
 
             return await Promise.all(
                 hotspots?.map(async (hotspot) => {
                     const photo = await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot.hotspot_id]);
-                    return [hotspot, photo];
+                    return [hotspot, ...photo];
 
                 })
             )
         }
     }
 
+    const getHotspotsByGivenType = async (hotspot_type) => {
+        const dealership_id = getCurrentSelection().dealership_id;
+        const hotspots = await dbRequest.requestFunction(async () => {
+            return await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([dealership_id, hotspot_type]);
+        })
+        return hotspots;
+    }
     
-    return [ getAllHotspotsForCurrentDealership, getCurrentHotspotsByType, getCurrentHotspotPhoto, getHotspotsWithPhotos];
+    return {
+        getAllHotspotsForCurrentDealership:getAllHotspotsForCurrentDealership, 
+        getCurrentHotspotsByType:getCurrentHotspotsByType, 
+        getCurrentHotspotPhoto:getCurrentHotspotPhoto, 
+        getHotspotsWithPhotos:getHotspotsWithPhotos,
+        getHotspotsByGivenType:getHotspotsByGivenType
+    };
 };
 export { useRSelection, useHotspot };

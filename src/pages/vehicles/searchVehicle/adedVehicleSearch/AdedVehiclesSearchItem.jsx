@@ -1,11 +1,14 @@
 import { IonImg, IonItem, IonLabel, IonIcon,IonCheckbox } from '@ionic/react'
 import { useHistory } from 'react-router';
 import { useState, useEffect } from 'react';
-import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
+import { useHotspot, useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
+import { useDbRequest, imagesService } from '../../../../packages/database';
 import './adedVehiclesSearchItem.scss'
 
 const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAll }) => {
     const [editSelection, getCurrentSelection] = useRSelection();
+    const hotspotHook = useHotspot();
+    const dbRequest = useDbRequest();
     const [markChecked, setMarkChecked] = useState(false);
     const history = useHistory();
 
@@ -26,8 +29,18 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
         setMarkChecked(checkAll); 
     }, [checkAll]);
 
+    const searchForPhoto = async (hotspots) => {
+
+    }
+
     useEffect(() => {
         setCheckedElements({[car.vehicle_id]:markChecked});
+        // console.log(car, 'car');
+        // (async () => {
+        //     const hots = await hotspotHook.getHotspotsByGivenType(2);
+        //     console.log(hots, 'hots');
+        //     searchForPhoto(hots);
+        // })();
     }, []);
 
     return (

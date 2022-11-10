@@ -17,17 +17,16 @@ const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
 
     useEffect(() => {   
         (async () => {
-            if(hotspotWithPhoto[1].length){
-                const image = await FS.showPicture(hotspotWithPhoto[1][0]?.image_data)
+            if(hotspotWithPhoto[1]){
+                const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
                 setHotspotImage(image);
             }
         })();
-            
     }, []);
 
     return (
         <IonItem button={true} onClick={selectItemHandler} className={'item-with-picture'}>
-            <IonImg src={hotspotImage.length?hotspotImage:('/assets/img/carPicPlaceholder.png')} />
+            <IonImg src={hotspotImage?hotspotImage:('/assets/img/carPicPlaceholder.png')} />
             <IonLabel>{currentHotspot?.hotspot_name}</IonLabel>
             <IonIcon class='forward-icon' icon={`/assets/svgs/next.svg`}></IonIcon>
         </IonItem>

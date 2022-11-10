@@ -11,7 +11,7 @@ import './vehicleDetails.scss';
 const VehicleDetails = () => {
     const dbRequest = useDbRequest();
     const history = useHistory();
-    const [getAllHotspots] = useHotspot();
+    const hotspotHook = useHotspot();
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [vehicle, setVehicle] = useState({});
     const [interiorHotspots, setInteriorHotspots] = useState([]);
@@ -19,42 +19,41 @@ const VehicleDetails = () => {
     const [interiorPictures, setInteriorPictures] = useState([]);
     const [exteriorPictures, setExteriorPictures] = useState([]);
 
-    const separateHotspots = (hotspots) => {
-        const interior = [];
-        const exterior = [];
-        hotspots.forEach(hotspot => {
-            if(hotspot.hotspot_type === 1){
-                interior.push(hotspot);
-            } else {
-                exterior.push(hotspot);
-            }
-        });
-        setExteriorHotspots(exterior);
-        setInteriorHotspots(interior);
-    }
-
     const getPicturesFromHotspots = async(hotspots) => {
-        let pictures = 0;
-        await Promise.all(
+        return await Promise.all(
             hotspots.map(async(hotspot) => {
-                const pic = await dbRequest.requestFunction(async ()=> imagesService.getImageByVehicleIdAndHotspotId([getCurrentSelection().vehicle_id, hotspot.hotspot_id]));
-                if(pic[0] !== undefined){
-                    pictures++;
+                let x = await dbRequest.requestFunction(async ()=> imagesService.getImageByVehicleIdAndHotspotId([getCurrentSelection().vehicle_id, hotspot.hotspot_id]));
+                if(x.length > 0){
+                    console.log(x, 'x');
+                    return x[0];
+                } else {
+                    return null;
                 }
-                return true;
             })
         )
-        return pictures;
+    }
+
+    const getPictureCount = async (hotspots) => {
+        
+        let x = 0;
+        hotspots.map(async(hotspot) => {
+            if(hotspot.length === 2){
+                x++;
+            }
+        })
+        return x;
     }
 
     useEffect(() => {
         (async () => {
-            const hotspots = await getAllHotspots();
-            separateHotspots(hotspots);
-            const intPics = await getPicturesFromHotspots(interiorHotspots);
-            const extPics = await getPicturesFromHotspots(exteriorHotspots);
-            setInteriorPictures(intPics);
-            setExteriorPictures(extPics);
+            const interior = await hotspotHook.getHotspotsWithPhotos(1);
+            const exterior = await hotspotHook.getHotspotsWithPhotos(2);
+            setInteriorHotspots(interior);
+            setExteriorHotspots(exterior);
+            const interiorPhotos = await getPictureCount(interior);
+            const exteriorPhotos = await getPictureCount(exterior);
+            setInteriorPictures(interiorPhotos);
+            setExteriorPictures(exteriorPhotos);
             const vehicle = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id]));
             setVehicle(vehicle);
         })();

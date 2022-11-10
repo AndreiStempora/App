@@ -67,9 +67,7 @@ const FS = {
         try{
             if(path !== null){
                 const contents = await Filesystem.readFile({ path: path });
-                console.log(contents);
                 const base64PictureData = "data:image/jpg;base64," + contents.data;
-                console.log(base64PictureData);
                 return base64PictureData;
             }
         } catch (e) {

@@ -12,7 +12,7 @@ import "./vehiclePhotos.scss";
 
 const VehiclePhotos = () => {
     const dbRequest = useDbRequest();
-    const [ , getCurrentHotspotsByType, getCurrentHotspotPhoto, getHotspotsWithPhoto ] = useHotspot();
+    const hotspotHook = useHotspot();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [hidePageContent, setHidePageContent] = useState(false);
     const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState([]);
@@ -26,7 +26,8 @@ const VehiclePhotos = () => {
     useEffect(() => {
         if(hidePageContent === false){
             (async () => {
-                const currentHotspotsWithPhotos = await getHotspotsWithPhoto(getCurrentSelection().hotspot_type);
+                const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+                console.log(currentHotspotsWithPhotos, 'currentHotspotsWithPhotos');
                 setHotspotsWithPhotos(currentHotspotsWithPhotos);
             })();
         }
