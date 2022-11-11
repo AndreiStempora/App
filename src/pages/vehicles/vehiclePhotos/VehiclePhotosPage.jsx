@@ -27,7 +27,7 @@ const VehiclePhotos = () => {
         if(hidePageContent === false){
             (async () => {
                 const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
-                console.log(currentHotspotsWithPhotos, 'currentHotspotsWithPhotos');
+                // console.log(currentHotspotsWithPhotos, 'currentHotspotsWithPhotos');
                 setHotspotsWithPhotos(currentHotspotsWithPhotos);
             })();
         }

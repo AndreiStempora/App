@@ -1,4 +1,4 @@
-import { IonItem,IonLabel,IonImg, IonIcon } from '@ionic/react';
+import { useIonViewWillEnter, IonItem,IonLabel,IonImg, IonIcon, ionViewWillEnter } from '@ionic/react';
 import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
 import { useEffect, useState} from 'react';
 import { FS } from '../../../../packages/filesystem';
@@ -15,13 +15,22 @@ const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
         await openCamera();
     }
 
-    useEffect(() => {   
+    // useIonViewWillEnter(() => {
+    //     (async () => {
+    //         if(hotspotWithPhoto[1]){
+    //             const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
+    //             setHotspotImage(image);
+    //         }
+    //     })();
+    // });
+
+    useEffect(() => {  
         (async () => {
             if(hotspotWithPhoto[1]){
                 const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
                 setHotspotImage(image);
             }
-        })();
+        })(); 
     }, []);
 
     return (

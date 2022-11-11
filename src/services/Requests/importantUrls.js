@@ -8,6 +8,7 @@ const URL = {
     logOut:atom(`${rootURL}user/auth/logout`),
     dealership:atom(`${rootURL}capture/dealerships`),
     inventory:atom(`${rootURL}capture/inventory`),
+    upload:atom(`${rootURL}capture/upload`),
 }
 
 export { URL };

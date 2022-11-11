@@ -38,10 +38,16 @@ const FS = {
         });
     },
     deleteFile: async(path) => {
-        await Filesystem.deleteFile({
-            path: path,
-            directory: Directory.Data,
-        });
+        try{
+            await Filesystem.deleteFile({
+                path: path,
+            })
+            return true;
+        }catch(e){
+            console.log(e);
+            return false;
+        }
+            
     },
     copyFile: async(path, newPath) => {
         return await Filesystem.copy({

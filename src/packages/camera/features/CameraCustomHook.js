@@ -38,16 +38,20 @@ const useCamera = () => {
     
     const takePicture = async (hotspot_id,vehicle_id) => {
         const existingImage = await dbRequest.requestFunction(async ()=>await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id,hotspot_id]));
-        console.log(existingImage.length);
+        console.log(existingImage, 'existingImage');
         if(existingImage.length !== 0){
-            await FS.deleteFile(`images/${existingImage.image_data}`);
-            await dbRequest.requestFunction(async ()=>await imagesService.deleteImageById([existingImage.image_id]));
+            console.log(existingImage[0].image_data,"wtfffff")
+            let fileDeletedConfirmation = await FS.deleteFile(existingImage[0].image_data);
+            if(fileDeletedConfirmation){
+                await dbRequest.requestFunction(async ()=>await imagesService.deleteImageById([existingImage[0].image_id]));
+            }
         }
         const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100, width:3840, height:2160 })).value;
         const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesUrl + '/' + Date.now() + '.jpg')).uri;
         await dbRequest.requestFunction(async() => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, copiedPictureUri]));
-        // const dirContent = await FS.readDirectory('images');
-        
+
+        const dirContent = await FS.readDirectory('images');
+        console.log(dirContent, 'dirContent');
 
          // console.log(filesPath, 'filesPath');
         // console.log(result);

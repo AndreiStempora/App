@@ -27,7 +27,12 @@ const HotspotSwiper = ({ camera }) => {
 
     const takePictureHandler = async () => {
         await camera.takePicture(getCurrentSelection().hotspot_id, getCurrentSelection().vehicle_id);
-        swiper.slideNext();
+        if(swiper.activeIndex === swiper.slides.length - 1){
+            swiper.slideTo(0);
+        } else {
+            swiper.slideNext();
+        }
+        
     }
 
     const selectInitialSlide = async (hotspots) => {
