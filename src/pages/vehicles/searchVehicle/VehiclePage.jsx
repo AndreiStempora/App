@@ -8,6 +8,7 @@ import { useRSelection } from '../../../packages/database/features/utils/utility
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
 import './vehiclePage.scss';
+import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
 
 
 const VehiclePage = () => {
@@ -27,19 +28,20 @@ const VehiclePage = () => {
         setCheckedElements({...checkedElements, ...element});
     }
     
-    useIonViewWillEnter(() => {
-        (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-            setCarsWithPics(cars);
-        })();
-    });
+    // useIonViewWillEnter(() => {
+    //     (async () => {
+    //         const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
+    //         setCarsWithPics(cars);
+    //     })();
+    // });
 
     const deleteVehicleHandler = async () => {
         console.log("delete: " , checkedElements);
-        let x = sortVehicles(checkedElements);
-        let y = await getAllPicturesForEachVehicle(x);
-        console.log(x);
-        console.log(y);
+        const vehiclesId = sortVehicles(checkedElements);
+        const allVehiclePhotos = await getAllPicturesForEachVehicle(vehiclesId);
+        allVehiclePhotos?.forEach(async (vehiclePhotos) => {
+
+        });
     }
 
     const uploadVehicleHandler = async () => {
@@ -66,6 +68,7 @@ const VehiclePage = () => {
     }
 
     const getAllPicturesForEachVehicle = async (vehicles) => {
+        console.log(vehicles, "vehicles");
         return await Promise.all(vehicles.map(async (vehicle) => {
             return await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle]));
         }));
@@ -76,7 +79,7 @@ const VehiclePage = () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCarsWithPics(cars);
         })();
-    }, []);
+    }, [carsWithPics]);
 
     return (
         <Page pageClass={'vehiclesSearch'}>
@@ -111,22 +114,28 @@ const VehiclePage = () => {
                 
             </CustomContent>
             {!showCheckbox ? <FooterAddVehicle></FooterAddVehicle> : 
-                <CustomFooter>
-                    <IonButtons>
-                        <IonButton className='icon-over-text' onClick={deleteVehicleHandler}>
-                            <div className="container">
-                                <IonIcon icon='/assets/svgs/delete.svg'></IonIcon>
-                                <IonLabel>delete</IonLabel>
-                            </div>
-                        </IonButton> 
-                        <IonButton className='icon-over-text' onClick={uploadVehicleHandler}>
-                            <div className="container">
-                                <IonIcon icon='/assets/svgs/upload.svg'></IonIcon>
-                                <IonLabel>upload</IonLabel>
-                            </div>
-                        </IonButton>
-                    </IonButtons>
-                </CustomFooter>}
+                <FooterDeleteUpload
+                    del={deleteVehicleHandler}
+                    retake={null}
+                    upload={uploadVehicleHandler}
+                ></FooterDeleteUpload>
+                // <CustomFooter>
+                //     <IonButtons>
+                //         <IonButton className='icon-over-text' onClick={deleteVehicleHandler}>
+                //             <div className="container">
+                //                 <IonIcon icon='/assets/svgs/delete.svg'></IonIcon>
+                //                 <IonLabel>delete</IonLabel>
+                //             </div>
+                //         </IonButton> 
+                //         <IonButton className='icon-over-text' onClick={uploadVehicleHandler}>
+                //             <div className="container">
+                //                 <IonIcon icon='/assets/svgs/upload.svg'></IonIcon>
+                //                 <IonLabel>upload</IonLabel>
+                //             </div>
+                //         </IonButton>
+                //     </IonButtons>
+                // </CustomFooter>
+                }
         </Page>
     )
 }

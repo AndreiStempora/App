@@ -29,6 +29,7 @@ import VehiclePage from './pages/vehicles/searchVehicle/VehiclePage';
 import AddVehicle from './pages/vehicles/addVehicle/AddVehiclePage';
 import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetailsPage';
 import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotosPage';
+import HotspotPhoto from './pages/vehicles/hotspotPhoto/HotspotPhoto';
 setupIonicReact();
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
 							<ProtectedRoute exact={true} path="/add-vehicle" component={AddVehicle} />
 							<ProtectedRoute exact={true} path="/vehicle-details" component={VehicleDetails} />
 							<ProtectedRoute exact={true} path="/vehicle-photos" component={VehiclePhotos} />
+							<ProtectedRoute exact={true} path="/hotspot-photo" component={HotspotPhoto} />
 							<Route render={() => <Redirect to="/dealerships" />} />
 						</IonRouterOutlet>
 					</IonReactRouter>

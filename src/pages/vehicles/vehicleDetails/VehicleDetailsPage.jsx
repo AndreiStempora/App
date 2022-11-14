@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
 import { useHotspot } from "../../../packages/database/features/utils/utilityHooks";
+import CustomBackButton from "../../../components/buttons/CustomBackButton";
 import './vehicleDetails.scss';
 
 const VehicleDetails = () => {
@@ -34,7 +35,6 @@ const VehicleDetails = () => {
     }
 
     const getPictureCount = async (hotspots) => {
-        
         let x = 0;
         hotspots.map(async(hotspot) => {
             if(hotspot.length === 2){
@@ -68,7 +68,7 @@ const VehicleDetails = () => {
         <Page pageClass={'vehicleDetails'}>
             <CustomHeader>
                 <IonButtons slot="start">
-                    <IonBackButton defaultHref="/dealerships" icon="assets/svgs/previous.svg"></IonBackButton>
+                    <CustomBackButton href='/vehicle-search'/>
                 </IonButtons>
                 <IonTitle className='ion-text-center'>Vehicle Details</IonTitle>
             </CustomHeader>

@@ -1,4 +1,4 @@
-import { useIonViewWillEnter, IonItem,IonLabel,IonImg, IonIcon, ionViewWillEnter } from '@ionic/react';
+import { useIonViewWillEnter, IonSpinner, IonItem,IonLabel,IonImg, IonIcon, ionViewWillEnter } from '@ionic/react';
 import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
 import { useEffect, useState} from 'react';
 import { FS } from '../../../../packages/filesystem';
@@ -8,6 +8,7 @@ const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [currentHotspot, setCurrentHotspot] = useState(hotspotWithPhoto[0]);
     const [hotspotImage, setHotspotImage] = useState(hotspotWithPhoto[1]);
+    const [imageLoading, setImageLoading] = useState(true);
 
 
     const selectItemHandler = async() => {
@@ -26,16 +27,26 @@ const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
 
     useEffect(() => {  
         (async () => {
-            if(hotspotWithPhoto[1]){
-                const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
-                setHotspotImage(image);
+            try{
+                if(hotspotWithPhoto[1]){
+                    const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
+                    setHotspotImage(image);
+                }
+            }catch(err){
+                console.log(err);
+            } finally{
+                setImageLoading(false);
             }
         })(); 
-    }, []);
+    }, [hotspotWithPhoto]);
 
     return (
         <IonItem button={true} onClick={selectItemHandler} className={'item-with-picture'}>
-            <IonImg src={hotspotImage?hotspotImage:('/assets/img/carPicPlaceholder.png')} />
+            {
+                imageLoading ?
+                <IonSpinner name="lines-sharp"></IonSpinner>:
+                <IonImg src={hotspotImage?hotspotImage:('/assets/img/carPicPlaceholder.png')} />
+            }
             <IonLabel>{currentHotspot?.hotspot_name}</IonLabel>
             <IonIcon class='forward-icon' icon={`/assets/svgs/next.svg`}></IonIcon>
         </IonItem>

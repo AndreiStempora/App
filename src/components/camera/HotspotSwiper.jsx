@@ -1,9 +1,10 @@
-import { IonCol, IonImg, IonButton } from '@ionic/react';
+import { IonCol, IonImg, IonButton, IonSpinner } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useRSelection } from '../../packages/database/features/utils/utilityHooks';
 import { Navigation } from 'swiper';
 import { useHotspot } from '../../packages/database/features/utils/utilityHooks';
+import { useHistory } from 'react-router';
 import { FS } from '../../packages/filesystem';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -14,15 +15,24 @@ const HotspotSwiper = ({ camera }) => {
     const [slides, setSlides] = useState(null);
     const [swiper,setSwiper] = useState(null);
     const [image,setImage] = useState(null);
+    const history = useHistory();
+    const [imageLoading, setImageLoading] = useState(true);
 
     const getPicture = async () => {
-        const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
-        if(imageObj.length > 0){
-            const img = await FS.showPicture(imageObj[0].image_data);
-            setImage(img);
-        } else {
-            setImage(null);
+        try{
+            const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
+            if(imageObj.length > 0){
+                const img = await FS.showPicture(imageObj[0].image_data);
+                setImage(img);
+            } else {
+                setImage(null);
+            }
+        } catch(err){
+            console.log(err);
+        } finally{
+            setImageLoading(false);
         }
+
     }
 
     const takePictureHandler = async () => {
@@ -58,11 +68,23 @@ const HotspotSwiper = ({ camera }) => {
         })();
     }, [swiper]);
 
+    const pictureClickHandler = async () => {
+        const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
+        editCurrentSelection({photo_id: imageObj[0].image_id});
+        console.log('picture clicked', imageObj);
+        await camera.stopCamera();
+        history.push('/hotspot-photo');
+    }
+
     return (
         <>
             <IonCol size='3'>
-                <div className="img-container" onClick={() => { console.log('click') }}>
-                    <IonImg src={image===null ? '/assets/img/carPicPlaceholder.png' : image} ></IonImg>
+                <div className="img-container" onClick={pictureClickHandler}>
+                    {
+                        imageLoading ?
+                        <IonSpinner name="lines-sharp"></IonSpinner> :
+                        <IonImg src={image!==null ? image : '/assets/img/carPicPlaceholder.png'}></IonImg>
+                    }
                 </div>
             </IonCol>
             <IonCol size='6' className="ion-text-center">

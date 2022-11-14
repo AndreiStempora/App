@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { user } from "../../../../services/user/user";
 import { useDbRequest, hotspotsService, vehiclesService, imagesService  } from "../../index";
+import { FS } from "../../../filesystem";
 
 const useRSelection = () => {
     const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
@@ -88,4 +89,17 @@ const useHotspot = () => {
         getHotspotsByGivenType:getHotspotsByGivenType
     };
 };
-export { useRSelection, useHotspot };
+
+const useDeleteUpload = () => {
+    const dbRequest = useDbRequest();
+    const deleteImage = async (image) => {
+        let x = await FS.deleteFile(image.image_data);
+        console.log(x);
+        if(x){
+            await dbRequest.requestFunction(async () => {await imagesService.deleteImageById([image.image_id])});
+        }
+    }
+    // const deleteCar = async (vehicle_id) => {
+}
+
+export { useRSelection, useHotspot, useDeleteUpload };

@@ -7,6 +7,8 @@ import OpenedCameraTakePhoto from "../../../components/camera/OpenedCameraTakePh
 import useCamera from "../../../packages/camera/features/CameraCustomHook";
 import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
 import HotspotWithPic from "./hotspotWithPhotoItem/HotspotWithPic";
+import CustomBackButton from "../../../components/buttons/CustomBackButton";
+import { useHistory } from "react-router";
 import "./vehiclePhotos.scss";
 
 
@@ -16,6 +18,7 @@ const VehiclePhotos = () => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [hidePageContent, setHidePageContent] = useState(false);
     const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState([]);
+    const history = useHistory();
     const camera = useCamera();
 
     const openCameraHandler = async () => {
@@ -24,16 +27,24 @@ const VehiclePhotos = () => {
     };
 
     useEffect(() => {
+        (async () => {
+            if(getCurrentSelection().cameraOn){
+                setHidePageContent(true);
+                await camera.startCamera();
+            }
+        })();
+
         if(hidePageContent === false){
             (async () => {
                 const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
-                // console.log(currentHotspotsWithPhotos, 'currentHotspotsWithPhotos');
                 setHotspotsWithPhotos(currentHotspotsWithPhotos);
             })();
         }
     }, [hidePageContent]);
 
-
+    const backButtonHandler = () => {
+        history.push("/vehicle-details");
+    }
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>` 
             {!hidePageContent ? 
@@ -41,7 +52,7 @@ const VehiclePhotos = () => {
                 <>
                     <CustomHeader>
                         <IonButtons slot="start">
-                            <IonBackButton defaultHref="/dealerships" icon="assets/svgs/previous.svg"></IonBackButton>
+                            <CustomBackButton href={"/vehicle-details"} />
                         </IonButtons>
                         <IonTitle className='ion-text-center'>Vehicle Photosred</IonTitle>
                     </CustomHeader>
