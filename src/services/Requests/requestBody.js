@@ -27,6 +27,7 @@ const reqBody = {
                         body: formData
                     }
                 }
+                console.log(data,'ffffffffffff')
                 set(reqBody.requestBodyAtom,bodyObj());
             } catch(e){
                 set(error.errorAtom,e.message)

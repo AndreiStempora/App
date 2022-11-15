@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { user } from "../../../../services/user/user";
 import { useDbRequest, hotspotsService, vehiclesService, imagesService  } from "../../index";
 import { FS } from "../../../filesystem";
+import { URL, usePageSetters, usePageRequest } from "../../../../services"
 
 const useRSelection = () => {
     const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
@@ -92,6 +93,11 @@ const useHotspot = () => {
 
 const useDeleteUpload = () => {
     const dbRequest = useDbRequest();
+    const pageSetters = usePageSetters();
+    const pageRequest = usePageRequest();
+    const [uploadURL,] = useAtom(URL.upload);
+    const [, getCurrentSelection]= useRSelection();
+    const [token,] = useAtom(user.tokenAtom);
     const deleteImage = async (image) => {
         let x = await FS.deleteFile(image.image_data);
         console.log(x);
@@ -99,7 +105,38 @@ const useDeleteUpload = () => {
             await dbRequest.requestFunction(async () => {await imagesService.deleteImageById([image.image_id])});
         }
     }
+    const uploadImage = async (image) => {
+        let fileData = await FS.showPicture(image.image_data);
+        const carVin = await dbRequest.requestFunction(async () => {return await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id])});
+        console.log(carVin,'red');
+        const response = await fetch(fileData);
+
+        const blob = await response.blob();
+        // console.log(uploadURL, "upload");
+        pageSetters.setUrl(uploadURL);
+        const obj = {
+            // token: token,
+            dealership: getCurrentSelection().dealership_id,
+            hotspot: getCurrentSelection().hotspot_id,
+            image: blob,
+            vin: carVin.vehicle_vin
+
+        };
+        pageSetters.setFormData(obj);
+        pageSetters.setRequestBody();
+        let x = await pageSetters.fetch();
+        console.log(x);
+        // const formData = new FormData();
+        // formData.append('file', blob, "image.jpg");
+        // this.uploadData(formData);
+        
+        // console.log('upload image', blob);
+    }
     // const deleteCar = async (vehicle_id) => {
+        return {
+            deleteImage:deleteImage,
+            uploadImage:uploadImage
+        }
 }
 
 export { useRSelection, useHotspot, useDeleteUpload };

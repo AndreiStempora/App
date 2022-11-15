@@ -58,9 +58,9 @@ const FS = {
     readFile: async(path) => {
         const result = await Filesystem.readFile({
             path: path,
-            directory: Directory.Data,
+            // directory: Directory.Data,
         });
-        return result.data;
+        return result;
     },
     deleteDirectory: async(path) => {
         await Filesystem.rmdir({

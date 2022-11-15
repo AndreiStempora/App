@@ -1,6 +1,6 @@
 import { IonButtons, IonButton, IonIcon, IonImg, IonSpinner, IonContent } from "@ionic/react";
 import { Page, CustomHeader, CustomContent, CustomFooter } from "../../../components/page/Page";
-import { useHotspot, useRSelection } from "../../../packages/database/features/utils/utilityHooks";
+import { useHotspot, useRSelection, useDeleteUpload } from "../../../packages/database/features/utils/utilityHooks";
 import { useHistory } from "react-router";
 import { useState, useEffect } from "react";
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
@@ -13,6 +13,7 @@ const HotspotPhoto = () => {
     const [image,setImage] = useState();
     const [imageLoading, setImageLoading] = useState(true);
     const hotspotHook = useHotspot();
+    const photoOps = useDeleteUpload();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
 
     const getPicture = async () => {
@@ -38,9 +39,17 @@ const HotspotPhoto = () => {
         })();
     }, []);
 
-    const deleteHandler = () => {}
-    const retakeHandler = () => {}
-    const uploadHandler = () => {}
+    const deleteHandler = () => {
+        console.log('delete');
+    }
+    const retakeHandler = () => {
+        console.log('retake');
+    }
+    const uploadHandler = async () => {
+        const image = (await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id))[0];
+        let photo = await photoOps.uploadImage(image);
+        // console.log('upload',image,);
+    }
     return (
         <Page pageClass={"hotspot-photo"}>
             <CustomHeader>
