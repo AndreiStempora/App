@@ -12,6 +12,7 @@ const useCamera = () => {
         toBack: true,
         quality: 100,
         storeToFile: true,
+        enableHighResolution: true,
     });
 
 

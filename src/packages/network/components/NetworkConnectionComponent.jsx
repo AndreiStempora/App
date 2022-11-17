@@ -6,20 +6,20 @@ import { Network } from '@capacitor/network';
 const NetworkConnectionComponent = () => {
 	const network = net;
 	const [connected, setConnected] = useState(true);
-	const [event, setEvent] = useState(false);
-
+	
 	const logCurrentNetworkConnectionStatus = async () => {
 		setConnected(await network.getCurrentNetworkStatus());
 	}
 
 	useEffect(() => {
-		logCurrentNetworkConnectionStatus();
 		(async () => {
-			if (!event) {
+			if(!network.listenerActivated){
 				Network.addListener('networkStatusChange', async () => {
-					setConnected(await network.getCurrentNetworkStatus());
+					await logCurrentNetworkConnectionStatus();
 				});
-				setEvent(true);
+				network.listenerActivated = true;
+			} else {
+				await logCurrentNetworkConnectionStatus();
 			}
 		})()
 	}, [])

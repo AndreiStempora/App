@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, setupIonicReact, IonRoute, IonRedirect } from '@ionic/react';
+import { IonApp, IonRouterOutlet, setupIonicReact} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -16,11 +16,11 @@ import '@ionic/react/css/typography.css';
 import { Provider } from "jotai";
 import { Suspense } from "react";
 import { Redirect, Route } from 'react-router-dom';
+/* Theme variables */
+import './theme/variables.css';
 // import RestrictedRouting from './components/page/restrictedPages/RestrictedRouting';
 import DealershipsPage from './pages/dealerships/DealershipsPage';
 import LoginPage from './pages/login/LoginPage';
-/* Theme variables */
-import './theme/variables.css';
 import ProtectedRoute from "./components/page/restrictedPages/ProtectedRoute"
 import TwoFAPage from './pages/twoFA/TwoFAPage';
 import TwoFACodePage from './pages/twoFA/TwoFACodePage';
@@ -30,6 +30,7 @@ import AddVehicle from './pages/vehicles/addVehicle/AddVehiclePage';
 import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetailsPage';
 import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotosPage';
 import HotspotPhoto from './pages/vehicles/hotspotPhoto/HotspotPhoto';
+
 setupIonicReact();
 
 const App = () => {

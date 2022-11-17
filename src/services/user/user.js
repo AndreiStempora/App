@@ -14,7 +14,8 @@ const user = {
     getCurrentSelections: atom(null,
         (get,set,update)=>{
             return get(user.userCurrentSelections);
-        })
+        }
+    ),
 }
 
 export { user };

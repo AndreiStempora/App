@@ -2,7 +2,8 @@ import { useAtom } from "jotai";
 import { user } from "../../../../services/user/user";
 import { useDbRequest, hotspotsService, vehiclesService, imagesService  } from "../../index";
 import { FS } from "../../../filesystem";
-import { URL, usePageSetters, usePageRequest } from "../../../../services"
+import { URL, usePageSetters, usePageRequest } from "../../../../services";
+import {useState, useEffect} from "react";
 
 const useRSelection = () => {
     const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
@@ -98,34 +99,77 @@ const useDeleteUpload = () => {
     const [uploadURL,] = useAtom(URL.upload);
     const [, getCurrentSelection]= useRSelection();
     const [token,] = useAtom(user.tokenAtom);
+    const [image, setImage] = useState();
+
+
     const deleteImage = async (image) => {
         let x = await FS.deleteFile(image.image_data);
-        console.log(x);
+        // console.log(x);
         if(x){
             await dbRequest.requestFunction(async () => {await imagesService.deleteImageById([image.image_id])});
         }
     }
-    const uploadImage = async (image) => {
-        let fileData = await FS.showPicture(image.image_data);
-        const carVin = await dbRequest.requestFunction(async () => {return await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id])});
-        console.log(carVin,'red');
-        const response = await fetch(fileData);
 
+    const getBlobData = async () =>{
+        let fileData = await FS.showPicture(image.image_data);
+        const response = await fetch(fileData);
         const blob = await response.blob();
-        // console.log(uploadURL, "upload");
-        pageSetters.setUrl(uploadURL);
-        const obj = {
-            // token: token,
+        const fileName = image.image_data.slice(image.image_data.lastIndexOf('/') + 1);
+        blob.name=fileName;
+        return blob;
+    }
+    
+    const createFormData = async () => {
+        const carVin = await dbRequest.requestFunction(async () => {return await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id])});
+        const objForUpload = {
+            token: token,
             dealership: getCurrentSelection().dealership_id,
             hotspot: getCurrentSelection().hotspot_id,
-            image: blob,
+            image: await getBlobData(),
             vin: carVin.vehicle_vin
-
         };
-        pageSetters.setFormData(obj);
-        pageSetters.setRequestBody();
-        let x = await pageSetters.fetch();
-        console.log(x);
+        // console.log(objForUpload, 'upload Object')
+        const formData = new FormData();
+        for(let item in objForUpload){
+            if(item === 'image'){
+                formData.append(item, objForUpload[item], objForUpload[item].name);
+            } else {
+                formData.append(item, objForUpload[item])
+            }
+        }
+        return formData;
+    }
+
+    const uploadImage = async (image) => {
+        setImage(image);
+        const data = await createFormData();
+        // console.log(data, 'data');
+
+        const request  = new XMLHttpRequest();
+        request.open('POST', uploadURL);
+
+        request.upload.addEventListener('progress', (e) => {
+            const percent = e.loaded / e.total;
+            console.log(percent);
+        });
+        request.addEventListener('load', (e) => {
+            console.log(request.status, 'status');
+            console.log(request.response, 'response');
+        });
+
+        request.send(data);
+        // const response = await fetch(uploadURL, {
+        //     method: 'POST',
+
+        // });
+        // console.log(uploadURL, "upload");
+        // pageSetters.setUrl(uploadURL);
+        // pageSetters.setFormData(obj);
+        // pageSetters.setRequestBody();
+        // let x = await pageSetters.fetch();
+        // console.log(x);
+
+
         // const formData = new FormData();
         // formData.append('file', blob, "image.jpg");
         // this.uploadData(formData);

@@ -48,7 +48,7 @@ const HotspotPhoto = () => {
     const uploadHandler = async () => {
         const image = (await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id))[0];
         let photo = await photoOps.uploadImage(image);
-        // console.log('upload',image,);
+        // console.log('upload1',image);
     }
     return (
         <Page pageClass={"hotspot-photo"}>

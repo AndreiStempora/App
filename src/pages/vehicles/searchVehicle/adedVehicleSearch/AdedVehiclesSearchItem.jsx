@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import { useState, useEffect } from 'react';
 import { useHotspot, useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
 import { useDbRequest, imagesService } from '../../../../packages/database';
+import ImageOrPlaceholderComponent from '../../../../components/image/ImageOrPlaceholderComponent';
 import './adedVehiclesSearchItem.scss'
 
 const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAll }) => {
@@ -50,7 +51,7 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
             lines='full' 
             className={'element-with-pics'}
         >
-            <IonImg src="/assets/img/carPicPlaceholder.png"></IonImg>
+            <ImageOrPlaceholderComponent/>
                 <IonLabel>
                     <h2>{car.vehicle_vin}</h2>
                     <h3>{car.vehicle_make} {car.vehicle_model} {car.vehicle_trim}</h3>

@@ -1,13 +1,9 @@
 import { Network } from '@capacitor/network';
+import { atom } from 'jotai';
 
 export const network = {
-                // ------------ can't make it work -----------//
-    // eventListener:async(func)=>{
-    //     return Network.addListener('networkStatusChange', async status => ([
-    //         await network.getCurrentNetworkStatus(),
-    //         await network.getCurrentNetworkType()
-    //     ]))
-    // },
+    networkListener: atom(false),
+    listenerActivated:false,
 
     getCurrentNetworkStatus:async ()=>{
         return (await Network.getStatus()).connected;
@@ -15,6 +11,15 @@ export const network = {
 
     getCurrentNetworkType:async ()=>{
         return (await Network.getStatus()).connectionType;
+    },
+
+    addNetworkListener: async () => {
+        if(!network.listenerActivated){
+            Network.addListener('networkStatusChange', async () => {
+                network.networkStatus = (await network.getCurrentNetworkStatus());
+            });
+            network.listenerActivated = true;
+        }
     }
 }
 

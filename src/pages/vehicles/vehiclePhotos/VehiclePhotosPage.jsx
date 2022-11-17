@@ -46,7 +46,7 @@ const VehiclePhotos = () => {
         history.push("/vehicle-details");
     }
     return (
-        <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>` 
+        <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
             {!hidePageContent ? 
             (             
                 <>

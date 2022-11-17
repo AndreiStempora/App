@@ -2,6 +2,7 @@ import { useIonViewWillEnter, IonSpinner, IonItem,IonLabel,IonImg, IonIcon, ionV
 import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
 import { useEffect, useState} from 'react';
 import { FS } from '../../../../packages/filesystem';
+import ImageOrPlaceholderComponent from '../../../../components/image/ImageOrPlaceholderComponent';
 import './hotspotWithPic.scss';
 
 const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
@@ -45,7 +46,7 @@ const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
             {
                 imageLoading ?
                 <IonSpinner name="lines-sharp"></IonSpinner>:
-                <IonImg src={hotspotImage?hotspotImage:('/assets/img/carPicPlaceholder.png')} />
+                <ImageOrPlaceholderComponent img={hotspotImage}/>
             }
             <IonLabel>{currentHotspot?.hotspot_name}</IonLabel>
             <IonIcon class='forward-icon' icon={`/assets/svgs/next.svg`}></IonIcon>
