@@ -8,8 +8,8 @@ const vehiclesService = {
         return await vehiclesRepository.insertVehicle([dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim, vehicle_interior, vehicle_exterior, vehicle_hotspots]);
     },
 
-    addVehicle: async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior ]) => {
-        return await vehiclesRepository.addVehicle([dealership_id, vehicle_vin,vehicle_hotspots, vehicle_interior ]);
+    addVehicle: async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]) => {
+        return await vehiclesRepository.addVehicle([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]);
     },
 
     //get all vehicles
@@ -23,10 +23,10 @@ const vehiclesService = {
     },
 
     //get all vehicles by vin
-    getAllVehiclesByVin: async ([dealership_id,vehicle_vin]) => {
-        return await vehiclesRepository.getAllVehiclesByVin([dealership_id,vehicle_vin]);
+    getAllVehiclesByVin: async ([dealership_id, vehicle_vin]) => {
+        return await vehiclesRepository.getAllVehiclesByVin([dealership_id, vehicle_vin]);
     },
-    
+
     //get all vehicles that don't have empty fields
     getAllVehiclesWithoutEmptyFields: async () => {
         return await vehiclesRepository.getAllVehiclesWithoutEmptyFields();
@@ -35,8 +35,9 @@ const vehiclesService = {
     //delete a vehicle by id
     deleteVehicleById: async ([vehicle_id]) => {
         const images = await imagesService.getAllImagesByVehicleId([vehicle_id]);
+        console.log("deleteVehicleById: images: ", images);
         images.map(async (image) => {
-            await imagesService.deleteImage([image.image_id]);
+            await imagesService.deleteImageById([image.image_id]);
         });
         return await vehiclesRepository.deleteVehicleById([vehicle_id]);
     },
@@ -59,7 +60,7 @@ const vehiclesService = {
         return await vehiclesRepository.getVehicleByStock([vehicle_stock]);
     },
 
-    updateVehicleById: async ([vehicle_id, vehicle_hotspots, vehicle_interior]) =>{
+    updateVehicleById: async ([vehicle_id, vehicle_hotspots, vehicle_interior]) => {
         return await vehiclesRepository.updateVehicleById([vehicle_id, vehicle_hotspots, vehicle_interior]);
     },
     getVehiclesWithPics: async ([dealership_id]) => {

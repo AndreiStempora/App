@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react';
 import { useRSelection } from '../../../packages/database/features/utils/utilityHooks';
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
-import './vehiclePage.scss';
 import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
+import './vehiclePage.scss';
 
 
 const VehiclePage = () => {
@@ -18,40 +18,33 @@ const VehiclePage = () => {
     const [userInfo] = useAtom(user.userDetails);
     const [showCheckbox, setShowCheckbox] = useState(false);
     const [checkedElements, setCheckedElements] = useState({});
-    const [checkAll,setCheckAll] = useState(false);
+    const [checkAll, setCheckAll] = useState(false);
 
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
     }
 
-    const changeCheckedElements = (element)=>{
-        setCheckedElements({...checkedElements, ...element});
+    const changeCheckedElements = (element) => {
+        setCheckedElements({ ...checkedElements, ...element });
     }
-    
-    // useIonViewWillEnter(() => {
-    //     (async () => {
-    //         const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-    //         setCarsWithPics(cars);
-    //     })();
-    // });
 
     const deleteVehicleHandler = async () => {
-        console.log("delete: " , checkedElements);
-        const vehiclesId = sortVehicles(checkedElements);
-        const allVehiclePhotos = await getAllPicturesForEachVehicle(vehiclesId);
-        allVehiclePhotos?.forEach(async (vehiclePhotos) => {
-
+        console.log("delete: ", checkedElements);
+        const collectedVehicleIds = sortVehicles(checkedElements);
+        console.log("collectedVehicles: ", collectedVehicleIds);
+        collectedVehicleIds?.forEach(async (vehicle_id) => {
+            await vehiclesService.deleteVehicleById([vehicle_id]);
         });
     }
 
     const uploadVehicleHandler = async () => {
-        console.log("upload: " , checkedElements);
+        console.log("upload: ", checkedElements);
     }
 
     const selectAllHandler = () => {
         setCheckAll(!checkAll);
         const newCheckedElements = {};
-        carsWithPics.forEach((car)=>{
+        carsWithPics.forEach((car) => {
             newCheckedElements[car.vehicle_id] = !checkAll;
         });
         setCheckedElements(newCheckedElements);
@@ -59,8 +52,8 @@ const VehiclePage = () => {
 
     const sortVehicles = (elements) => {
         const selectedElements = [];
-        Object.keys(elements).forEach((key)=>{
-            if(elements[key]){
+        Object.keys(elements).forEach((key) => {
+            if (elements[key]) {
                 selectedElements.push(parseInt(key));
             }
         });
@@ -101,19 +94,19 @@ const VehiclePage = () => {
                 </IonButtons>
             </CustomHeader>
             <CustomContent colSizesArr={[[12]]}>
-                    <IonList>
-                        {carsWithPics?.map((car, index) => 
-                            <AdedVehiclesSearchItem 
-                                key={index} 
-                                car={car} 
-                                showCheckbox={showCheckbox} 
-                                checkAll={checkAll}
-                                setCheckedElements={changeCheckedElements}
-                            ></AdedVehiclesSearchItem>)}
-                    </IonList>
-                
+                <IonList>
+                    {carsWithPics?.map((car, index) =>
+                        <AdedVehiclesSearchItem
+                            key={index}
+                            car={car}
+                            showCheckbox={showCheckbox}
+                            checkAll={checkAll}
+                            setCheckedElements={changeCheckedElements}
+                        ></AdedVehiclesSearchItem>)}
+                </IonList>
+
             </CustomContent>
-            {!showCheckbox ? <FooterAddVehicle></FooterAddVehicle> : 
+            {!showCheckbox ? <FooterAddVehicle></FooterAddVehicle> :
                 <FooterDeleteUpload
                     del={deleteVehicleHandler}
                     retake={null}
@@ -135,7 +128,7 @@ const VehiclePage = () => {
                 //         </IonButton>
                 //     </IonButtons>
                 // </CustomFooter>
-                }
+            }
         </Page>
     )
 }

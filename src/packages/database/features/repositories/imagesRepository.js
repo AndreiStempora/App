@@ -61,6 +61,37 @@ const imagesRepository = {
         });
     },
 
+    //get image by id
+    getImageById: async ([image_id]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM images WHERE image_id = ?`,
+                        [image_id],
+                        (tx, results) => {
+                            let arr = [];
+                            for (let i = 0; i < results.rows.length; i++) {
+                                arr.push(results.rows.item(i));
+                            }
+                            resolve(arr);
+                        }
+                    );
+                },
+                //transaction error
+                (error) => {
+                    // console.log(error, 'getImageById error');
+                    logService.insertLog([new Date().getTime(), [image_id], error]);
+                    reject(error);
+                },
+                //transaction success
+                () => {
+                    logService.insertLog([new Date().getTime(), [image_id], "Image retrieved successfully"]);
+                }
+            );
+        });
+    },
+
     //get all images by vehicle id
     getAllImagesByVehicleId: async ([vehicle_id]) => {
         return new Promise(async (resolve, reject) => {

@@ -128,7 +128,7 @@ const useDeleteUpload = () => {
             image: await getBlobData(),
             vin: carVin.vehicle_vin
         };
-        // console.log(objForUpload, 'upload Object')
+
         const formData = new FormData();
         for(let item in objForUpload){
             if(item === 'image'){
@@ -143,7 +143,6 @@ const useDeleteUpload = () => {
     const uploadImage = async (image) => {
         setImage(image);
         const data = await createFormData();
-        // console.log(data, 'data');
 
         const request  = new XMLHttpRequest();
         request.open('POST', uploadURL);
@@ -152,12 +151,18 @@ const useDeleteUpload = () => {
             const percent = e.loaded / e.total;
             console.log(percent);
         });
-        request.addEventListener('load', (e) => {
+        request.addEventListener('load',async (e) => {
             console.log(request.status, 'status');
             console.log(request.response, 'response');
+            if(request.status === 200){
+                await dbRequest.requestFunction(async () => {await imagesService.deleteImageById([image.image_id])});
+            }
         });
 
-        request.send(data);
+        let x = request.send(data);
+
+        console.log(x,'x');
+
         // const response = await fetch(uploadURL, {
         //     method: 'POST',
 
@@ -177,10 +182,10 @@ const useDeleteUpload = () => {
         // console.log('upload image', blob);
     }
     // const deleteCar = async (vehicle_id) => {
-        return {
-            deleteImage:deleteImage,
-            uploadImage:uploadImage
-        }
+    return {
+        deleteImage:deleteImage,
+        uploadImage:uploadImage
+    }
 }
 
 export { useRSelection, useHotspot, useDeleteUpload };

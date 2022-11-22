@@ -5,12 +5,17 @@
     margin:15px 15px 15px 0;
     display: block;
 
-}
-
-ion-img{
-    transform:rotate(-90deg) ;
-    width:60px;
-    height:80px;
-    margin:0 15px 15px 15px!important;
-    object-fit: cover;
+    ion-img{
+        transform:rotate(-90deg) ;
+        width:60px;
+        height:80px;
+        margin:0 15px 15px 15px!important;
+        object-fit: cover;
+        &.placeholder{
+            transform:rotate(0deg) ;
+            height:60px;
+            width:80px;
+            margin:15 15px 15px 0px!important;
+        }
+    }
 }

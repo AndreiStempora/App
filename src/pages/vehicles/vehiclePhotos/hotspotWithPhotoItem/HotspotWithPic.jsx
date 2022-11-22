@@ -17,15 +17,6 @@ const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
         await openCamera();
     }
 
-    // useIonViewWillEnter(() => {
-    //     (async () => {
-    //         if(hotspotWithPhoto[1]){
-    //             const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
-    //             setHotspotImage(image);
-    //         }
-    //     })();
-    // });
-
     useEffect(() => {  
         (async () => {
             try{
@@ -51,7 +42,6 @@ const HotspotItemWithPic = ({hotspotWithPhoto, openCamera}) => {
             <IonLabel>{currentHotspot?.hotspot_name}</IonLabel>
             <IonIcon class='forward-icon' icon={`/assets/svgs/next.svg`}></IonIcon>
         </IonItem>
-    
     )
 }
 
