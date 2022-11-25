@@ -1,8 +1,8 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 const FS = {
-    createDirectory : async(path) => {
-        if(await FS.readDirectory(path) === null){
+    createDirectory: async (path) => {
+        if (await FS.readDirectory(path) === null) {
             await Filesystem.mkdir({
                 path: path,
                 directory: Directory.Data,
@@ -10,8 +10,8 @@ const FS = {
             });
         }
     },
-    readDirectory : async(path) => {
-        try{
+    readDirectory: async (path) => {
+        try {
             const result = await Filesystem.readdir({
                 path: path,
                 directory: Directory.Data
@@ -23,55 +23,55 @@ const FS = {
             return null;
         }
     },
-    appendFile: async(path, data) => {
+    appendFile: async (path, data) => {
         await Filesystem.appendFile({
             path: path,
             data: data,
             directory: Directory.Data,
         });
     },
-    renameFile: async(path, newPath) => {
+    renameFile: async (path, newPath) => {
         await Filesystem.rename({
             path: path,
             newPath: newPath,
             directory: Directory.Data,
         });
     },
-    deleteFile: async(path) => {
-        try{
+    deleteFile: async (path) => {
+        try {
             await Filesystem.deleteFile({
                 path: path,
             })
             return true;
-        }catch(e){
-            console.log(e);
+        } catch (e) {
+            console.log(e, "deleteFile" + path);
             return false;
         }
-            
+
     },
-    copyFile: async(path, newPath) => {
+    copyFile: async (path, newPath) => {
         return await Filesystem.copy({
             from: path,
             to: newPath,
         });
     },
-    readFile: async(path) => {
+    readFile: async (path) => {
         const result = await Filesystem.readFile({
             path: path,
             // directory: Directory.Data,
         });
         return result;
     },
-    deleteDirectory: async(path) => {
+    deleteDirectory: async (path) => {
         await Filesystem.rmdir({
             path: path,
             directory: Directory.Data,
             recursive: true
         });
     },
-    showPicture: async(path) => {
-        try{
-            if(path !== null){
+    showPicture: async (path) => {
+        try {
+            if (path !== null) {
                 const contents = await Filesystem.readFile({ path: path });
                 const base64PictureData = "data:image/jpg;base64," + contents.data;
                 return base64PictureData;

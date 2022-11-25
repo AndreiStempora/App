@@ -31,9 +31,10 @@ const imagesService = {
     deleteImageById: async ([image_id]) => {
         await imagesRepository.getImageById([image_id]).then(async (image) => {
             console.log("deleteImageById: image: ", image);
-            await FS.deleteFile(image[0].image_data);
-        }).then(async () => {
-            await imagesRepository.deleteImageById([image_id]);
+            let wasFileDeleted = await FS.deleteFile(image[0].image_data);
+            if (wasFileDeleted) {
+                await imagesRepository.deleteImageById([image_id]);
+            }
         });
     },
     //delete all images by vehicle id

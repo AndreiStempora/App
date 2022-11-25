@@ -4,7 +4,8 @@ import { useAtom } from 'jotai';
 import { user } from '../../../services/user/user';
 import { imagesService, useDbRequest, vehiclesService } from '../../../packages/database';
 import { useEffect, useState } from 'react';
-import { useRSelection } from '../../../packages/database/features/utils/utilityHooks';
+import { useDeleteUpload, useRSelection } from '../../../packages/database/features/utils/utilityHooks';
+import { FS } from '../../../packages/filesystem';
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
@@ -19,6 +20,7 @@ const VehiclePage = () => {
     const [showCheckbox, setShowCheckbox] = useState(false);
     const [checkedElements, setCheckedElements] = useState({});
     const [checkAll, setCheckAll] = useState(false);
+    const delUpload = useDeleteUpload();
 
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
@@ -31,14 +33,25 @@ const VehiclePage = () => {
     const deleteVehicleHandler = async () => {
         console.log("delete: ", checkedElements);
         const collectedVehicleIds = sortVehicles(checkedElements);
-        console.log("collectedVehicles: ", collectedVehicleIds);
+        console.log("collectedVehicles: red", collectedVehicleIds);
         collectedVehicleIds?.forEach(async (vehicle_id) => {
-            await vehiclesService.deleteVehicleById([vehicle_id]);
+            console.log("vehicle_id: ", vehicle_id);
+            let pictures = await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]))
+            console.log("pictures: ", pictures);
+            pictures.forEach(async (picture) => {
+                console.log("picture: uuuu", picture);
+                await delUpload.uploadImage(picture);
+            });
         });
     }
 
     const uploadVehicleHandler = async () => {
         console.log("upload: ", checkedElements);
+        const collectedVehicleIds = sortVehicles(checkedElements);
+        collectedVehicleIds?.forEach(async (vehicle_id) => {
+            console.log("vehicle_id: ", vehicle_id);
+            await vehiclesService.deleteVehicleById([vehicle_id]);
+        });
     }
 
     const selectAllHandler = () => {
@@ -71,8 +84,14 @@ const VehiclePage = () => {
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCarsWithPics(cars);
+            let x = await FS.readDirectory('/images');
+            // await FS.deleteDirectory('/images');
+            console.log(x, "x");
+            console.log('x')
         })();
-    }, [carsWithPics]);
+    }, []);
+
+    // useE
 
     return (
         <Page pageClass={'vehiclesSearch'}>

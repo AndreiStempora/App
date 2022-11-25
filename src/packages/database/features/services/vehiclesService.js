@@ -1,5 +1,6 @@
 import { vehiclesRepository } from "../repositories/vehiclesRepository";
 import { imagesService } from "./imagesService";
+import { FS } from "../../../filesystem";
 
 const vehiclesService = {
 
@@ -35,11 +36,14 @@ const vehiclesService = {
     //delete a vehicle by id
     deleteVehicleById: async ([vehicle_id]) => {
         const images = await imagesService.getAllImagesByVehicleId([vehicle_id]);
-        console.log("deleteVehicleById: images: ", images);
-        images.map(async (image) => {
+        return await Promise.all(images.map(async (image) => {
+            console.log(image)
+            await FS.deleteFile(image.image_data);
             await imagesService.deleteImageById([image.image_id]);
+            return true;
+        })).then(async () => {
+            await vehiclesRepository.deleteVehicleById([vehicle_id])
         });
-        return await vehiclesRepository.deleteVehicleById([vehicle_id]);
     },
 
     getAllVehiclesByDealershipId: async ([dealership_id]) => {

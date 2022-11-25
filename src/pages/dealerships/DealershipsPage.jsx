@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { network } from '../../packages/network';
 import DealershipSelector from './dealershipSelector/DealershipSelector';
+import { FS } from '../../packages/filesystem';
 import "./dealershipsPage.scss";
 
 const DealershipsPage = () => {
@@ -43,6 +44,7 @@ const DealershipsPage = () => {
 				const vehicleArrays = await requestTableContentVehicles(response?.dealerships);
 				setRequestInfo({ dealerships: response?.dealerships, vehicles: vehicleArrays });
 			}
+			await FS.createDirectory('images')
 		})()
 	}, []);
 
