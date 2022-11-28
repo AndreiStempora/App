@@ -6,6 +6,7 @@
     "@awesome-cordova-plugins/core": "^5.43.0",
     "@awesome-cordova-plugins/screen-orientation": "^5.43.0",
     "@awesome-cordova-plugins/sqlite": "^5.43.0",
+    "@capacitor-community/barcode-scanner": "^3.0.1",
     "@capacitor-community/camera-preview": "^3.1.0",
     "@capacitor/android": "^4.1.0",
     "@capacitor/app": "^4.0.1",

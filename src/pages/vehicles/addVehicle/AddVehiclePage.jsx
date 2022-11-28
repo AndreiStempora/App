@@ -6,6 +6,8 @@ import { useDbRequest, vehiclesService, hotspotsService } from "../../../package
 import VehicleSearch from "../../../components/vehicleComponents/vehicleSearch/VehicleSearch";
 import "./addVehicle.scss"
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
+import OpenedScanner from "./OpenedScanner";
+import useBarcodeScanner from "../../../packages/barcodeScanner/features/barcodeScanner";
 
 const AddVehicle = () => {
     const history = useHistory();
@@ -13,6 +15,9 @@ const AddVehicle = () => {
     const [newCar, setNewCar] = useState('');
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [disabledSave, setDisabledSave] = useState(true);
+    const [hidePageContent, setHidePageContent] = useState(false);
+    const scanner = useBarcodeScanner();
+    const [scanResult, setScanResult] = useState('');
 
     const backToSelectVehiclesHandler = () => {
         history.push("/vehicle-search");
@@ -35,8 +40,24 @@ const AddVehicle = () => {
         } else {
             await extractIdAndUpdate(vinCar);
         }
-
     }
+
+    const openScannerHandler = async () => {
+        setHidePageContent(true);
+        let result = await scanner.startScan();
+        setNewCar(result);
+        setScanResult(result);
+    }
+
+    const closeScannerHandler = async () => {
+        setHidePageContent(false);
+        await scanner.stopScan();
+    }
+
+    useEffect(() => {
+        console.log('scanResult', scanResult);
+        setHidePageContent(false);
+    }, [scanResult]);
 
     const saveVehicleHandler = async (e) => {
         await searchInDbForVehicle(newCar);
@@ -48,36 +69,49 @@ const AddVehicle = () => {
     }, [disabledSave]);
 
     return (
-        <Page pageClass={'addVehicle'}>
-            <CustomHeader>
-                <IonButtons slot="start">
-                    <IonButton
-                        className='ion-text-capitalize'
-                        onClick={backToSelectVehiclesHandler}
-                    >cancel</IonButton>
-                </IonButtons>
-                <IonTitle className='ion-text-center'>Add vehicle</IonTitle>
-                <IonButtons slot="end">
-                    <IonButton
-                        className='ion-text-capitalize'
-                        disabled={disabledSave}
-                        onClick={saveVehicleHandler}
-                    >Save</IonButton>
-                </IonButtons>
-            </CustomHeader>
+        <Page pageClass={`addVehicle ${hidePageContent ? 'camera-open' : ''}`}>
+            {!hidePageContent ?
+                (
+                    <>
+                        <CustomHeader>
+                            <IonButtons slot="start">
+                                <IonButton
+                                    className='ion-text-capitalize'
+                                    onClick={backToSelectVehiclesHandler}
+                                >cancel</IonButton>
+                            </IonButtons>
+                            <IonTitle className='ion-text-center'>Add vehicle</IonTitle>
+                            <IonButtons slot="end">
+                                <IonButton
+                                    className='ion-text-capitalize'
+                                    disabled={disabledSave}
+                                    onClick={saveVehicleHandler}
+                                >Save</IonButton>
+                            </IonButtons>
+                        </CustomHeader>
 
-            <CustomContent colSizesArr={[[12],[12]]} >
-                <>
-                    <IonButtons className="ion-justify-content-between">
-                        <IonLabel>VIN / Stock number</IonLabel>
-                        <IonButton className="ion-text-right"><IonIcon icon={'./assets/svgs/scanner.svg'}></IonIcon></IonButton>
-                    </IonButtons>
-                    <VehicleSearch newCar={setNewCar} disableSave={setDisabledSave}></VehicleSearch>
-                </>
-                    <IonButtons className="ion-justify-content-center">
-                        <IonButton onClick={() => { history.push('/vehicle-details') }}>go to vehicle details</IonButton>
-                    </IonButtons>
-            </CustomContent>
+                        <CustomContent colSizesArr={[[12], [12]]} >
+                            <>
+                                <IonButtons className="ion-justify-content-between">
+                                    <IonLabel>VIN / Stock number</IonLabel>
+                                    <IonButton
+                                        onClick={openScannerHandler}
+                                        className="ion-text-right"
+
+
+                                    >
+                                        <IonIcon icon={'./assets/svgs/scanner.svg'}></IonIcon>
+                                    </IonButton>
+                                </IonButtons>
+                                <VehicleSearch newCar={setNewCar} disableSave={setDisabledSave} scanResult={scanResult}></VehicleSearch>
+                            </>
+                            <IonButtons className="ion-justify-content-center">
+                                <IonButton onClick={() => { history.push('/vehicle-details') }}>go to vehicle details</IonButton>
+                            </IonButtons>
+                        </CustomContent>
+                    </>
+                ) : (
+                    <OpenedScanner close={closeScannerHandler}></OpenedScanner>)}
         </Page>
     )
 }

@@ -8,7 +8,7 @@ import VehicleSearchItem from "./VehicleSearchItem";
 import './vehicleSearch.scss';
 
 
-const VehicleSearch = ({disableSave, newCar}) => {
+const VehicleSearch = ({ disableSave, newCar }) => {
     const dbRequest = useDbRequest();
     const [currentDealership] = useAtom(user.userCurrentSelections);
     const [searchText, setSearchText] = useState('');
@@ -30,13 +30,13 @@ const VehicleSearch = ({disableSave, newCar}) => {
 
     const filterFunc = async () => {
         //filter all vehicles by search text where the search text matches the vin or the stock of the vehicle, do it asynchronously
-        const filtered = await Promise.all(allVehicles?.filter(vehicle =>{
-                return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase()) || (vehicle.vehicle_stock)?.startsWith(searchText.toUpperCase());
-            }
+        const filtered = await Promise.all(allVehicles?.filter(vehicle => {
+            return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase()) || (vehicle.vehicle_stock)?.startsWith(searchText.toUpperCase());
+        }
         ));
-        if(filtered.length < 2 && searchText.length > 0){
+        if (filtered.length < 2 && searchText.length > 0) {
             disableSave(false);
-        } 
+        }
         return filtered;
     }
 
@@ -59,10 +59,10 @@ const VehicleSearch = ({disableSave, newCar}) => {
         const attribute = target.querySelector('.matched').getAttribute('data-highlight');
         setSearchText(attribute);
     }
-    
+
     useEffect(() => {
         disableSave(true);
-        
+
         (async () => {
             if (searchText.length >= 3) {
                 const filteredList = await filterFunc();
@@ -75,7 +75,7 @@ const VehicleSearch = ({disableSave, newCar}) => {
 
     }, [searchText]);
 
-    
+
     return (
         <>
             <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
@@ -83,7 +83,7 @@ const VehicleSearch = ({disableSave, newCar}) => {
             <IonList >
                 {searchText.length < 3 && <div className="ion-text-center">Search by Vin or Stock number, write at least 3 characters to see the filtered vehicles</div>}
                 {filteredVehicles && filteredVehicles?.map((vehicle, index) => (
-                    
+
                     <VehicleSearchItem key={index} vehicle={vehicle} match={transformStringMatch} click={searcFieldCompletionHandler}></VehicleSearchItem>
                 ))}
                 {(!spinnerOn && filteredVehicles?.length == 0) &&

@@ -1,0 +1,8 @@
+.addVehicle {
+    &.camera-open {
+        background-image: none;
+        > * {
+            opacity: 1;
+        }
+    }
+}
