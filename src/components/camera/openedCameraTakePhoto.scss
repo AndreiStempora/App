@@ -1,3 +1,25 @@
-.opaque-bg{
-    background:rgba(0,0,0,0.5);
+.opaque-bg {
+    background: rgba(0, 0, 0, 0.5);
 }
+.camera-open {
+    transform: rotate(-90deg) translate(63%, 28%);
+    width: 100vh;
+    height: 100vw;
+}
+// .camera-header {
+//     left: 0;
+//     transform-origin: 0 100%;
+//     transform: rotate(90deg);
+//     // position: absolute;
+// }
+
+// .camera-footer {
+//     right: 0;
+//     top: 0;
+//     transform-origin: bottom center;
+//     position: absolute;
+
+//     max-height: 100vw;
+//     width: 100vh;
+//     transform: rotate(-90deg);
+// }

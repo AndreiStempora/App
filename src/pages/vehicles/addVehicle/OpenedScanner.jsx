@@ -1,4 +1,4 @@
-import CustomHeader from "../../../components/pageMainComponents/CustomHeader";
+import CustomHeader from "../../../components/page/pageMainComponents/CustomHeader";
 import "./openedScanner.scss";
 import { IonButton, IonButtons, IonTitle } from "@ionic/react";
 

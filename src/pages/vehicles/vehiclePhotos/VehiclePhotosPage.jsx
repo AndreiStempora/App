@@ -28,13 +28,13 @@ const VehiclePhotos = () => {
 
     useEffect(() => {
         (async () => {
-            if(getCurrentSelection().cameraOn){
+            if (getCurrentSelection().cameraOn) {
                 setHidePageContent(true);
                 await camera.startCamera();
             }
         })();
 
-        if(hidePageContent === false){
+        if (hidePageContent === false) {
             (async () => {
                 const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
                 setHotspotsWithPhotos(currentHotspotsWithPhotos);
@@ -47,40 +47,40 @@ const VehiclePhotos = () => {
     }
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
-            {!hidePageContent ? 
-            (             
-                <>
-                    <CustomHeader>
-                        <IonButtons slot="start">
-                            <CustomBackButton href={"/vehicle-details"} />
-                        </IonButtons>
-                        <IonTitle className='ion-text-center'>Vehicle Photosred</IonTitle>
-                    </CustomHeader>
-                    <CustomContent>
-                        <IonList>
-                            {hotspotsWithPhoto?.map((hotspotWithPhoto,index) => (
-                                <HotspotWithPic 
-                                    key={index} 
-                                    hotspotWithPhoto={hotspotWithPhoto} 
-                                    openCamera={openCameraHandler}
-                                >
-                                </HotspotWithPic>
-                            ))}
-                        </IonList>
-                        <div className="centered-camera-button">
-                            <IonButtons >
-                                <IonButton onClick={openCameraHandler}><IonIcon icon='/assets/svgs/camera.svg'></IonIcon></IonButton>
+            {!hidePageContent ?
+                (
+                    <>
+                        <CustomHeader>
+                            <IonButtons slot="start">
+                                <CustomBackButton href={"/vehicle-details"} />
                             </IonButtons>
-                            <IonLabel>Start taking photos of your vehicle</IonLabel>
-                            
-                        </div>
-                        
-                    </CustomContent>
-                    <FooterAddVehicle photoBtn={true} />
-                </>
-            ) : (
-            <OpenedCameraTakePhoto setHidePageContent={setHidePageContent} camera={camera}/>
-            )}
+                            <IonTitle className='ion-text-center'>Vehicle Photos</IonTitle>
+                        </CustomHeader>
+                        <CustomContent>
+                            <IonList>
+                                {hotspotsWithPhoto?.map((hotspotWithPhoto, index) => (
+                                    <HotspotWithPic
+                                        key={index}
+                                        hotspotWithPhoto={hotspotWithPhoto}
+                                        openCamera={openCameraHandler}
+                                    >
+                                    </HotspotWithPic>
+                                ))}
+                            </IonList>
+                            <div className="centered-camera-button">
+                                <IonButtons >
+                                    <IonButton onClick={openCameraHandler}><IonIcon icon='/assets/svgs/camera.svg'></IonIcon></IonButton>
+                                </IonButtons>
+                                <IonLabel>Start taking photos of your vehicle</IonLabel>
+
+                            </div>
+
+                        </CustomContent>
+                        <FooterAddVehicle photoBtn={true} />
+                    </>
+                ) : (
+                    <OpenedCameraTakePhoto setHidePageContent={setHidePageContent} camera={camera} />
+                )}
         </Page>
     )
 }

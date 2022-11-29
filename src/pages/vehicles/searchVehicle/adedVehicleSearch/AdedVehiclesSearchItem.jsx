@@ -1,4 +1,4 @@
-import { IonImg, IonItem, IonLabel, IonIcon,IonCheckbox } from '@ionic/react'
+import { IonImg, IonItem, IonLabel, IonIcon, IonCheckbox } from '@ionic/react'
 import { useHistory } from 'react-router';
 import { useState, useEffect } from 'react';
 import { useHotspot, useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
@@ -14,7 +14,7 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
     const history = useHistory();
 
     const itemClickHandler = async () => {
-        editSelection({vehicle_id:car.vehicle_id});
+        editSelection({ vehicle_id: car.vehicle_id });
         history.push("/vehicle-details");
     }
 
@@ -23,11 +23,11 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
     }
 
     useEffect(() => {
-        setCheckedElements({[car.vehicle_id]:markChecked});
+        setCheckedElements({ [car.vehicle_id]: markChecked });
     }, [markChecked]);
 
     useEffect(() => {
-        setMarkChecked(checkAll); 
+        setMarkChecked(checkAll);
     }, [checkAll]);
 
     const searchForPhoto = async (hotspots) => {
@@ -35,7 +35,7 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
     }
 
     useEffect(() => {
-        setCheckedElements({[car.vehicle_id]:markChecked});
+        setCheckedElements({ [car.vehicle_id]: markChecked });
         // console.log(car, 'car');
         // (async () => {
         //     const hots = await hotspotHook.getHotspotsByGivenType(2);
@@ -45,25 +45,24 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
     }, []);
 
     return (
-        <IonItem 
-            button={true} 
-            onClick={showCheckbox?checkboxClickHandler:itemClickHandler} 
-            lines='full' 
+        <IonItem
+            onClick={showCheckbox ? checkboxClickHandler : itemClickHandler}
+            lines='full'
             className={'element-with-pics'}
         >
-            <ImageOrPlaceholderComponent/>
-                <IonLabel>
-                    <h2>{car.vehicle_vin}</h2>
-                    <h3>{car.vehicle_make} {car.vehicle_model} {car.vehicle_trim}</h3>
-                </IonLabel>
-                {showCheckbox ? 
-                    <IonCheckbox
-                        slot="end"
-                        checked={markChecked}
-                        onChange={checkboxClickHandler}
-                    /> : 
-                    <IonIcon icon={'/assets/svgs/next.svg'}></IonIcon>
-                }
+            <ImageOrPlaceholderComponent />
+            <IonLabel>
+                <h2>{car.vehicle_vin}</h2>
+                <h3>{car.vehicle_make} {car.vehicle_model} {car.vehicle_trim}</h3>
+            </IonLabel>
+            {showCheckbox ?
+                <IonCheckbox
+                    slot="end"
+                    checked={markChecked}
+                    onChange={checkboxClickHandler}
+                /> :
+                <IonIcon icon={'/assets/svgs/next.svg'}></IonIcon>
+            }
         </IonItem>
     )
 }

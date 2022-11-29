@@ -1,9 +1,9 @@
 import { IonSearchbar, IonLabel, IonRadio, IonRadioGroup, IonVirtualScroll, IonGrid, IonContent, IonCol, IonRow, IonSpinner, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react";
 import { useState, useEffect } from "react";
-import { vehiclesService } from "../../../packages/database/features/services/vehiclesService";
+import { vehiclesService } from "../../../../packages/database/features/services/vehiclesService";
 import { useAtom } from 'jotai';
-import { user } from '../../../services/user/user';
-import useDbRequest from "../../../packages/database/features/utils/databaseOperationsHook";
+import { user } from '../../../../services/user/user';
+import useDbRequest from "../../../../packages/database/features/utils/databaseOperationsHook";
 import VehicleSearchItem from "./VehicleSearchItem";
 import './vehicleSearch.scss';
 

@@ -1,0 +1,55 @@
+.search-result-element{
+    display:flex;
+    flex-direction:column;
+    align-items: flex-start;
+    // justify-content: flex-start;
+    &::part(native){
+        flex-direction:column;
+        // .item-inner{
+        //     .input-wrapper{
+        //     }
+        // }
+    }
+    .element-name{
+        // color:blue;
+        // display: block;
+    }
+    .element-search{
+        .element-vin,.element-stock{
+            .name{
+                font-size:15px;
+            }
+            .value{
+                padding-left:3px;
+                font-size:10px;
+                color:rgba(255,255,255,0.7);
+                .matched{
+                    font-size:10px;
+                    color:#3880ff;
+                }
+            }
+
+        }
+        .element-stock{
+            margin-left:10px;
+        }
+    }
+}
+ion-searchbar{
+    
+    &.sc-ion-searchbar-md-h{
+        padding-inline-start: 0;
+        padding-inline-end: 0;
+        .sc-ion-searchbar-md{
+            &.searchbar-search-icon{
+                left:0;
+            }
+        }
+        input{
+            &.searchbar-input{
+                padding-inline-start: 40px;
+
+            }
+        }
+    }
+}

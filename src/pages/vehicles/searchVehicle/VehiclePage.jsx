@@ -85,9 +85,6 @@ const VehiclePage = () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCarsWithPics(cars);
             let x = await FS.readDirectory('/images');
-            // await FS.deleteDirectory('/images');
-            console.log(x, "x");
-            console.log('x')
         })();
     }, []);
 
@@ -121,7 +118,9 @@ const VehiclePage = () => {
                             showCheckbox={showCheckbox}
                             checkAll={checkAll}
                             setCheckedElements={changeCheckedElements}
-                        ></AdedVehiclesSearchItem>)}
+                        ></AdedVehiclesSearchItem>
+
+                    )}
                 </IonList>
 
             </CustomContent>

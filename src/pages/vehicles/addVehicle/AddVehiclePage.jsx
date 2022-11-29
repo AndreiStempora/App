@@ -3,7 +3,7 @@ import { IonButtons, IonTitle, IonButton, IonLabel, IonIcon, IonSearchbar, IonTo
 import { useHistory } from "react-router";
 import { useState, useEffect } from "react";
 import { useDbRequest, vehiclesService, hotspotsService } from "../../../packages/database";
-import VehicleSearch from "../../../components/vehicleComponents/vehicleSearch/VehicleSearch";
+import VehicleSearch from "../searchVehicle/vehicleSearch/VehicleSearch";
 import "./addVehicle.scss"
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import OpenedScanner from "./OpenedScanner";
