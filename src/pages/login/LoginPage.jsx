@@ -2,7 +2,7 @@ import { CustomContent, Page } from '../../components/page/Page';
 import { URL, usePageRequest, usePageSetters } from "../../services"
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { IonIcon} from '@ionic/react';
+import { IonIcon } from '@ionic/react';
 import { CustomForm, formAtoms } from './form';
 import "./loginPage.scss";
 
@@ -45,14 +45,14 @@ const LoginPage = () => {
 
         requestSetters.setRequestBody();                   //add token to body 
         requestSetters.setUrl(summary);                    //set new URL
-        response = await requestSetters.fetch();           //make request
+        const response2 = await requestSetters.fetch();           //make request
 
-        if (response?.status === "ok") {
+        if (response2?.status === "ok") {
             requestSetters.isLoggedIn(true);
             requestSetters.setUserDetails(response.profile);
             requestSetters.push('/dealerships')
         } else {
-            if (response?.module === "users-addon-2fa") {
+            if (response2?.module === "users-addon-2fa") {
                 requestSetters.push("/2fa");
             }
         }
@@ -62,15 +62,15 @@ const LoginPage = () => {
         <Page pageClass={'loginPage'}>
             <CustomContent
                 gridClassStr={"content-in-center vertical-centering"}
-                colSizesArr={[[12,"ion-text-center"], [12,"ion-text-center"]]}
+                colSizesArr={[[12, "ion-text-center"], [12, "ion-text-center"]]}
             >
                 <IonIcon
                     className="logo"
                     icon="assets/svgs/logo.svg"
                 ></IonIcon>
-                <CustomForm 
-                    submitForm={submitLogin} 
-                    autofocus={true} 
+                <CustomForm
+                    submitForm={submitLogin}
+                    autofocus={true}
                 />
             </CustomContent>
         </Page>
