@@ -36,12 +36,6 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
 
     useEffect(() => {
         setCheckedElements({ [car.vehicle_id]: markChecked });
-        // console.log(car, 'car');
-        // (async () => {
-        //     const hots = await hotspotHook.getHotspotsByGivenType(2);
-        //     console.log(hots, 'hots');
-        //     searchForPhoto(hots);
-        // })();
     }, []);
 
     return (

@@ -1,4 +1,4 @@
-import { useIonViewWillEnter, IonList, IonTitle, IonButtons, IonButton, IonItem, IonIcon, IonLabel, IonCheckbox } from '@ionic/react';
+import { IonList, IonTitle, IonButtons, IonButton, IonItem, IonIcon, IonLabel, IonCheckbox } from '@ionic/react';
 import { Page, CustomHeader, CustomContent, CustomFooter } from '../../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../../services/user/user';
@@ -84,7 +84,7 @@ const VehiclePage = () => {
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCarsWithPics(cars);
-            let x = await FS.readDirectory('/images');
+            // let x = await FS.readDirectory('/images');
         })();
     }, []);
 

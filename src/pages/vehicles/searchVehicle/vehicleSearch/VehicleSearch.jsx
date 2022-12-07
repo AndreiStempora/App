@@ -8,7 +8,7 @@ import VehicleSearchItem from "./VehicleSearchItem";
 import './vehicleSearch.scss';
 
 
-const VehicleSearch = ({ disableSave, newCar }) => {
+const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const dbRequest = useDbRequest();
     const [currentDealership] = useAtom(user.userCurrentSelections);
     const [searchText, setSearchText] = useState('');
@@ -21,6 +21,10 @@ const VehicleSearch = ({ disableSave, newCar }) => {
         const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([dealershipId]));
         setAllVehicles(response);
     }
+
+    useEffect(() => {
+        console.log('scanResult', scanResult);
+    }, [scanResult]);
 
     useEffect(() => {
         (async () => {

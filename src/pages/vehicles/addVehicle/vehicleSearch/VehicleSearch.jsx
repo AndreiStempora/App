@@ -32,7 +32,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
         if (scanResult !== '') {
             // setSearchText(newCar);
             setSearchText(scanResult);
-
+            console.log('scanResult', scanResult);
         }
     }, [scanResult]);
 
