@@ -17,8 +17,7 @@ const OpenedCameraTakePhoto = ({ camera, setHidePageContent }) => {
 
     useEffect(() => {
         ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE);
-
-
+        editCurrentSelection({ cameraOn: true });
     }, []);
 
     return (

@@ -1,5 +1,5 @@
 import { IonSearchbar, IonLabel, IonRadio, IonRadioGroup, IonVirtualScroll, IonGrid, IonContent, IonCol, IonRow, IonSpinner, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { vehiclesService } from "../../../../packages/database/features/services/vehiclesService";
 import { useAtom } from 'jotai';
 import { user } from '../../../../services/user/user';
@@ -8,14 +8,15 @@ import VehicleSearchItem from "./VehicleSearchItem";
 import './vehicleSearch.scss';
 
 
+
 const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const dbRequest = useDbRequest();
+    const searchText = useRef('');
     const [currentDealership] = useAtom(user.userCurrentSelections);
-    const [searchText, setSearchText] = useState('');
+    // const [searchText, setSearchText] = useState('');
     const [filteredVehicles, setFilteredVehicles] = useState(null);
     const [spinnerOn, setSpinnerOn] = useState(true);
     const [allVehicles, setAllVehicles] = useState(null);
-    // const [matchingVin, setMatchingVin] = useState(false);
 
     const getVehicleList = async (dealershipId) => {
         const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([dealershipId]));
@@ -24,6 +25,8 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
 
     useEffect(() => {
         console.log('scanResult', scanResult);
+        // setSearchText(scanResult);
+        searchText.current = scanResult;
     }, [scanResult]);
 
     useEffect(() => {
@@ -38,7 +41,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
             return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase()) || (vehicle.vehicle_stock)?.startsWith(searchText.toUpperCase());
         }
         ));
-        if (filtered.length < 2 && searchText.length > 0) {
+        if (filtered?.length < 2 && searchText?.length > 0) {
             disableSave(false);
         }
         return filtered;
@@ -61,7 +64,8 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const searcFieldCompletionHandler = async (e) => {
         const target = e.target.closest('ion-item');
         const attribute = target.querySelector('.matched').getAttribute('data-highlight');
-        setSearchText(attribute);
+        // setSearchText(attribute);
+        searchText.current = attribute;
     }
 
     useEffect(() => {
@@ -82,15 +86,13 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
 
     return (
         <>
-            <IonSearchbar value={searchText} onIonChange={e => setSearchText(e.target.value)} setClearButton="focus"></IonSearchbar>
-
+            <IonSearchbar value={searchText} setClearButton="focus"></IonSearchbar>
             <IonList >
                 {searchText.length < 3 && <div className="ion-text-center">Search by Vin or Stock number, write at least 3 characters to see the filtered vehicles</div>}
                 {filteredVehicles && filteredVehicles?.map((vehicle, index) => (
-
                     <VehicleSearchItem key={index} vehicle={vehicle} match={transformStringMatch} click={searcFieldCompletionHandler}></VehicleSearchItem>
                 ))}
-                {(!spinnerOn && filteredVehicles?.length == 0) &&
+                {(!spinnerOn && filteredVehicles?.length === 0) &&
                     <div className="ion-text-center">
                         <IonLabel>No results match this search</IonLabel>
                     </div>

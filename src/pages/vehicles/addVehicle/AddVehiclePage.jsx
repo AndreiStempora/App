@@ -3,7 +3,7 @@ import { IonButtons, IonTitle, IonButton, IonLabel, IonIcon, IonSearchbar, IonTo
 import { useHistory } from "react-router";
 import { useState, useEffect } from "react";
 import { useDbRequest, vehiclesService, hotspotsService } from "../../../packages/database";
-import VehicleSearch from "../searchVehicle/vehicleSearch/VehicleSearch";
+import VehicleSearch from "./vehicleSearch/VehicleSearch";
 import "./addVehicle.scss"
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import OpenedScanner from "./OpenedScanner";
@@ -13,7 +13,7 @@ const AddVehicle = () => {
     const history = useHistory();
     const dbRequest = useDbRequest();
     const [newCar, setNewCar] = useState('');
-    const [setCurrentSelection, getCurrentSelection] = useRSelection();
+    const [, getCurrentSelection] = useRSelection();
     const [disabledSave, setDisabledSave] = useState(true);
     const [hidePageContent, setHidePageContent] = useState(false);
     const scanner = useBarcodeScanner();
@@ -33,12 +33,12 @@ const AddVehicle = () => {
         if (vinCar === undefined) {
             const stockCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByStock([keyword]));
             if (stockCar === undefined) {
-                await dbRequest.requestFunction(async () => await vehiclesService.addVehicle([getCurrentSelection().dealership_id, keyword, 1, 1]));
+                return await dbRequest.requestFunction(async () => await vehiclesService.addVehicle([getCurrentSelection().dealership_id, keyword, 1, 1]));
             } else {
-                await extractIdAndUpdate(stockCar);
+                return await extractIdAndUpdate(stockCar);
             }
         } else {
-            await extractIdAndUpdate(vinCar);
+            return await extractIdAndUpdate(vinCar);
         }
     }
 
@@ -55,7 +55,7 @@ const AddVehicle = () => {
     }
 
     useEffect(() => {
-        console.log('scanResult', scanResult);
+        // console.log('scanResult', scanResult);
         setHidePageContent(false);
     }, [scanResult]);
 
@@ -97,8 +97,6 @@ const AddVehicle = () => {
                                     <IonButton
                                         onClick={openScannerHandler}
                                         className="ion-text-right"
-
-
                                     >
                                         <IonIcon icon={'./assets/svgs/scanner.svg'}></IonIcon>
                                     </IonButton>
@@ -106,7 +104,7 @@ const AddVehicle = () => {
                                 <VehicleSearch newCar={setNewCar} disableSave={setDisabledSave} scanResult={scanResult}></VehicleSearch>
                             </>
                             <IonButtons className="ion-justify-content-center">
-                                <IonButton onClick={() => { history.push('/vehicle-details') }}>go to vehicle details</IonButton>
+                                {/* <IonButton onClick={() => { history.push('/vehicle-details') }}>go to vehicle details</IonButton> */}
                             </IonButtons>
                         </CustomContent>
                     </>

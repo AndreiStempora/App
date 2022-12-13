@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, setupIonicReact} from '@ionic/react';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -40,9 +40,9 @@ const App = () => {
 				<Suspense fallback="Loading">
 					<IonReactRouter>
 						<IonRouterOutlet animated={false}>
-							<Route 						 path="/login" component={LoginPage} />
-							<Route 			exact={true} path="/2fa"  component={TwoFAPage} />
-							<Route 			exact={true} path="/2fa/code"  component={TwoFACodePage} />
+							<Route path="/login" component={LoginPage} />
+							<Route exact={true} path="/2fa" component={TwoFAPage} />
+							<Route exact={true} path="/2fa/code" component={TwoFACodePage} />
 							<ProtectedRoute exact={true} path="/dealerships" component={DealershipsPage} />
 							<ProtectedRoute exact={true} path="/camera" component={CameraPage} />
 							<ProtectedRoute exact={true} path="/vehicle-search" component={VehiclePage} />
