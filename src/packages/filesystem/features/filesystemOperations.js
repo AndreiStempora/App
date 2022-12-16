@@ -69,10 +69,10 @@ const FS = {
             recursive: true
         });
     },
-    showPicture: async (path) => {
+    showPicture: async (actualPath) => {
         try {
-            if (path !== null) {
-                const contents = await Filesystem.readFile({ path: path });
+            if (actualPath !== null && actualPath !== undefined) {
+                const contents = await Filesystem.readFile({ path: actualPath });
                 const base64PictureData = "data:image/jpg;base64," + contents.data;
                 return base64PictureData;
             }

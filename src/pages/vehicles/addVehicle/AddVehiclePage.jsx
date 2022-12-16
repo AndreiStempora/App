@@ -13,7 +13,7 @@ const AddVehicle = () => {
     const history = useHistory();
     const dbRequest = useDbRequest();
     const [newCar, setNewCar] = useState('');
-    const [, getCurrentSelection] = useRSelection();
+    const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [disabledSave, setDisabledSave] = useState(true);
     const [hidePageContent, setHidePageContent] = useState(false);
     const scanner = useBarcodeScanner();
@@ -61,6 +61,7 @@ const AddVehicle = () => {
 
     const saveVehicleHandler = async (e) => {
         await searchInDbForVehicle(newCar);
+        setCurrentSelection({ ...getCurrentSelection(), refreshPage: true });
         history.push("/vehicle-search");
     }
 

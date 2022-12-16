@@ -1,5 +1,5 @@
-import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, tests } from "../../../packages/database";
-import { IonList} from '@ionic/react';
+import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, tests, logService } from "../../../packages/database";
+import { IonList } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import DealershipElement from './DealershipElement';
 import './dealershipSelector.scss'
@@ -20,7 +20,8 @@ const DealershipSelector = ({ info }) => {
 		const d1 = await dbRequest.requestFunction(async () => settingsService.getAllSettingsByDealershipId([1]));
 		const d2 = await dbRequest.requestFunction(async () => settingsService.getAllSettingsByDealershipId([2]));
 		const e = await dbRequest.requestFunction(async () => imagesService.getAllImages());
-		console.log(a, b, c, d1, d2, e, "all");
+		const f = await dbRequest.requestFunction(async () => logService.getAllLogs());
+		console.log(f, "all");
 	}
 
 	const dealershipsToAdd = async () => {
@@ -141,6 +142,7 @@ const DealershipSelector = ({ info }) => {
 
 		if (info !== null) {
 			// deleteDatabase();
+			getAllDBContents();
 			databaseInitialOperations();
 		}
 	}, [info]);

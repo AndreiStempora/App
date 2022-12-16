@@ -3,101 +3,103 @@ import { Page, CustomHeader, CustomContent, CustomFooter } from '../../../compon
 import { useAtom } from 'jotai';
 import { user } from '../../../services/user/user';
 import { imagesService, useDbRequest, vehiclesService } from '../../../packages/database';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDeleteUpload, useRSelection } from '../../../packages/database/features/utils/utilityHooks';
 import { FS } from '../../../packages/filesystem';
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
+import ItemWithPhoto from '../../../components/vehicleComponents/hotspotsComponents/ItemWithPhoto';
 import './vehiclePage.scss';
+// import ItemWithPhoto from '../../../components/vehicleComponents/hotspotsComponents/ItemWithPhoto';
 
 
 const VehiclePage = () => {
     const dbRequest = useDbRequest();
-    const [carsWithPics, setCarsWithPics] = useState([]);
-    const [, getCurrentSelection] = useRSelection();
     const [userInfo] = useAtom(user.userDetails);
     const [showCheckbox, setShowCheckbox] = useState(false);
-    const [checkedElements, setCheckedElements] = useState({});
-    const [checkAll, setCheckAll] = useState(false);
-    const delUpload = useDeleteUpload();
+    const [addedVehicles, setAddedVehicles] = useState([]);
+    const elementsRef = useRef([]);
+    const [refresh, setRefresh] = useState(false);
+    const [setUserSelection, getCurrentSelection] = useRSelection();
+    const delUp = useDeleteUpload();
 
-    const editVehicleHandler = () => {
-        setShowCheckbox(!showCheckbox);
+    const getAddedVehicles = async () => {
+        const vehicles = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]))
+        setAddedVehicles(vehicles);
     }
 
-    const changeCheckedElements = (element) => {
-        setCheckedElements({ ...checkedElements, ...element });
-    }
-
-    const deleteVehicleHandler = async () => {
-        console.log("delete: ", checkedElements);
-        const collectedVehicleIds = sortVehicles(checkedElements);
-        console.log("collectedVehicles: red", collectedVehicleIds);
-        collectedVehicleIds?.forEach(async (vehicle_id) => {
-            console.log("vehicle_id: ", vehicle_id);
-            let pictures = await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]))
-            console.log("pictures: ", pictures);
-            pictures.forEach(async (picture) => {
-                console.log("picture: uuuu", picture);
-                await delUpload.uploadImage(picture);
-            });
+    const getCheckValues = () => {
+        const checkElements = {};
+        elementsRef.current?.map((element, index) => {
+            checkElements[element.data.vehicle_id] = element.querySelector('ion-checkbox').checked;
+            return null;
         });
+        return checkElements;
     }
 
-    const uploadVehicleHandler = async () => {
-        console.log("upload: ", checkedElements);
-        const collectedVehicleIds = sortVehicles(checkedElements);
-        collectedVehicleIds?.forEach(async (vehicle_id) => {
-            console.log("vehicle_id: ", vehicle_id);
-            await vehiclesService.deleteVehicleById([vehicle_id]);
+    const setCheckValues = () => {
+        let newCheckValues;
+        if (Object.values(getCheckValues()).includes(false)) {
+            newCheckValues = true;
+        } else {
+            newCheckValues = false;
+        }
+        elementsRef.current?.map((element, index) => {
+            element.querySelector('ion-checkbox').checked = newCheckValues;
+            return null;
         });
     }
 
     const selectAllHandler = () => {
-        setCheckAll(!checkAll);
-        const newCheckedElements = {};
-        carsWithPics.forEach((car) => {
-            newCheckedElements[car.vehicle_id] = !checkAll;
-        });
-        setCheckedElements(newCheckedElements);
+        setCheckValues();
     }
 
-    const sortVehicles = (elements) => {
-        const selectedElements = [];
-        Object.keys(elements).forEach((key) => {
-            if (elements[key]) {
-                selectedElements.push(parseInt(key));
-            }
-        });
-        return selectedElements;
+    const findFirstImageOfCurrentVehicle = (vehicleId) => {
+        (async () => {
+
+        })();
     }
 
-    const getAllPicturesForEachVehicle = async (vehicles) => {
-        console.log(vehicles, "vehicles");
-        return await Promise.all(vehicles.map(async (vehicle) => {
-            return await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle]));
-        }));
+    const getAllPicturesForSelectedVehicles = async () => {
+        const selectedVehicles = getCheckValues();
+        //find all keys with true value
+        const selectedVehiclesKeys = Object.keys(selectedVehicles).filter(key => selectedVehicles[key]);
+        const allFoundPictures = [];
+        //get all pictures for selected vehicles
+        await Promise.all(selectedVehiclesKeys.map(async (vehicleId) => {
+            const vehiclePictures = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([parseInt(vehicleId)]));
+            return vehiclePictures
+        }))
+
+
+    }
+    const editVehicleHandler = () => { setShowCheckbox(!showCheckbox) }
+
+    const deleteVehiclesHandler = async () => {
+        await getAllPicturesForSelectedVehicles();
+        setRefresh(true);
+    }
+    const uploadVehiclesHandler = async () => {
+        await getAllPicturesForSelectedVehicles();
+        setRefresh(true);
     }
 
     useEffect(() => {
-    }, []);
-
-    useIonViewWillEnter(() => {
         (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-            setCarsWithPics(cars);
-
-            console.log(cars, "cars activated");
-        })()
-    }
-    );
+            await getAddedVehicles();
+        })();
+        console.log("rendered")
+        return () => {
+            setRefresh(false);
+        }
+    }, [refresh]);
 
     return (
         <Page pageClass={'vehiclesSearch'}>
             <CustomHeader>
                 <IonButtons slot="start" >
-                    {showCheckbox ? <IonButton onClick={editVehicleHandler}>Cancel</IonButton> :
+                    {showCheckbox ? <IonButton onClick={() => setShowCheckbox(false)}>Cancel</IonButton> :
                         <IonButton defaultHref="/profile" >
                             {userInfo.avatar ? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg' />}
                         </IonButton>
@@ -108,29 +110,33 @@ const VehiclePage = () => {
                 <IonButtons slot="end" >
                     <IonButton onClick={showCheckbox ? selectAllHandler : editVehicleHandler}>
                         {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg' /> : <IonIcon icon='/assets/svgs/edit1.svg'></IonIcon>}
-
                     </IonButton>
                 </IonButtons>
             </CustomHeader>
             <CustomContent colSizesArr={[[12]]}>
                 <IonList>
-                    {carsWithPics?.map((car, index) =>
-                        <AdedVehiclesSearchItem
+                    {addedVehicles?.map((car, index) =>
+                        <ItemWithPhoto
+                            ref={(element) => elementsRef.current[index] = element}
                             key={index}
-                            car={car}
+                            item={car}
+                            image={(async () => {
+                                return (await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([car.vehicle_id])))[0];
+                            })()}
                             showCheckbox={showCheckbox}
-                            checkAll={checkAll}
-                            setCheckedElements={changeCheckedElements}
+                            car={true}
                         />
+
+
                     )}
                 </IonList>
 
             </CustomContent>
             {!showCheckbox ? <FooterAddVehicle></FooterAddVehicle> :
                 <FooterDeleteUpload
-                    del={deleteVehicleHandler}
+                    del={deleteVehiclesHandler}
                     retake={null}
-                    upload={uploadVehicleHandler}
+                    upload={uploadVehiclesHandler}
                 ></FooterDeleteUpload>
             }
         </Page>
