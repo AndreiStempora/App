@@ -21,6 +21,7 @@ const VehiclePage = () => {
     const [checkedElements, setCheckedElements] = useState({});
     const [checkAll, setCheckAll] = useState(false);
     const delUpload = useDeleteUpload();
+    const [refresh, setRefresh] = useState(false);
 
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
@@ -34,24 +35,40 @@ const VehiclePage = () => {
         console.log("delete: ", checkedElements);
         const collectedVehicleIds = sortVehicles(checkedElements);
         console.log("collectedVehicles: red", collectedVehicleIds);
-        collectedVehicleIds?.forEach(async (vehicle_id) => {
-            console.log("vehicle_id: ", vehicle_id);
-            let pictures = await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]))
-            console.log("pictures: ", pictures);
-            pictures.forEach(async (picture) => {
-                console.log("picture: uuuu", picture);
-                await delUpload.uploadImage(picture);
-            });
-        });
+        await Promise.all(
+            collectedVehicleIds?.map(async (vehicle_id) => {
+                console.log("vehicle_id: ", vehicle_id);
+                let pictures = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle_id]));
+                console.log("pictures: ", pictures);
+                let deletedStatus = await Promise.all(
+                    pictures?.map(async (picture) => {
+                        return await dbRequest.requestFunction(async () => await imagesService.deleteImageById([picture.image_id]))
+                    })
+                )
+
+                if (deletedStatus?.every((status) => status === true)) {
+                    console.log("deletedStatus: ", deletedStatus);
+                    await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]));
+                    console.log(vehicle_id, " was deleted");
+                }
+
+                //     let pictures = await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]))
+                //     console.log("pictures: ", pictures);
+                //     pictures.forEach(async (picture) => {
+                //         console.log("picture: uuuu", picture);
+                //         await delUpload.uploadImage(picture);
+                //     });
+            }));
+        setRefresh(true);
     }
 
     const uploadVehicleHandler = async () => {
         console.log("upload: ", checkedElements);
-        const collectedVehicleIds = sortVehicles(checkedElements);
-        collectedVehicleIds?.forEach(async (vehicle_id) => {
-            console.log("vehicle_id: ", vehicle_id);
-            await vehiclesService.deleteVehicleById([vehicle_id]);
-        });
+        // const collectedVehicleIds = sortVehicles(checkedElements);
+        // collectedVehicleIds?.forEach(async (vehicle_id) => {
+        //     console.log("vehicle_id: ", vehicle_id);
+        //     await vehiclesService.deleteVehicleById([vehicle_id]);
+        // });
     }
 
     const selectAllHandler = () => {
@@ -81,7 +98,16 @@ const VehiclePage = () => {
     }
 
     useEffect(() => {
-    }, []);
+        (async () => {
+            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
+            setCarsWithPics(cars);
+
+            console.log(cars, "cars activated");
+            console.log("refresh: ", refresh);
+            setRefresh(false);
+        })();
+
+    }, [refresh]);
 
     useIonViewWillEnter(() => {
         (async () => {
