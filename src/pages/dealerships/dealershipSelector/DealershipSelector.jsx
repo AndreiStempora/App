@@ -21,7 +21,7 @@ const DealershipSelector = ({ info }) => {
 		const d2 = await dbRequest.requestFunction(async () => settingsService.getAllSettingsByDealershipId([2]));
 		const e = await dbRequest.requestFunction(async () => imagesService.getAllImages());
 		const f = await dbRequest.requestFunction(async () => logService.getAllLogs());
-		console.log(f, "all");
+		console.log(a, b, c, d1, d2, e, f, "all");
 	}
 
 	const dealershipsToAdd = async () => {
@@ -29,6 +29,12 @@ const DealershipSelector = ({ info }) => {
 		const newList = info.dealerships;
 		const newDealerships = newList?.filter(elem => !oldList?.some(elem2 => parseInt(elem.id) === elem2.dealership_id));
 		return newDealerships;
+	}
+
+	const checkLogsAndDeleteSurplus = async () => {
+		await dbRequest.requestFunction(async () => await logService.deleteAllLogsExceptLast300());
+		const logs = await dbRequest.requestFunction(async () => await logService.getAllLogs());
+		console.log(logs, "logs");
 	}
 
 	const vehiclesToAdd = async ([dealershipId]) => {
@@ -98,7 +104,7 @@ const DealershipSelector = ({ info }) => {
 
 		const databaseInitialOperations = async () => {
 			dbRequest.setLoading(true);
-
+			await checkLogsAndDeleteSurplus();
 			const newDealerships = await dealershipsToAdd();
 			await Promise.all(newDealerships.map(async (dealership) => {
 				const logoBlob = await (await fetch(dealership.logo)).blob();

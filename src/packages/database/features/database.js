@@ -7,56 +7,56 @@ const DB = {
     db: null,
 
     //get a db instance
-    dbInstance:async ()=>{
-        if(!DB.dbinitialized){
+    dbInstance: async () => {
+        if (!DB.dbinitialized) {
             return await DB.init();
-        }else{
+        } else {
             return DB.db;
         }
     },
 
     //initialize the db
-    init:async ()=>{
+    init: async () => {
         //get userDetails from local storage
         let userDetails = await JSON.parse(localStorage.getItem("userDetails"));
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             window.sqlitePlugin.openDatabase({
                 name: `${userDetails["email"]}.db`,
                 location: 'default',
                 androidDatabaseProvider: 'system'
-            },(db)=>{
-                
+            }, (db) => {
+
                 resolve(db)
                 // return true;
-            }, (error)=>{
-                console.log(error);            
+            }, (error) => {
+                console.log(error);
             });
         })
-        .then(async(db)=>{
-            await DB.createTables(db);
-            return db;
-        }).then((db)=>{
-            DB.createIndexes(db);
-            DB.db = db;
-            DB.dbinitialized = true;
-            return db;
-        })
+            .then(async (db) => {
+                await DB.createTables(db);
+                return db;
+            }).then((db) => {
+                DB.createIndexes(db);
+                DB.db = db;
+                DB.dbinitialized = true;
+                return db;
+            })
     },
 
     //create a table
-    createTable:async (db, tableName, tableSQL) =>{
-        return db.transaction((tx)=>{
-            tx.executeSql(tableSQL, [], function(tx, res){
+    createTable: async (db, tableName, tableSQL) => {
+        return db.transaction((tx) => {
+            tx.executeSql(tableSQL, [], function (tx, res) {
                 console.log("Table " + tableName + " created successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error creating table " + tableName + ": " + error.message);
             });
         });
     },
 
     //createTables
-    createTables: async (db) =>{ 
-        await DB.createTable(db,"dealerships", `CREATE TABLE IF NOT EXISTS dealerships (
+    createTables: async (db) => {
+        await DB.createTable(db, "dealerships", `CREATE TABLE IF NOT EXISTS dealerships (
             dealership_id	INTEGER,
             dealership_name	TEXT,
             dealership_logo	MEDIUMBLOB,
@@ -64,7 +64,7 @@ const DB = {
             UNIQUE (dealership_id)
         )`)
         // .then(()=>{
-        await DB.createTable(db,"images", `CREATE TABLE IF NOT EXISTS images (
+        await DB.createTable(db, "images", `CREATE TABLE IF NOT EXISTS images (
                 image_id	INTEGER,
                 image_status	INTEGER, 
                 image_type	INTEGER,
@@ -75,7 +75,7 @@ const DB = {
                 PRIMARY KEY(image_id AUTOINCREMENT)
             )`);
         // }).then(()=>{
-        await DB.createTable(db,"log", `CREATE TABLE IF NOT EXISTS log (
+        await DB.createTable(db, "log", `CREATE TABLE IF NOT EXISTS log (
                 log_id	    INTEGER,
                 log_date	INTEGER,
                 log_body    TEXT,
@@ -83,7 +83,7 @@ const DB = {
                 PRIMARY KEY(log_id AUTOINCREMENT)
             )`);
         // }).then(()=>{
-        await DB.createTable(db,"settings", `CREATE TABLE IF NOT EXISTS settings (
+        await DB.createTable(db, "settings", `CREATE TABLE IF NOT EXISTS settings (
                 setting_id	INTEGER,
                 setting_name	TEXT,
                 setting_value	TEXT,
@@ -91,7 +91,7 @@ const DB = {
                 PRIMARY KEY(setting_id AUTOINCREMENT)
             )`);
         // }).then(()=>{
-        await DB.createTable(db,"vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
+        await DB.createTable(db, "vehicles", `CREATE TABLE IF NOT EXISTS vehicles (
                 vehicle_id	INTEGER,
                 dealership_id INTEGER REFERENCES dealerships(dealership_id),
                 vehicle_vin	TEXT,
@@ -107,7 +107,7 @@ const DB = {
                 PRIMARY KEY(vehicle_id AUTOINCREMENT)
             )`);
         // }).then(()=>{
-        await DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
+        await DB.createTable(db, "hotspots", `CREATE TABLE IF NOT EXISTS hotspots (
                 hotspot_id	INTEGER,
                 dealership_id INTEGER REFERENCES dealerships(dealership_id),
                 hotspot_name TEXT,
@@ -119,70 +119,78 @@ const DB = {
     },
 
     //create indexes
-    createIndexes:async (db) =>{
-        await db.transaction((tx)=>{
-            tx.executeSql('CREATE INDEX IF NOT EXISTS "dealership_id" ON "vehicles" ("dealership_id")', [], function(tx, res){
+    createIndexes: async (db) => {
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE INDEX IF NOT EXISTS "dealership_id" ON "vehicles" ("dealership_id")', [], function (tx, res) {
                 console.log("Index dealership_id created successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error creating index dealership_id: " + error.message);
             });
         });
 
-        await db.transaction((tx)=>{
-            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_exterior" ON "vehicles" ("vehicle_exterior")', [], function(tx, res){
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_exterior" ON "vehicles" ("vehicle_exterior")', [], function (tx, res) {
                 console.log("Index vehicle_exterior created successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error creating index vehicle_exterior: " + error.message);
             });
         });
 
-        await db.transaction((tx)=>{
-            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_interior" ON "vehicles" ("vehicle_interior")', [], function(tx, res){
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_interior" ON "vehicles" ("vehicle_interior")', [], function (tx, res) {
                 console.log("Index vehicle_interior created successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error creating index vehicle_interior: " + error.message);
             });
         });
-        
-        await db.transaction((tx)=>{
-            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_hotspots" ON "vehicles" ("vehicle_hotspots")', [], function(tx, res){
+
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_hotspots" ON "vehicles" ("vehicle_hotspots")', [], function (tx, res) {
                 console.log("Index vehicle_hotspots created successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error creating index vehicle_hotspots: " + error.message);
             });
         });
-        
-        await db.transaction((tx)=>{
-            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_stock" ON "vehicles" ("vehicle_stock")', [], function(tx, res){
+
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_stock" ON "vehicles" ("vehicle_stock")', [], function (tx, res) {
                 console.log("Index vehicle_stock created successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error creating index vehicle_stock: " + error.message);
             });
         });
 
-        await db.transaction((tx)=>{
-            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_vin" ON "vehicles" ("vehicle_vin")', [], function(tx, res){
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE INDEX IF NOT EXISTS "vehicle_vin" ON "vehicles" ("vehicle_vin")', [], function (tx, res) {
                 console.log("Index vehicle_vin created successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error creating index vehicle_vin: " + error.message);
             });
         });
-        
+
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE INDEX IF NOT EXISTS "hotspot_type" ON "hotspots" ("hotspot_type")', [], function (tx, res) {
+                console.log("Index hotspots_type created successfully");
+            }, function (tx, error) {
+                console.log("Error creating index hotspot_type: " + error.message);
+            });
+        });
+
     },
-    
+
     //drop a table
-    dropTable:async(tableName) =>{
-        (await DB.dbInstance()).transaction((tx)=>{
-            tx.executeSql("DROP TABLE IF EXISTS " + tableName, [], function(tx, res){
+    dropTable: async (tableName) => {
+        (await DB.dbInstance()).transaction((tx) => {
+            tx.executeSql("DROP TABLE IF EXISTS " + tableName, [], function (tx, res) {
                 console.log("Table " + tableName + " dropped successfully");
-            }, function(tx, error){
+            }, function (tx, error) {
                 console.log("Error dropping table " + tableName + ": " + error.message);
             });
         });
     },
 
     //drop all tables
-    dropAllTables:async () =>{
+    dropAllTables: async () => {
         await DB.dropTable("dealerships");
         await DB.dropTable("images");
         await DB.dropTable("log");
@@ -193,7 +201,7 @@ const DB = {
         return true;
     },
 
-    blobToBase64 : blob => {
+    blobToBase64: blob => {
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         return new Promise(resolve => {
@@ -202,21 +210,21 @@ const DB = {
             };
         });
     },
-    
+
     //get contents of each table
-    getTableContents:async (tableName) =>{
+    getTableContents: async (tableName) => {
         let db = await DB.dbInstance();
-        return new Promise((resolve, reject)=>{
-            db.transaction((tx)=>{
-                tx.executeSql("SELECT * FROM " + tableName, [], function(tx, res){
+        return new Promise((resolve, reject) => {
+            db.transaction((tx) => {
+                tx.executeSql("SELECT * FROM " + tableName, [], function (tx, res) {
                     resolve(res.rows);
-                }, function(tx, error){
+                }, function (tx, error) {
                     reject(error);
                 });
             });
         });
     },
-    
+
 }
 
 export default DB;

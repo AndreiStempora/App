@@ -29,7 +29,7 @@ const AddVehicle = () => {
 
     const searchInDbForVehicle = async (keyword) => {
         const vinCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByVin([keyword]));
-
+        console.log('vinCar', vinCar)
         if (vinCar === undefined) {
             const stockCar = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByStock([keyword]));
             if (stockCar === undefined) {
@@ -59,7 +59,9 @@ const AddVehicle = () => {
         setHidePageContent(false);
     }, [scanResult]);
 
-    const saveVehicleHandler = async (e) => {
+    const saveVehicleHandler = async () => {
+        console.log('pressed save');
+        console.log('newCar', newCar)
         await searchInDbForVehicle(newCar);
         setCurrentSelection({ ...getCurrentSelection(), refreshPage: true });
         history.push("/vehicle-search");

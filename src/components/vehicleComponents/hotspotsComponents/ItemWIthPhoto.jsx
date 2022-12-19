@@ -22,7 +22,6 @@ const ItemWithPhoto = ({ item, image, showCheckbox, car, checkAll, setCheckedEle
         history.push("/vehicle-details");
     }
 
-
     useEffect(() => {
         (async () => {
             let data = await image;

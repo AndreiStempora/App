@@ -62,15 +62,27 @@ const VehiclePage = () => {
     }
 
     const getAllPicturesForSelectedVehicles = async () => {
+        //start a timer
+        const start = new Date().getTime();
         const selectedVehicles = getCheckValues();
+        console.log(selectedVehicles, 'selectedValues')
         //find all keys with true value
         const selectedVehiclesKeys = Object.keys(selectedVehicles).filter(key => selectedVehicles[key]);
+        console.log(selectedVehiclesKeys, 'selectedVehiclesKeys')
         const allFoundPictures = [];
         //get all pictures for selected vehicles
-        await Promise.all(selectedVehiclesKeys.map(async (vehicleId) => {
+        let x = await Promise.all(selectedVehiclesKeys.map(async (vehicleId) => {
             const vehiclePictures = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([parseInt(vehicleId)]));
+            console.log(vehiclePictures, 'vehiclePictures')
             return vehiclePictures
         }))
+            .then((values) => {
+                //stop timer    
+                console.log(values, 'values')
+                const end = new Date().getTime();
+                console.log(end - start, 'time')
+
+            });
 
 
     }
