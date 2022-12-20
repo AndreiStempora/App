@@ -42,11 +42,7 @@ const useCamera = () => {
         console.log(existingImage, 'existingImage');
         if (existingImage.length !== 0) {
             console.log(existingImage[0].image_data, "wtfffff")
-            let fileDeletedConfirmation = await FS.deleteFile(existingImage[0].image_data);
-            console.log(fileDeletedConfirmation, existingImage[0].image_data, 'fileDeletedConfirmation')
-            if (fileDeletedConfirmation) {
-                await dbRequest.requestFunction(async () => await imagesService.deleteImageById([existingImage[0].image_id]));
-            }
+            await dbRequest.requestFunction(async () => await imagesService.deleteImageById([existingImage[0].image_id]));
         }
         const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100, width: 3840, height: 2160 })).value;
         const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesUrl + '/' + Date.now() + '.jpg')).uri;

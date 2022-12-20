@@ -61,7 +61,7 @@ const AddVehicle = () => {
 
     const saveVehicleHandler = async (e) => {
         await searchInDbForVehicle(newCar);
-        history.push("/vehicle-search");
+        history.push({ pathname: "/vehicle-search", state: { newCar: newCar } });
     }
 
     useEffect(() => {

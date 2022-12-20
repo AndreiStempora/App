@@ -1,15 +1,16 @@
-import { IonList, IonTitle, IonButtons, IonButton, IonItem, IonIcon, IonLabel, IonCheckbox, useIonViewWillEnter } from '@ionic/react';
+import { IonList, IonTitle, IonButtons, IonButton, IonItem, IonIcon, IonLabel, IonCheckbox, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
 import { Page, CustomHeader, CustomContent, CustomFooter } from '../../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../../services/user/user';
 import { imagesService, useDbRequest, vehiclesService } from '../../../packages/database';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDeleteUpload, useRSelection } from '../../../packages/database/features/utils/utilityHooks';
 import { FS } from '../../../packages/filesystem';
 import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
 import './vehiclePage.scss';
+import { useLocation } from 'react-router';
 
 
 const VehiclePage = () => {
@@ -21,7 +22,10 @@ const VehiclePage = () => {
     const [checkedElements, setCheckedElements] = useState({});
     const [checkAll, setCheckAll] = useState(false);
     const delUpload = useDeleteUpload();
-    const [refresh, setRefresh] = useState(false);
+    const locationRefresh = useLocation();
+    const [refresh, setRefresh] = useState(true);
+    // const refresh = useRef(true);
+    const elementsRef = useRef([])
 
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
@@ -32,8 +36,9 @@ const VehiclePage = () => {
     }
 
     const deleteVehicleHandler = async () => {
-        console.log("delete: ", checkedElements);
-        const collectedVehicleIds = sortVehicles(checkedElements);
+
+        const collectedVehicles = getCheckValues();
+        const collectedVehicleIds = sortVehicles(collectedVehicles);
         console.log("collectedVehicles: red", collectedVehicleIds);
         await Promise.all(
             collectedVehicleIds?.map(async (vehicle_id) => {
@@ -51,15 +56,10 @@ const VehiclePage = () => {
                     await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]));
                     console.log(vehicle_id, " was deleted");
                 }
-
-                //     let pictures = await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]))
-                //     console.log("pictures: ", pictures);
-                //     pictures.forEach(async (picture) => {
-                //         console.log("picture: uuuu", picture);
-                //         await delUpload.uploadImage(picture);
-                //     });
+                return null;
             }));
         setRefresh(true);
+        setCheckValues(false);
     }
 
     const uploadVehicleHandler = async () => {
@@ -71,14 +71,6 @@ const VehiclePage = () => {
         // });
     }
 
-    const selectAllHandler = () => {
-        setCheckAll(!checkAll);
-        const newCheckedElements = {};
-        carsWithPics.forEach((car) => {
-            newCheckedElements[car.vehicle_id] = !checkAll;
-        });
-        setCheckedElements(newCheckedElements);
-    }
 
     const sortVehicles = (elements) => {
         const selectedElements = [];
@@ -90,6 +82,46 @@ const VehiclePage = () => {
         return selectedElements;
     }
 
+    const getCheckValues = () => {
+        const checkElements = {};
+        console.log(elementsRef.current, "elementsRef.current")
+        if (elementsRef.current[elementsRef.current.length - 1] === null) {
+            elementsRef.current.pop();
+        }
+        elementsRef.current?.map((element, index) => {
+            if (element !== null) {
+                checkElements[element.data?.vehicle_id] = element.querySelector('ion-checkbox').checked;
+            }
+            // console.log(checkElements[element.data.vehicle_id] = element.querySelector('ion-checkbox').checked, "checkElements")
+            return null;
+        });
+        return checkElements;
+    }
+
+    const setCheckValues = (bull) => {
+        let newCheckValues;
+        if (bull !== true || bull !== false) {
+            if (Object.values(getCheckValues()).includes(false)) {
+                newCheckValues = true;
+            } else {
+                newCheckValues = false;
+            }
+            console.log('bull === undefined')
+        } else {
+            newCheckValues = bull;
+            console.log('bull =!!!!!= undefined')
+        }
+
+        while (elementsRef.current[elementsRef.current.length - 1] === null) {
+            elementsRef.current.pop();
+        }
+        console.log(newCheckValues, "newCheckValues")
+        elementsRef.current?.map((element, index) => {
+            element.querySelector('ion-checkbox').checked = newCheckValues;
+            return null;
+        });
+    }
+
     const getAllPicturesForEachVehicle = async (vehicles) => {
         console.log(vehicles, "vehicles");
         return await Promise.all(vehicles.map(async (vehicle) => {
@@ -98,26 +130,23 @@ const VehiclePage = () => {
     }
 
     useEffect(() => {
-        (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-            setCarsWithPics(cars);
+        if (refresh) {
+            (async () => {
+                const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
+                setCarsWithPics(cars);
 
-            console.log(cars, "cars activated");
-            console.log("refresh: ", refresh);
+                console.log(cars, "cars activated");
+            })();
             setRefresh(false);
-        })();
+        }
+        // console.log(locationRefresh, "locationRefresh")
+    }, [locationRefresh, refresh]);
 
-    }, [refresh]);
+    useIonViewDidEnter(() => {
+        console.log("ionViewDidEnter");
+        setRefresh(true);
+    });
 
-    useIonViewWillEnter(() => {
-        (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-            setCarsWithPics(cars);
-
-            console.log(cars, "cars activated");
-        })()
-    }
-    );
 
     return (
         <Page pageClass={'vehiclesSearch'}>
@@ -132,7 +161,7 @@ const VehiclePage = () => {
 
                 <IonTitle className='ion-text-center'>Vehicles Page</IonTitle>
                 <IonButtons slot="end" >
-                    <IonButton onClick={showCheckbox ? selectAllHandler : editVehicleHandler}>
+                    <IonButton onClick={showCheckbox ? setCheckValues : editVehicleHandler}>
                         {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg' /> : <IonIcon icon='/assets/svgs/edit1.svg'></IonIcon>}
 
                     </IonButton>
@@ -147,6 +176,7 @@ const VehiclePage = () => {
                             showCheckbox={showCheckbox}
                             checkAll={checkAll}
                             setCheckedElements={changeCheckedElements}
+                            ref={(element) => elementsRef.current[index] = element}
                         />
                     )}
                 </IonList>

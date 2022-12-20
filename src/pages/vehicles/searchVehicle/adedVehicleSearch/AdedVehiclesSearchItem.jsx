@@ -1,12 +1,13 @@
 import { IonImg, IonItem, IonLabel, IonIcon, IonCheckbox } from '@ionic/react'
 import { useHistory } from 'react-router';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useHotspot, useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
 import { useDbRequest, imagesService } from '../../../../packages/database';
 import ImageOrPlaceholderComponent from '../../../../components/image/ImageOrPlaceholderComponent';
 import './adedVehiclesSearchItem.scss'
 
-const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAll }) => {
+const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAll }, ref) => {
     const [editSelection, getCurrentSelection] = useRSelection();
     const hotspotHook = useHotspot();
     const dbRequest = useDbRequest();
@@ -15,16 +16,16 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
 
     const itemClickHandler = async () => {
         editSelection({ vehicle_id: car.vehicle_id });
-        history.push("/vehicle-details");
+        history.push({ pathname: "/vehicle-details", state: { ...car } });
     }
 
     const checkboxClickHandler = () => {
-        setMarkChecked(!markChecked);
+
     }
 
-    useEffect(() => {
-        setCheckedElements({ [car.vehicle_id]: markChecked });
-    }, [markChecked]);
+    // useEffect(() => {
+    //     setCheckedElements({ [car.vehicle_id]: markChecked });
+    // }, [markChecked]);
 
     useEffect(() => {
         setMarkChecked(checkAll);
@@ -43,6 +44,8 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
             onClick={showCheckbox ? checkboxClickHandler : itemClickHandler}
             lines='full'
             className={'element-with-pics'}
+            ref={ref}
+            data={car}
         >
             <ImageOrPlaceholderComponent />
             <IonLabel>
@@ -53,7 +56,7 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
                 <IonCheckbox
                     slot="end"
                     checked={markChecked}
-                    onChange={checkboxClickHandler}
+                // onChange={checkboxClickHandler}
                 /> :
                 <IonIcon icon={'/assets/svgs/next.svg'}></IonIcon>
             }
@@ -61,4 +64,4 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
     )
 }
 
-export default AdedVehiclesSearchItem
+export default React.forwardRef(AdedVehiclesSearchItem)

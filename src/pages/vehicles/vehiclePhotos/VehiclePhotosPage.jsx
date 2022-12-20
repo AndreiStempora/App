@@ -23,13 +23,15 @@ const VehiclePhotos = () => {
 
     const openCameraHandler = async () => {
         setHidePageContent(true);
-        await camera.startCamera();
+        console.log('open camera handler');
+        // await camera.startCamera();
     };
 
     useEffect(() => {
         (async () => {
             if (getCurrentSelection().cameraOn) {
                 setHidePageContent(true);
+                console.log('effect camera start')
                 await camera.startCamera();
             }
         })();
