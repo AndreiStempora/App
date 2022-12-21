@@ -16,7 +16,9 @@ const AdedVehiclesSearchItem = ({ car, showCheckbox, setCheckedElements, checkAl
 
     const itemClickHandler = async () => {
         editSelection({ vehicle_id: car.vehicle_id });
-        history.push({ pathname: "/vehicle-details", state: { ...car } });
+        // history.push({ pathname: "/vehicle-details", state: { ...car } });
+        console.log(`${history.location.pathname}/${car.vehicle_id}`)
+        history.push({ pathname: `${history.location.pathname}/${car.vehicle_id}`, state: { ...car } });
     }
 
     const checkboxClickHandler = () => {

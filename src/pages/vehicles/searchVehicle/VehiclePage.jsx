@@ -10,7 +10,7 @@ import FooterAddVehicle from '../../../components/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../../components/footers/FooterDeleteUpload';
 import './vehiclePage.scss';
-import { useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 
 
 const VehiclePage = () => {
@@ -25,7 +25,8 @@ const VehiclePage = () => {
     const locationRefresh = useLocation();
     const [refresh, setRefresh] = useState(true);
     // const refresh = useRef(true);
-    const elementsRef = useRef([])
+    const elementsRef = useRef([]);
+    const history = useHistory();
 
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
@@ -138,6 +139,7 @@ const VehiclePage = () => {
                 console.log(cars, "cars activated");
             })();
             setRefresh(false);
+            // console.log(history.location.pathname, "history.location")
         }
         // console.log(locationRefresh, "locationRefresh")
     }, [locationRefresh, refresh]);
@@ -182,7 +184,7 @@ const VehiclePage = () => {
                 </IonList>
 
             </CustomContent>
-            {!showCheckbox ? <FooterAddVehicle></FooterAddVehicle> :
+            {!showCheckbox ? <FooterAddVehicle /> :
                 <FooterDeleteUpload
                     del={deleteVehicleHandler}
                     retake={null}

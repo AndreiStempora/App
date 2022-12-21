@@ -1,5 +1,5 @@
 import { Page, CustomHeader, CustomContent } from "../../../components/page/Page";
-import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonList, IonIcon } from "@ionic/react";
+import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonList, IonIcon, useIonViewWillEnter } from "@ionic/react";
 import { useState, useEffect } from "react";
 import { useDbRequest, hotspotsService, imagesService } from "../../../packages/database";
 import { useRSelection, useHotspot } from "../../../packages/database/features/utils/utilityHooks";
@@ -45,8 +45,16 @@ const VehiclePhotos = () => {
     }, [hidePageContent]);
 
     const backButtonHandler = () => {
-        history.push("/vehicle-details");
+        const path = history.location.pathname.replace(/\/[^\/]*$/, '');
+        history.push({ pathname: `${path}`, state: { ...history.location.state } })
     }
+
+    useIonViewWillEnter(() => {
+        (async () => {
+            const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+            setHotspotsWithPhotos(currentHotspotsWithPhotos);
+        })();
+    });
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
             {!hidePageContent ?
@@ -54,7 +62,7 @@ const VehiclePhotos = () => {
                     <>
                         <CustomHeader>
                             <IonButtons slot="start">
-                                <CustomBackButton href={"/vehicle-details"} />
+                                <CustomBackButton extraFunction={backButtonHandler} />
                             </IonButtons>
                             <IonTitle className='ion-text-center'>Vehicle Photos</IonTitle>
                         </CustomHeader>

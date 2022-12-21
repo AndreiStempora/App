@@ -45,11 +45,17 @@ const App = () => {
 							<Route exact={true} path="/2fa/code" component={TwoFACodePage} />
 							<ProtectedRoute exact={true} path="/dealerships" component={DealershipsPage} />
 							<ProtectedRoute exact={true} path="/camera" component={CameraPage} />
-							<ProtectedRoute exact={true} path="/vehicle-search" component={VehiclePage} />
-							<ProtectedRoute exact={true} path="/add-vehicle" component={AddVehicle} />
-							<ProtectedRoute exact={true} path="/vehicle-details" component={VehicleDetails} />
+							{/* <ProtectedRoute exact={true} path="/vehicle-search" component={VehiclePage} /> */}
+							{/* <ProtectedRoute exact={true} path="/add-vehicle" component={AddVehicle} /> */}
+							{/* <ProtectedRoute exact={true} path="/vehicle-details" component={VehicleDetails} /> */}
 							<ProtectedRoute exact={true} path="/vehicle-photos" component={VehiclePhotos} />
 							<ProtectedRoute exact={true} path="/hotspot-photo" component={HotspotPhoto} />
+
+							<ProtectedRoute exact={true} path="/dealerships/:id" component={VehiclePage} />
+							<ProtectedRoute exact={true} path="/dealerships/:id/add-vehicle" component={AddVehicle} />
+							<ProtectedRoute exact={true} path="/dealerships/:id/:id" component={VehicleDetails} />
+							<ProtectedRoute exact={true} path="/dealerships/:id/:id/:id" component={VehiclePhotos} />
+
 							<Route render={() => <Redirect to="/dealerships" />} />
 						</IonRouterOutlet>
 					</IonReactRouter>

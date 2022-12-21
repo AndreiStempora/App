@@ -8,7 +8,9 @@ const CustomBackButton = ({ href, extraFunction }) => {
         if (extraFunction) {
             extraFunction();
         }
-        history.push({ pathname: href, state: { ...history.location.state } });
+        if (href !== undefined) {
+            history.push({ pathname: href, state: { ...history.location.state } });
+        }
     }
 
     return (

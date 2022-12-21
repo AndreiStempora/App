@@ -6,13 +6,17 @@ const FooterAddVehicle = ({ photoBtn }) => {
     const history = useHistory();
 
     const addVehicleHandler = () => {
-        history.push("/add-vehicle");
+        // history.push("/add-vehicle");
+        history.push({ pathname: `${history.location.pathname}/add-vehicle` });
+        // console.log(history.location.pathname);
+
     }
     const takePhotoHandler = () => {
         console.log('take photo');
     }
     const toDealershipsHandler = () => {
         history.push("/dealerships");
+        // history.push({ pathname: `${history.location.pathname}` });
     }
     return (
         <CustomFooter>
@@ -20,7 +24,7 @@ const FooterAddVehicle = ({ photoBtn }) => {
                 {photoBtn ?
                     <IonButton onClick={takePhotoHandler} className='icon-over-text'>
                         <div className="container">
-                        <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
+                            <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
                             <IonLabel>Photo</IonLabel>
                         </div>
                     </IonButton> :
