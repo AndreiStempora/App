@@ -1,17 +1,17 @@
 import { useAtom } from "jotai";
 import { user } from "../../../../services/user/user";
-import { useDbRequest, hotspotsService, vehiclesService, imagesService  } from "../../index";
+import { useDbRequest, hotspotsService, vehiclesService, imagesService } from "../../index";
 import { FS } from "../../../filesystem";
 import { URL, usePageSetters, usePageRequest } from "../../../../services";
-import {useState, useEffect} from "react";
+import { useState, useEffect, useRef } from "react";
 
 const useRSelection = () => {
     const [currentSelection, setCurrentSelection] = useAtom(user.userCurrentSelections);
-    const [, getCurrentSelection]= useAtom(user.getCurrentSelections);
+    const [, getCurrentSelection] = useAtom(user.getCurrentSelections);
 
-    const editSelection = (selection) =>{
+    const editSelection = (selection) => {
         setCurrentSelection((currentSelection) => {
-            return {...currentSelection, ...selection}
+            return { ...currentSelection, ...selection }
         })
     }
     return [editSelection, getCurrentSelection];
@@ -20,7 +20,7 @@ const useRSelection = () => {
 
 const useHotspot = () => {
     const dbRequest = useDbRequest();
-    const [, getCurrentSelection]= useAtom(user.getCurrentSelections);
+    const [, getCurrentSelection] = useAtom(user.getCurrentSelections);
 
     const getAllHotspotsForCurrentDealership = async () => {
         const dealership_id = getCurrentSelection().dealership_id;
@@ -29,7 +29,7 @@ const useHotspot = () => {
         })
     }
 
-    const getCurrentHotspotsByType = async () =>{
+    const getCurrentHotspotsByType = async () => {
         const dealership_id = getCurrentSelection().dealership_id;
         const hotspot_type = getCurrentSelection().hotspot_type;
         return await dbRequest.requestFunction(async () => {
@@ -37,7 +37,7 @@ const useHotspot = () => {
         })
     }
 
-    const getCurrentHotspotsByGivenType = async (hotspot_type) =>{
+    const getCurrentHotspotsByGivenType = async (hotspot_type) => {
         const dealership_id = getCurrentSelection().dealership_id;
         return await dbRequest.requestFunction(async () => {
             return await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([dealership_id, hotspot_type]);
@@ -52,7 +52,7 @@ const useHotspot = () => {
     }
 
     const getHotspotsWithPhotos = async (hotspot_type) => {
-        if(hotspot_type === undefined){
+        if (hotspot_type === undefined) {
             const vehicle_id = getCurrentSelection().vehicle_id;
             const hotspots = await getAllHotspotsForCurrentDealership();
             return await Promise.all(
@@ -82,13 +82,13 @@ const useHotspot = () => {
         })
         return hotspots;
     }
-    
+
     return {
-        getAllHotspotsForCurrentDealership:getAllHotspotsForCurrentDealership, 
-        getCurrentHotspotsByType:getCurrentHotspotsByType, 
-        getCurrentHotspotPhoto:getCurrentHotspotPhoto, 
-        getHotspotsWithPhotos:getHotspotsWithPhotos,
-        getHotspotsByGivenType:getHotspotsByGivenType
+        getAllHotspotsForCurrentDealership: getAllHotspotsForCurrentDealership,
+        getCurrentHotspotsByType: getCurrentHotspotsByType,
+        getCurrentHotspotPhoto: getCurrentHotspotPhoto,
+        getHotspotsWithPhotos: getHotspotsWithPhotos,
+        getHotspotsByGivenType: getHotspotsByGivenType
     };
 };
 
@@ -97,41 +97,45 @@ const useDeleteUpload = () => {
     const pageSetters = usePageSetters();
     const pageRequest = usePageRequest();
     const [uploadURL,] = useAtom(URL.upload);
-    const [, getCurrentSelection]= useRSelection();
+    const [, getCurrentSelection] = useRSelection();
     const [token,] = useAtom(user.tokenAtom);
-    const [image, setImage] = useState();
+    // const [image, setImage] = useState();
+    // const referanceImage = useRef({});
+    // const refImage = referanceImage.current;
 
 
     const deleteImage = async (image) => {
-        let x = await FS.deleteFile(image.image_data);
-        // console.log(x);
-        if(x){
-            await dbRequest.requestFunction(async () => {await imagesService.deleteImageById([image.image_id])});
-        }
+        // let x = await FS.deleteFile(image.image_data);
+        // // console.log(x);
+        // if(x){
+        await dbRequest.requestFunction(async () => { await imagesService.deleteImageById([image.image_id]) });
+        // }
     }
 
-    const getBlobData = async () =>{
-        let fileData = await FS.showPicture(image.image_data);
+    const getBlobData = async (image) => {
+        let fileData = await FS.showPicture(image?.image_data);
         const response = await fetch(fileData);
         const blob = await response.blob();
-        const fileName = image.image_data.slice(image.image_data.lastIndexOf('/') + 1);
-        blob.name=fileName;
+        const fileName = image?.image_data.slice(image?.image_data.lastIndexOf('/') + 1);
+        blob.name = fileName;
         return blob;
     }
-    
-    const createFormData = async () => {
-        const carVin = await dbRequest.requestFunction(async () => {return await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id])});
+
+    const createFormData = async (image) => {
+        const carVin = await dbRequest.requestFunction(async () => { return await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id]) });
+        console.log(carVin, 'carVin')
         const objForUpload = {
             token: token,
             dealership: getCurrentSelection().dealership_id,
             hotspot: getCurrentSelection().hotspot_id,
-            image: await getBlobData(),
-            vin: carVin.vehicle_vin
+            image: await getBlobData(image),
+            vin: carVin?.vehicle_vin
         };
+        console.log(objForUpload, 'objForUpload')
 
         const formData = new FormData();
-        for(let item in objForUpload){
-            if(item === 'image'){
+        for (let item in objForUpload) {
+            if (item === 'image') {
                 formData.append(item, objForUpload[item], objForUpload[item].name);
             } else {
                 formData.append(item, objForUpload[item])
@@ -141,27 +145,41 @@ const useDeleteUpload = () => {
     }
 
     const uploadImage = async (image) => {
-        setImage(image);
-        const data = await createFormData();
-
-        const request  = new XMLHttpRequest();
+        // referanceImage.current = image;
+        // setImage(image);
+        console.log(image, 'refImage');
+        const data = await createFormData(image);
+        // console.log(data, 'data');
+        const request = new XMLHttpRequest();
         request.open('POST', uploadURL);
 
         request.upload.addEventListener('progress', (e) => {
             const percent = e.loaded / e.total;
             console.log(percent);
         });
-        request.addEventListener('load',async (e) => {
+        request.addEventListener('load', async (e) => {
             console.log(request.status, 'status');
-            console.log(request.response, 'response');
-            if(request.status === 200){
-                await dbRequest.requestFunction(async () => {await imagesService.deleteImageById([image.image_id])});
-            }
+            // if (request.status === 200) {
+            //     await dbRequest.requestFunction(async () => { await imagesService.deleteImageById([image?.image_id]) });
+            // }
         });
+        request.send(data);
 
-        let x = request.send(data);
+        request.onreadystatechange = async () => {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        };
 
-        console.log(x,'x');
+        let res = await request.onreadystatechange();
+        console.log(res, 'res');
+        return res
+
+        // console.log(response, 'response');
 
         // const response = await fetch(uploadURL, {
         //     method: 'POST',
@@ -178,13 +196,14 @@ const useDeleteUpload = () => {
         // const formData = new FormData();
         // formData.append('file', blob, "image.jpg");
         // this.uploadData(formData);
-        
+
         // console.log('upload image', blob);
+
     }
     // const deleteCar = async (vehicle_id) => {
     return {
-        deleteImage:deleteImage,
-        uploadImage:uploadImage
+        deleteImage: deleteImage,
+        uploadImage: uploadImage
     }
 }
 

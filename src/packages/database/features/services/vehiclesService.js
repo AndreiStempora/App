@@ -37,9 +37,9 @@ const vehiclesService = {
     deleteVehicleById: async ([vehicle_id]) => {
         const images = await imagesService.getAllImagesByVehicleId([vehicle_id]);
         return await Promise.all(images.map(async (image) => {
-            console.log(image)
-            await FS.deleteFile(image.image_data);
-            await imagesService.deleteImageById([image.image_id]);
+            // console.log(image)
+            // await FS.deleteFile(image?.image_data);
+            await imagesService.deleteImageById([image?.image_id]);
             return true;
         })).then(async () => {
             await vehiclesRepository.deleteVehicleById([vehicle_id])

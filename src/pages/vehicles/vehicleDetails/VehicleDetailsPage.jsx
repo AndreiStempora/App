@@ -71,21 +71,24 @@ const VehicleDetails = () => {
 
     const goToPhotosHandler = (type) => {
         setCurrentSelection({ hotspot_type: type });
-        // history.push('/vehicle-photos');
-        console.log(`${history.location.pathname}/${type}`)
-        history.push({ pathname: `${history.location.pathname}/${type}`, state: { type: type } })
+        history.push('/vehicle-photos');
+        // console.log(`${history.location.pathname}/${type}`)
+        // history.push({ pathname: `${history.location.pathname}/${type}`, state: { type: type } })
     }
 
     const goBackToVehiclesPageHandler = () => {
-        const path = history.location.pathname.replace(/\/[^\/]*$/, '');
-        history.push({ pathname: path, state: {} });
+        // const path = history.location.pathname.replace(/\/[^\/]*$/, '');
+        // history.push({ pathname: path, state: {} });
     }
 
     return (
         <Page pageClass={'vehicleDetails'}>
             <CustomHeader>
                 <IonButtons slot="start">
-                    <CustomBackButton extraFunction={goBackToVehiclesPageHandler} />
+                    <CustomBackButton
+                        href={'vehicle-search'}
+                    // extraFunction={goBackToVehiclesPageHandler} 
+                    />
                 </IonButtons>
                 <IonTitle className='ion-text-center'>Vehicle Details</IonTitle>
             </CustomHeader>

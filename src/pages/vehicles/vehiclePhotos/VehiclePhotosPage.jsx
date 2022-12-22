@@ -45,8 +45,9 @@ const VehiclePhotos = () => {
     }, [hidePageContent]);
 
     const backButtonHandler = () => {
-        const path = history.location.pathname.replace(/\/[^\/]*$/, '');
-        history.push({ pathname: `${path}`, state: { ...history.location.state } })
+
+        // const path = history.location.pathname.replace(/\/[^\/]*$/, '');
+        // history.push({ pathname: `${path}`, state: { ...history.location.state } })
     }
 
     useIonViewWillEnter(() => {
@@ -62,7 +63,9 @@ const VehiclePhotos = () => {
                     <>
                         <CustomHeader>
                             <IonButtons slot="start">
-                                <CustomBackButton extraFunction={backButtonHandler} />
+                                <CustomBackButton //extraFunction={backButtonHandler} 
+                                    href={'vehicle-details'}
+                                />
                             </IonButtons>
                             <IonTitle className='ion-text-center'>Vehicle Photos</IonTitle>
                         </CustomHeader>

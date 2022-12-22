@@ -6,8 +6,8 @@ const FooterAddVehicle = ({ photoBtn }) => {
     const history = useHistory();
 
     const addVehicleHandler = () => {
-        // history.push("/add-vehicle");
-        history.push({ pathname: `${history.location.pathname}/add-vehicle` });
+        history.push("/add-vehicle");
+        // history.push({ pathname: `${history.location.pathname}/add-vehicle` });
         // console.log(history.location.pathname);
 
     }

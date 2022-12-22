@@ -37,7 +37,6 @@ const VehiclePage = () => {
     }
 
     const deleteVehicleHandler = async () => {
-
         const collectedVehicles = getCheckValues();
         const collectedVehicleIds = sortVehicles(collectedVehicles);
         console.log("collectedVehicles: red", collectedVehicleIds);
@@ -64,12 +63,27 @@ const VehiclePage = () => {
     }
 
     const uploadVehicleHandler = async () => {
-        console.log("upload: ", checkedElements);
+        const collectedVehicles = getCheckValues();
+        const collectedVehicleIds = sortVehicles(collectedVehicles);
+        console.log("collectedVehicles: upload", collectedVehicleIds);
         // const collectedVehicleIds = sortVehicles(checkedElements);
-        // collectedVehicleIds?.forEach(async (vehicle_id) => {
-        //     console.log("vehicle_id: ", vehicle_id);
-        //     await vehiclesService.deleteVehicleById([vehicle_id]);
-        // });
+        let x = await Promise.all(collectedVehicleIds?.map(async (vehicle_id) => {
+            const pictures = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle_id]));
+            let x = await Promise.all(
+                pictures?.map(async (picture) => {
+                    console.log("picture: ", picture);
+                    let result = await delUpload.uploadImage(picture);
+                    console.log("result: ", result);
+                    return result;
+                })
+            )
+            console.log(x, "request.onreadystatechange")
+            await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]));
+            return true;
+        }));
+        console.log(x, "wtf?")
+        // console.log(x, "wtf?")
+        setRefresh(true);
     }
 
 
@@ -85,7 +99,7 @@ const VehiclePage = () => {
 
     const getCheckValues = () => {
         const checkElements = {};
-        console.log(elementsRef.current, "elementsRef.current")
+        // console.log(elementsRef.current, "elementsRef.current")
         if (elementsRef.current[elementsRef.current.length - 1] === null) {
             elementsRef.current.pop();
         }

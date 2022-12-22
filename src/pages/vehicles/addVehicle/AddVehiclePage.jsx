@@ -20,16 +20,17 @@ const AddVehicle = () => {
     const [scanResult, setScanResult] = useState('');
 
     const backToSelectVehiclesHandler = () => {
-        // history.push("/vehicle-search");
+        history.push("/vehicle-search");
         //from string remove text starting with last slash
-        const path = history.location.pathname.replace(/\/[^\/]*$/, '');
-        history.push({ pathname: `${path}` });
+        // const path = history.location.pathname.replace(/\/[^\/]*$/, '');
+        // history.push({ pathname: `${path}` });
     }
 
     const saveVehicleHandler = async (e) => {
         await searchInDbForVehicle(newCar);
-        const path = history.location.pathname.replace(/\/[^\/]*$/, '');
-        history.push({ pathname: `${path}` });
+        // const path = history.location.pathname.replace(/\/[^\/]*$/, '');
+        // history.push({ pathname: `${path}` });
+        history.push("/vehicle-search");
     }
 
     const extractIdAndUpdate = async (vehicle) => {
