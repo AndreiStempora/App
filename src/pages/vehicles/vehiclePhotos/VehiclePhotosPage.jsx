@@ -45,12 +45,6 @@ const VehiclePhotos = () => {
         }
     }, [hidePageContent]);
 
-    const backButtonHandler = () => {
-
-        // const path = history.location.pathname.replace(/\/[^\/]*$/, '');
-        // history.push({ pathname: `${path}`, state: { ...history.location.state } })
-    }
-
     useIonViewWillEnter(() => {
         setRefresh(true);
     });
@@ -63,10 +57,6 @@ const VehiclePhotos = () => {
             setHotspotsWithPhotos(currentHotspotsWithPhotos);
             console.log('entered vehicle photos')
         })();
-        return () => {
-            setRefresh(false);
-            setHotspotsWithPhotos([]);
-        };
     }, [refresh]);
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
