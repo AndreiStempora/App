@@ -22,7 +22,7 @@ const VehiclePage = () => {
     const [checkedElements, setCheckedElements] = useState({});
     const [checkAll, setCheckAll] = useState(false);
     const delUpload = useDeleteUpload();
-    const locationRefresh = useLocation();
+    // const locationRefresh = useLocation();
     const [refresh, setRefresh] = useState(true);
     // const refresh = useRef(true);
     const elementsRef = useRef([]);
@@ -155,8 +155,12 @@ const VehiclePage = () => {
             setRefresh(false);
             // console.log(history.location.pathname, "history.location")
         }
+        // return () => {
+        //     console.log("unmounted");
+        //     setCarsWithPics([]);
+        // }
         // console.log(locationRefresh, "locationRefresh")
-    }, [locationRefresh, refresh]);
+    }, [refresh]);
 
     useIonViewDidEnter(() => {
         console.log("ionViewDidEnter");

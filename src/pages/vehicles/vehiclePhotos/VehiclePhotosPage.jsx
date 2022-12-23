@@ -20,6 +20,7 @@ const VehiclePhotos = () => {
     const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState([]);
     const history = useHistory();
     const camera = useCamera();
+    const [refresh, setRefresh] = useState(false);
 
     const openCameraHandler = async () => {
         setHidePageContent(true);
@@ -51,11 +52,22 @@ const VehiclePhotos = () => {
     }
 
     useIonViewWillEnter(() => {
+        setRefresh(true);
+    });
+
+    useEffect(() => {
         (async () => {
             const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+            console.log(getCurrentSelection().hotspot_type, 'hotspot type', currentHotspotsWithPhotos);
+
             setHotspotsWithPhotos(currentHotspotsWithPhotos);
+            console.log('entered vehicle photos')
         })();
-    });
+        return () => {
+            setRefresh(false);
+            setHotspotsWithPhotos([]);
+        };
+    }, [refresh]);
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
             {!hidePageContent ?

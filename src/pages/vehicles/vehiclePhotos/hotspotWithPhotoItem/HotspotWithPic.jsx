@@ -7,8 +7,8 @@ import './hotspotWithPic.scss';
 
 const HotspotItemWithPic = ({ hotspotWithPhoto, openCamera }) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
-    const [currentHotspot, setCurrentHotspot] = useState(hotspotWithPhoto[0]);
-    const [hotspotImage, setHotspotImage] = useState(hotspotWithPhoto[1]);
+    const [currentHotspot, setCurrentHotspot] = useState();
+    const [hotspotImage, setHotspotImage] = useState();
     const [imageLoading, setImageLoading] = useState(true);
 
 
@@ -19,10 +19,14 @@ const HotspotItemWithPic = ({ hotspotWithPhoto, openCamera }) => {
 
     useEffect(() => {
         (async () => {
+            setCurrentHotspot(hotspotWithPhoto[0]);
+            // console.log('i am confused')
             try {
-                if (hotspotWithPhoto[1]) {
+                if (hotspotWithPhoto[1] !== undefined) {
                     const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
                     setHotspotImage(image);
+                } else {
+                    setHotspotImage(null);
                 }
             } catch (err) {
                 console.log(err);
@@ -30,7 +34,7 @@ const HotspotItemWithPic = ({ hotspotWithPhoto, openCamera }) => {
                 setImageLoading(false);
             }
         })();
-    }, [hotspotWithPhoto]);
+    }, []);
 
     return (
         <IonItem onClick={selectItemHandler} className={'item-with-picture'}>

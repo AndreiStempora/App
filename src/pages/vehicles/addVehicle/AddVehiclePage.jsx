@@ -55,6 +55,7 @@ const AddVehicle = () => {
     const openScannerHandler = async () => {
         setHidePageContent(true);
         let result = await scanner.startScan();
+        console.log('result', result, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         setNewCar(result);
         setScanResult(result);
     }

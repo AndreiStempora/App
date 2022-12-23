@@ -1,17 +1,17 @@
 import { IonImg } from "@ionic/react";
 import './imageOrPlaceholderComponent.scss';
 
-const ImageOrPlaceholderComponent = ({img}) => {
+const ImageOrPlaceholderComponent = ({ img }) => {
     return (
         <>
             {
-                img?.length ? 
+                img?.length ?
                     <div className="image-container">
-                        <IonImg src={img}  />
+                        <IonImg src={img} />
                     </div>
-                
-                :
-                <IonImg src="/assets/img/carPicPlaceholder.png" className="placeholder"/>
+
+                    :
+                    <IonImg src="/assets/img/carPicPlaceholder.png" className="placeholder" />
             }
         </>
     )

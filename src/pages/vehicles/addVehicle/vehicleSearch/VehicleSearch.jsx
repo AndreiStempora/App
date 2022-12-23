@@ -1,4 +1,4 @@
-import { IonSearchbar, IonLabel, IonRadio, IonRadioGroup, IonVirtualScroll, IonGrid, IonContent, IonCol, IonRow, IonSpinner, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react";
+import { IonSearchbar, IonLabel, IonRadio, IonRadioGroup, IonVirtualScroll, IonGrid, IonContent, IonCol, IonRow, IonSpinner, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidEnter } from "@ionic/react";
 import { useState, useEffect, useRef } from "react";
 import { vehiclesService } from "../../../../packages/database/features/services/vehiclesService";
 import { useAtom } from 'jotai';
@@ -21,6 +21,11 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     // console.log(searchText, 'searchText');
 
     useEffect(() => {
+        console.log(scanResult.length, 'scanResult++++++++++++++');
+        if (scanResult.length > 0) {
+            setSearchText(scanResult);
+            // console.log('scanResult', scanResult);
+        }
         (async () => {
             const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([getCurrentSelection().dealership_id]));
             setAllVehicles(response);
@@ -74,8 +79,6 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
         disableSave(true);
 
         (async () => {
-            // console.log(searchBar, 'searchBar.current?.value')
-            // searchBar.current?.value = searchText;
             if (searchText.length > 0) {
                 const filteredList = await filterFunc();
                 if (filteredList !== null) {
