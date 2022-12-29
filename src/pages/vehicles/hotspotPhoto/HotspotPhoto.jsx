@@ -5,29 +5,29 @@ import { Page, CustomHeader } from "../../../components/page/Page";
 import { useHistory } from "react-router";
 import { FS } from "../../../packages/filesystem/index";
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
-import FooterDeleteUpload from "../../../components/footers/FooterDeleteUpload";
+import FooterDeleteUpload from "../../../components/page/pageMainComponents/footers/FooterDeleteUpload";
 
 
 const HotspotPhoto = () => {
     const history = useHistory();
-    const [image,setImage] = useState();
+    const [image, setImage] = useState();
     const [imageLoading, setImageLoading] = useState(true);
     const hotspotHook = useHotspot();
     const photoOps = useDeleteUpload();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
 
     const getPicture = async () => {
-        try{
+        try {
             const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
-            if(imageObj.length > 0){
+            if (imageObj.length > 0) {
                 const img = await FS.showPicture(imageObj[0].image_data);
                 setImage(img);
             } else {
                 setImage(null);
             }
-        } catch(err){
+        } catch (err) {
             console.log(err);
-        } finally{
+        } finally {
             setImageLoading(false);
         }
     }
@@ -52,7 +52,7 @@ const HotspotPhoto = () => {
         <Page pageClass={"hotspot-photo"}>
             <CustomHeader>
                 <IonButtons>
-                    <CustomBackButton href={'./vehicle-photos'} extraFunction={()=>editCurrentSelection({cameraOn: true})}></CustomBackButton>
+                    <CustomBackButton href={'./vehicle-photos'} extraFunction={() => editCurrentSelection({ cameraOn: true })}></CustomBackButton>
                 </IonButtons>
             </CustomHeader>
             <IonContent>

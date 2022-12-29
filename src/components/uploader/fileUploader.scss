@@ -1,0 +1,10 @@
+.file-uploader {
+    ion-row {
+        width: 100%;
+        ion-item.item {
+            & + ion-item.item {
+                padding-top: 0;
+            }
+        }
+    }
+}

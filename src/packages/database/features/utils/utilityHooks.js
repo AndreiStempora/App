@@ -55,6 +55,7 @@ const useHotspot = () => {
         if (hotspot_type === undefined) {
             const vehicle_id = getCurrentSelection().vehicle_id;
             const hotspots = await getAllHotspotsForCurrentDealership();
+
             return await Promise.all(
                 hotspots?.map(async (hotspot) => {
                     const photo = await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot.hotspot_id]);

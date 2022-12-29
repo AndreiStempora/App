@@ -25,7 +25,7 @@ import ProtectedRoute from "./components/page/restrictedPages/ProtectedRoute"
 import TwoFAPage from './pages/twoFA/TwoFAPage';
 import TwoFACodePage from './pages/twoFA/TwoFACodePage';
 import CameraPage from './pages/camera/CameraPage';
-import VehiclePage from './pages/vehicles/searchVehicle/VehiclePage';
+import VehiclePage from './pages/vehicles/VehiclePage';
 import AddVehicle from './pages/vehicles/addVehicle/AddVehiclePage';
 import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetailsPage';
 import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotosPage';

@@ -1,72 +1,73 @@
-@import '../../theme/app.scss';
-ion-app{
-    .ion-page{
-        
-        
-        --ion-text-color:#fff;
-        --ion-item-background:transparent;
-        background-image: url('../../../public/assets/img/AppBackground.jpg');
+@import "../../theme/app.scss";
+ion-app {
+    .ion-page {
+        --ion-text-color: #fff;
+        --ion-item-background: transparent;
+        background-image: url("../../../public/assets/img/AppBackground.jpg");
         // --background:red;
-        --ion-grid-column-padding-xs:15px;
-        
+        --ion-grid-column-padding-xs: 15px;
+
         background-repeat: no-repeat;
         background-size: cover;
-        
-        ion-header{
-            border-bottom:1px solid;
-            border-image: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(255,255,255,0.3) 100%);
+
+        ion-header {
+            border-bottom: 1px solid;
+            border-image: radial-gradient(circle, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0.1) 100%);
             border-image-slice: 1;
-            ion-toolbar{
+            // border-image-repeat: repeat;
+            ion-toolbar {
                 --background: #181818;
-                ion-buttons{
-                    ion-back-button{
+                ion-buttons {
+                    ion-back-button {
                         position: absolute;
                     }
                 }
             }
         }
-        ion-header,ion-content,ion-footer{
-            opacity:0;
+        ion-header,
+        ion-content,
+        ion-footer {
+            opacity: 0;
         }
-        ion-header{
+        ion-header {
             transition: opacity 0.2s ease-in;
             transition-delay: 0.5s;
-            @include context(".ion-page", '.ion-page.show-page'){
-                opacity:1;
+            @include context(".ion-page", ".ion-page.show-page") {
+                opacity: 1;
             }
         }
-        ion-footer{
+        ion-footer {
             transition: opacity 0.2s ease-in;
             transition-delay: 0.5s;
-            @include context(".ion-page", '.ion-page.show-page'){
-                opacity:1;
+            @include context(".ion-page", ".ion-page.show-page") {
+                opacity: 1;
             }
         }
-        ion-content{
+        ion-content {
             // opacity:0;
             transition: opacity 0.2s ease-in;
             transition-delay: 0.5s;
-            @include context(".ion-page", '.ion-page.show-page'){
-                opacity:1;
+            @include context(".ion-page", ".ion-page.show-page") {
+                opacity: 1;
             }
-            --background:none;
-            ion-grid{
-                padding:15px;
-                @include context('ion-content','ion-header + ion-content'){
-                    padding:0 15px;
+            --background: none;
+            ion-grid {
+                padding: 15px;
+                @include context("ion-content", "ion-header + ion-content") {
+                    padding: 0 15px;
                 }
             }
         }
-        
-        ion-content{
+
+        ion-content {
             position: relative;
-            ion-grid{
-                height:100%;
-                &.content-in-center{
-                    position:relative;
+            ion-grid {
+                height: 100%;
+                &.content-in-center {
+                    position: relative;
                     display: flex;
-                    ion-row{
-                        margin:auto 0;
+                    ion-row {
+                        margin: auto 0;
                     }
                 }
             }
@@ -76,5 +77,4 @@ ion-app{
         //     transform:rotate(-90deg)
         // }
     }
-
 }

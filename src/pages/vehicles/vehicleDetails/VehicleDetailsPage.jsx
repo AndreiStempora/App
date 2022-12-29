@@ -4,7 +4,7 @@ import { useHistory, useLocation } from "react-router";
 import { useDbRequest, vehiclesService, imagesService } from "../../../packages/database";
 import { useEffect, useRef, useState } from "react";
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
-import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
+import FooterAddVehicle from "../../../components/page/pageMainComponents/footers/FooterAddVehicle";
 import { useHotspot } from "../../../packages/database/features/utils/utilityHooks";
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
 import './vehicleDetails.scss';

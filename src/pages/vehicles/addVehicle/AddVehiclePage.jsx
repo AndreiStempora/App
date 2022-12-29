@@ -28,9 +28,10 @@ const AddVehicle = () => {
 
     const saveVehicleHandler = async (e) => {
         await searchInDbForVehicle(newCar);
-        // const path = history.location.pathname.replace(/\/[^\/]*$/, '');
-        // history.push({ pathname: `${path}` });
-        history.push("/vehicle-search");
+        const path = history.location.pathname.replace(/\/[^\/]*$/, '');
+        history.push({ pathname: `/vehicle-search`, state: { newCar } });
+
+        // history.push("/vehicle-search");
     }
 
     const extractIdAndUpdate = async (vehicle) => {

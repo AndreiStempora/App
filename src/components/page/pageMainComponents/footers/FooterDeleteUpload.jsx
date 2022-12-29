@@ -1,5 +1,5 @@
 import { IonButtons, IonButton, IonIcon, IonLabel } from '@ionic/react'
-import CustomFooter from '../page/pageMainComponents/CustomFooter'
+import CustomFooter from '../CustomFooter'
 
 const FooterDeleteUpload = ({ del, retake, upload }) => {
     return (

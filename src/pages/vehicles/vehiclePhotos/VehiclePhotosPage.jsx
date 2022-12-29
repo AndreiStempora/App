@@ -5,7 +5,7 @@ import { useDbRequest, hotspotsService, imagesService } from "../../../packages/
 import { useRSelection, useHotspot } from "../../../packages/database/features/utils/utilityHooks";
 import OpenedCameraTakePhoto from "../../../components/camera/OpenedCameraTakePhoto";
 import useCamera from "../../../packages/camera/features/CameraCustomHook";
-import FooterAddVehicle from "../../../components/footers/FooterAddVehicle";
+import FooterAddVehicle from "../../../components/page/pageMainComponents/footers/FooterAddVehicle";
 import HotspotWithPic from "./hotspotWithPhotoItem/HotspotWithPic";
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
 import { useHistory } from "react-router";
