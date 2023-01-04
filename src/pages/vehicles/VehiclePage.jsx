@@ -1,4 +1,4 @@
-import { IonList, IonTitle, IonButtons, IonButton, IonLoading, IonItem, IonIcon, IonLabel, IonCheckbox, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
+import { IonList, IonTitle, IonButtons, IonButton, IonLoading, IonItem, IonIcon, IonRefresh, IonLabel, IonCheckbox, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
 import { Page, CustomHeader, CustomContent, CustomFooter } from '../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../services/user/user';
@@ -10,7 +10,6 @@ import FooterAddVehicle from '../../components/page/pageMainComponents/footers/F
 import AdedVehiclesSearchItem from './searchVehicle/adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../components/page/pageMainComponents/footers/FooterDeleteUpload';
 import './vehiclePage.scss';
-import { useHistory, useLocation } from 'react-router';
 import ItemWIthPhoto from '../../components/vehicleComponents/hotspotsComponents/ItemWIthPhoto';
 import FileUploader from '../../components/uploader/FileUploader';
 
@@ -23,46 +22,91 @@ const VehiclePage = (props) => {
     const [refresh, setRefresh] = useState(false);
     const elementsRef = useRef([]);
     const [uploading, setUploading] = useState(false);
+    const [elementsForUpload, setElementsForUpload] = useState([]);
 
 
     useEffect(() => {
+
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCars(cars);
         })();
 
+        deselectAll();
         return () => {
             console.log('unmounting')
-            setRefresh(false)
         };
     }, [refresh]);
 
     const setCheckValues = () => {
         let allChecked = true;
-        elementsRef.current.forEach(element => {
+
+        elementsRef.current?.forEach(element => {
             if (!element.querySelector('ion-checkbox').checked) {
                 allChecked = false;
             }
         })
 
-        console.log(allChecked, 'allChecked')
-
-        elementsRef.current.forEach(element => {
+        elementsRef.current?.forEach(element => {
             element.querySelector('ion-checkbox').checked = !allChecked;
         });
 
     };
 
+    const deselectAll = () => {
+        if (showCheckbox) {
+            elementsRef.current?.forEach(element => {
+                element.querySelector('ion-checkbox').checked = false;
+            });
+        }
+    };
+
     const editVehicleHandler = () => {
         setShowCheckbox(!showCheckbox);
     };
-    const deleteVehicleHandler = () => { };
-    const uploadVehicleHandler = () => { };
+
+
+    const deleteVehicleHandler = async () => {
+        elementsRef.current = elementsRef.current.filter(element => element !== null);
+        await Promise.all(
+            elementsRef.current.map(async element => {
+                if (element.querySelector('ion-checkbox').checked) {
+                    console.log(element);
+                    return await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([element.id]));
+                }
+                return null;
+            })
+        )
+        setRefresh(!refresh);
+    };
+
+    const uploadVehicleHandler = () => {
+        elementsRef.current = elementsRef.current.filter(element => element !== null);
+        let forUpload = [];
+        elementsRef.current.forEach(element => {
+            if (element.querySelector('ion-checkbox').checked) {
+                forUpload.push(parseInt(element.id));
+            }
+        });
+        console.log(forUpload);
+        setElementsForUpload(forUpload);
+        setUploading(true);
+    };
+
+    useEffect(() => {
+        if (uploading === false) {
+            setElementsForUpload([]);
+        }
+    }, [uploading]);
 
     return (
         <Page pageClass={'vehiclesSearch'}>
             {uploading ?
-                <FileUploader></FileUploader> :
+                <FileUploader
+                    elements={elementsForUpload}
+                    setUploading={setUploading}
+                    uploading={uploading}
+                /> :
                 <>
                     <CustomHeader>
                         <IonButtons slot="start" >
@@ -82,13 +126,13 @@ const VehiclePage = (props) => {
                         </IonButtons>
                     </CustomHeader>
                     <CustomContent colSizesArr={[[12]]}>
-
                         <IonList>
                             {cars?.map((car, index) =>
                                 <ItemWIthPhoto
                                     ref={(element) => elementsRef.current[index] = element}
                                     key={index}
                                     item={car}
+                                    id={car.vehicle_id}
                                     car={true}
                                     showCheckbox={showCheckbox}
                                 // image={car.image}

@@ -7,7 +7,7 @@ import React from "react";
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import ImageOrPlaceholderComponent from "../../image/ImageOrPlaceholderComponent";
 
-const ItemWithPhoto = ({ item, image, showCheckbox, car }, ref) => {
+const ItemWithPhoto = ({ item, image, showCheckbox, car, id }, ref) => {
     const dbRequest = useDbRequest();
     const [itemImage, setItemImage] = useState(null);
     const [editSelection, getCurrentSelection] = useRSelection();
@@ -21,6 +21,12 @@ const ItemWithPhoto = ({ item, image, showCheckbox, car }, ref) => {
     }
 
     useEffect(() => {
+        if (image) {
+            (async () => {
+                const actualImage = await FS.showPicture(image?.image_data);
+                setImg(actualImage);
+            })();
+        }
         // (async () => {
         //     let data = await image;
         //     const actualImage = await FS.showPicture(data?.image_data);
@@ -34,6 +40,7 @@ const ItemWithPhoto = ({ item, image, showCheckbox, car }, ref) => {
             lines='full'
             className={'element-with-pics'}
             ref={ref}
+            id={id}
         // data={item}
         >
             <ImageOrPlaceholderComponent img={img} />

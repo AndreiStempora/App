@@ -156,30 +156,12 @@ const useDeleteUpload = () => {
 
         request.upload.addEventListener('progress', (e) => {
             const percent = e.loaded / e.total;
-            console.log(percent);
         });
-        request.addEventListener('load', async (e) => {
-            console.log(request.status, 'status');
-            // if (request.status === 200) {
-            //     await dbRequest.requestFunction(async () => { await imagesService.deleteImageById([image?.image_id]) });
-            // }
-        });
+
         request.send(data);
-
-        request.onreadystatechange = async () => {
-            if (request.readyState === 4) {
-                if (request.status === 200) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-        };
-
-        let res = await request.onreadystatechange();
-        console.log(res, 'res');
-        return res
-
+        // console.log(request, 'request1');
+        // return status when upload is done
+        return request;
         // console.log(response, 'response');
 
         // const response = await fetch(uploadURL, {
@@ -199,12 +181,11 @@ const useDeleteUpload = () => {
         // this.uploadData(formData);
 
         // console.log('upload image', blob);
-
     }
     // const deleteCar = async (vehicle_id) => {
     return {
         deleteImage: deleteImage,
-        uploadImage: uploadImage
+        uploadImage: uploadImage,
     }
 }
 
