@@ -151,17 +151,17 @@ const useDeleteUpload = () => {
         console.log(image, 'refImage');
         const data = await createFormData(image);
         // console.log(data, 'data');
-        const request = new XMLHttpRequest();
-        request.open('POST', uploadURL);
+        // const request = new XMLHttpRequest();
+        // request.open('POST', uploadURL);
 
-        request.upload.addEventListener('progress', (e) => {
-            const percent = e.loaded / e.total;
-        });
+        // request.upload.addEventListener('progress', (e) => {
+        //     const percent = e.loaded / e.total;
+        // });
 
-        request.send(data);
+        // request.send(data);
         // console.log(request, 'request1');
         // return status when upload is done
-        return request;
+        return data;
         // console.log(response, 'response');
 
         // const response = await fetch(uploadURL, {
