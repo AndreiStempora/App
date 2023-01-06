@@ -21,7 +21,7 @@ const VehiclePage = (props) => {
     const [cars, setCars] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const elementsRef = useRef([]);
-    const [uploading, setUploading] = useState(false);
+    const [uploading, setUploading] = useState(true);
     const [elementsForUpload, setElementsForUpload] = useState([]);
 
 
