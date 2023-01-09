@@ -6,27 +6,34 @@ import { imagesService, useDbRequest, vehiclesService } from '../../packages/dat
 import { useEffect, useState, useRef } from 'react';
 import { useDeleteUpload, useRSelection } from '../../packages/database/features/utils/utilityHooks';
 import { FS } from '../../packages/filesystem';
+// import { useNavigation } from 'react-router-dom';
 import FooterAddVehicle from '../../components/page/pageMainComponents/footers/FooterAddVehicle';
 import AdedVehiclesSearchItem from './searchVehicle/adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../components/page/pageMainComponents/footers/FooterDeleteUpload';
 import './vehiclePage.scss';
+import { useHistory, useLocation } from 'react-router-dom';
 import ItemWIthPhoto from '../../components/vehicleComponents/hotspotsComponents/ItemWIthPhoto';
 import FileUploader from '../../components/uploader/FileUploader';
 
 const VehiclePage = (props) => {
     const dbRequest = useDbRequest();
     const userInfo = useAtom(user.userDetails);
-    const [editCurrentSelection, getCurrentSelection] = useRSelection();
+    const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [showCheckbox, setShowCheckbox] = useState(false);
     const [cars, setCars] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const elementsRef = useRef([]);
-    const [uploading, setUploading] = useState(true);
+    const [uploading, setUploading] = useState(false);
     const [elementsForUpload, setElementsForUpload] = useState([]);
 
+    useIonViewDidEnter(() => {
+        resetPage();
+        console.log('refresh');
+    });
+
+    const resetPage = () => { setRefresh(!refresh) };
 
     useEffect(() => {
-
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCars(cars);
@@ -34,9 +41,14 @@ const VehiclePage = (props) => {
 
         deselectAll();
         return () => {
-            console.log('unmounting')
+            setCars([]);
         };
     }, [refresh]);
+
+    // if (getCurrentSelection().refreshPage) {
+    //     resetPage();
+    //     setCurrentSelection({ refreshPage: false });
+    // }
 
     const setCheckValues = () => {
         let allChecked = true;
@@ -106,9 +118,11 @@ const VehiclePage = (props) => {
                     elements={elementsForUpload}
                     setUploading={setUploading}
                     uploading={uploading}
+                    setRefresh={resetPage}
                 /> :
                 <>
                     <CustomHeader>
+
                         <IonButtons slot="start" >
                             {showCheckbox ? <IonButton onClick={editVehicleHandler}>Cancel</IonButton> :
                                 <IonButton defaultHref="/profile" >
@@ -126,19 +140,21 @@ const VehiclePage = (props) => {
                         </IonButtons>
                     </CustomHeader>
                     <CustomContent colSizesArr={[[12]]}>
-                        <IonList>
-                            {cars?.map((car, index) =>
-                                <ItemWIthPhoto
-                                    ref={(element) => elementsRef.current[index] = element}
-                                    key={index}
-                                    item={car}
-                                    id={car.vehicle_id}
-                                    car={true}
-                                    showCheckbox={showCheckbox}
-                                // image={car.image}
-                                />
-                            )}
-                        </IonList>
+                        <>
+                            <IonList>
+                                {cars?.map((car, index) =>
+                                    <ItemWIthPhoto
+                                        ref={(element) => elementsRef.current[index] = element}
+                                        key={index}
+                                        item={car}
+                                        id={car.vehicle_id}
+                                        car={true}
+                                        showCheckbox={showCheckbox}
+                                    // image={car.image}
+                                    />
+                                )}
+                            </IonList>
+                        </>
 
                     </CustomContent>
                     {!showCheckbox ? <FooterAddVehicle /> :

@@ -8,9 +8,6 @@
                     --inner-padding-end: 0px;
 
                     // display: none;
-                    &::part(progress) {
-                        transition: unset;
-                    }
                 }
             }
         }

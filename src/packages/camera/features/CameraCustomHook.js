@@ -13,6 +13,10 @@ const useCamera = () => {
         quality: 100,
         storeToFile: true,
         enableHighResolution: true,
+        x: 100,
+        y: 0,
+        width: 100,
+        height: '80%',
     });
 
 
@@ -44,7 +48,7 @@ const useCamera = () => {
             console.log(existingImage[0].image_data, "wtfffff")
             await dbRequest.requestFunction(async () => await imagesService.deleteImageById([existingImage[0].image_id]));
         }
-        const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100, width: 3840, height: 2160 })).value;
+        const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100, width: 2880, height: 2160 })).value;
         const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesUrl + '/' + Date.now() + '.jpg')).uri;
         await dbRequest.requestFunction(async () => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, copiedPictureUri]));
 
