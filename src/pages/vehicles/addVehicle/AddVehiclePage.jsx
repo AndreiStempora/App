@@ -20,15 +20,15 @@ const AddVehicle = () => {
     const [scanResult, setScanResult] = useState('');
 
     const backToSelectVehiclesHandler = () => {
-        setCurrentSelection({ ...getCurrentSelection(), refreshPage: true });
+        // setCurrentSelection({ ...getCurrentSelection(), refreshPage: true });
         history.push("/vehicle-search");
 
     }
 
     const saveVehicleHandler = async (e) => {
         await searchInDbForVehicle(newCar);
-        const path = history.location.pathname.replace(/\/[^\/]*$/, '');
-        history.push({ pathname: `/vehicle-search`, state: { newCar } });
+        setCurrentSelection({ ...getCurrentSelection(), refreshPage: !getCurrentSelection().refreshPage });
+        history.push("/vehicle-search");
 
         // history.push("/vehicle-search");
     }

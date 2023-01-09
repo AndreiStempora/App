@@ -109,7 +109,7 @@ const FileUploader = ({ elements, setUploading, uploading, setRefresh }) => {
                     onDidDismiss={() => {
                         setUploading(false);
                         setAlert(false)
-                        setCurrentSelection({ ...getCurrentSelection(), refreshPage: true });
+                        setCurrentSelection({ ...getCurrentSelection(), refreshPage: !getCurrentSelection().refreshPage });
                     }}
                     header='Upload Complete'
                     message={alertMessage}

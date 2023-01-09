@@ -10,7 +10,7 @@ const user = {
     }),
     currentPath: atomWithStorage("lastPage", []),
     userDetails: atomWithStorage("userDetails", {}),
-    userCurrentSelections: atomWithStorage("userCurrentSelections", { dealership_id: null, vehicle_id: null, hotspot_type: null, hotspot_id: null, photo_id: null }),
+    userCurrentSelections: atomWithStorage("userCurrentSelections", { dealership_id: null, vehicle_id: null, hotspot_type: null, hotspot_id: null, photo_id: null, refreshPage:false }),
     getCurrentSelections: atom(null,
         (get, set, update) => {
             return get(user.userCurrentSelections);

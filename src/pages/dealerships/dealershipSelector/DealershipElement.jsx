@@ -8,8 +8,8 @@ const DealershipElement = ({ dealership }) => {
     const history = useHistory();
 
     const clickHandler = () => {
-        editSelection({ dealership_id: dealership.dealership_id });
-        history.push({ pathname: "/vehicle-search", state: { dealership } });
+        editSelection({...getSelection(), dealership_id: dealership.dealership_id });
+        history.push("/vehicle-search");
         // history.push({ pathname: `${history.location.pathname}/${dealership.dealership_id}`, state: { ...dealership } });
     }
 

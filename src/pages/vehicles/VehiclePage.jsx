@@ -26,28 +26,32 @@ const VehiclePage = (props) => {
     const [uploading, setUploading] = useState(false);
     const [elementsForUpload, setElementsForUpload] = useState([]);
 
-    useIonViewDidEnter(() => {
-        resetPage();
-        console.log('refresh');
-    });
+    // useIonViewDidEnter(() => {
+    //     resetPage();
+    //     console.log('refresh');
+    // });
 
     const resetPage = () => { setRefresh(!refresh) };
 
     useEffect(() => {
-        (async () => {
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-            setCars(cars);
-        })();
-
-        deselectAll();
+            (async () => {
+                const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
+                setCars(cars);
+                console.log(getCurrentSelection().refreshPage, 'refresh page')
+                // setCurrentSelection({ ...getCurrentSelection(), refreshPage: false });
+            })();
+            console.log('refresh+++++++++++++')
+            deselectAll();
+        
         return () => {
-            setCars([]);
+            // setCars([]);
+            // setRefresh(false);
         };
-    }, [refresh]);
+    }, [getCurrentSelection().refreshPage]);
 
     // if (getCurrentSelection().refreshPage) {
-    //     resetPage();
-    //     setCurrentSelection({ refreshPage: false });
+    //     console.log('refresh page wtf',getCurrentSelection().refreshPage)
+    //     // setRefresh(true);
     // }
 
     const setCheckValues = () => {
@@ -67,6 +71,7 @@ const VehiclePage = (props) => {
 
     const deselectAll = () => {
         if (showCheckbox) {
+            elementsRef.current = elementsRef.current.filter(element => element !== null);
             elementsRef.current?.forEach(element => {
                 element.querySelector('ion-checkbox').checked = false;
             });
@@ -118,7 +123,7 @@ const VehiclePage = (props) => {
                     elements={elementsForUpload}
                     setUploading={setUploading}
                     uploading={uploading}
-                    setRefresh={resetPage}
+                    // setRefresh={resetPage}
                 /> :
                 <>
                     <CustomHeader>
