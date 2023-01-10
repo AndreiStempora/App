@@ -27,7 +27,7 @@ const AddVehicle = () => {
 
     const saveVehicleHandler = async (e) => {
         await searchInDbForVehicle(newCar);
-        setCurrentSelection({ ...getCurrentSelection(), refreshPage: !getCurrentSelection().refreshPage });
+        setCurrentSelection('refresh');
         history.push("/vehicle-search");
 
         // history.push("/vehicle-search");

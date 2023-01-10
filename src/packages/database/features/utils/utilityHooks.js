@@ -10,6 +10,12 @@ const useRSelection = () => {
     const [, getCurrentSelection] = useAtom(user.getCurrentSelections);
 
     const editSelection = (selection) => {
+        if (selection === 'refresh') {
+            setCurrentSelection((currentSelection) => {
+                return { ...currentSelection, refreshPage: !getCurrentSelection().refreshPage }
+            })
+            return;
+        }
         setCurrentSelection((currentSelection) => {
             return { ...currentSelection, ...selection }
         })
@@ -109,7 +115,7 @@ const useDeleteUpload = () => {
         // let x = await FS.deleteFile(image.image_data);
         // // console.log(x);
         // if(x){
-        await dbRequest.requestFunction(async () => { await imagesService.deleteImageById([image.image_id]) });
+        return await dbRequest.requestFunction(async () => await imagesService.deleteImageById([image.image_id]));
         // }
     }
 

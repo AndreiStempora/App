@@ -6,20 +6,17 @@ import { FS } from "../../../packages/filesystem";
 import React from "react";
 import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import ImageOrPlaceholderComponent from "../../image/ImageOrPlaceholderComponent";
-import './itemWithPhoto.scss'
+import './vehicleItem.scss'
 
-const ItemWithPhoto = ({ item, image, showCheckbox, car, id }, ref) => {
+const VehicleItem = ({ item, image, showCheckbox, id }, ref) => {
     const dbRequest = useDbRequest();
     const [itemImage, setItemImage] = useState(null);
     const [editSelection, getCurrentSelection] = useRSelection();
+    const [checkmark, setCheckmark] = useState(false);
     const history = useHistory();
     const [img, setImg] = useState(null);
+    const checkboxRef = useRef(null);
     const checkboxClickHandler = () => { }
-
-    const itemClickHandler = () => {
-        editSelection({ vehicle_id: item.vehicle_id });
-        history.push("/vehicle-details");
-    }
 
     useEffect(() => {
         if (image) {
@@ -28,12 +25,23 @@ const ItemWithPhoto = ({ item, image, showCheckbox, car, id }, ref) => {
                 setImg(actualImage);
             })();
         }
-        // (async () => {
-        //     let data = await image;
-        //     const actualImage = await FS.showPicture(data?.image_data);
-        //     setImg(actualImage);
-        // })();
     }, []);
+
+    useEffect(() => {
+        console.log('checkmark', checkmark);
+        //     if (checkboxRef.current.checked) {
+        //         // setCheckmark(checkboxRef.current);
+        //         setCheckmark(true);
+        //     }
+        //     else {
+
+        //     }
+    }, [checkmark]);
+
+    const itemClickHandler = () => {
+        editSelection({ vehicle_id: item.vehicle_id });
+        history.push("/vehicle-details");
+    }
 
     return (
         <IonItem
@@ -42,21 +50,22 @@ const ItemWithPhoto = ({ item, image, showCheckbox, car, id }, ref) => {
             className={'element-with-pics'}
             ref={ref}
             id={id}
-        // data={item}
         >
-            <ImageOrPlaceholderComponent img={img} />
+            <ImageOrPlaceholderComponent img={img} checkmark={checkmark} />
             <IonLabel>
-                {car ? <h2>{item?.vehicle_vin}</h2> : <h2>{item?.name}</h2>}
-                <h3>{item?.vehicle_make} {item?.vehicle_model} {item?.vehicle_trim}</h3>
+                <h2>{item?.vehicle_make} {item?.vehicle_model} {item?.vehicle_trim}</h2>
+                <h3>{item?.vehicle_vin}</h3>
             </IonLabel>
-            {showCheckbox ?
+            {showCheckbox &&
                 <IonCheckbox
                     slot="end"
-                /> :
-                <IonIcon icon={'/assets/svgs/next.svg'}></IonIcon>
+                    ref={checkboxRef}
+
+                    onIonChange={() => setCheckmark(checkboxRef.current.checked)}
+                />
             }
         </IonItem>
     )
-};
+}
 
-export default React.forwardRef(ItemWithPhoto)
+export default React.forwardRef(VehicleItem);

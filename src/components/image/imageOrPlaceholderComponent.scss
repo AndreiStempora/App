@@ -1,21 +1,41 @@
-.image-container{
-    width:80px;
-    height:60px;
-    overflow:hidden;
-    margin:15px 15px 15px 0;
+.image-container {
+    width: 80px;
+    height: 60px;
+    overflow: hidden;
+    margin: 15px 15px 15px 0;
     display: block;
 
-    ion-img{
-        transform:rotate(-90deg) ;
-        width:60px;
-        height:80px;
-        margin:0 15px 15px 15px!important;
+    ion-img {
+        transition: transform 0.2s linear;
+        transform: rotate(-90deg);
+        width: 60px;
+        height: 80px;
+        margin: 0 15px 15px 15px !important;
         object-fit: cover;
-        &.placeholder{
-            transform:rotate(0deg) ;
-            height:60px;
-            width:80px;
-            margin:15 15px 15px 0px!important;
+        &.placeholder {
+            transform: rotate(0deg);
+            height: 60px;
+            width: 80px;
+            margin: 15 15px 15px 0px !important;
+        }
+    }
+}
+.image-component {
+    position: relative;
+    .car-checkmark {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 100;
+        color: #fff;
+        font-size: 20px;
+        margin: 0;
+        opacity: 1;
+        transform: translate(50%, -50%);
+    }
+    .item-checkbox-checked & {
+        ion-img {
+            // transform: scale(0.9);
         }
     }
 }

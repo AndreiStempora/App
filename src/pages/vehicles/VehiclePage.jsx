@@ -14,6 +14,8 @@ import './vehiclePage.scss';
 import { useHistory, useLocation } from 'react-router-dom';
 import ItemWIthPhoto from '../../components/vehicleComponents/hotspotsComponents/ItemWIthPhoto';
 import FileUploader from '../../components/uploader/FileUploader';
+import SlidingListItem from '../../components/vehicleComponents/hotspotsComponents/SlidingListItem';
+import VehicleItem from '../../components/vehicleComponents/hotspotsComponents/VehicleItem';
 
 const VehiclePage = (props) => {
     const dbRequest = useDbRequest();
@@ -25,34 +27,20 @@ const VehiclePage = (props) => {
     const elementsRef = useRef([]);
     const [uploading, setUploading] = useState(false);
     const [elementsForUpload, setElementsForUpload] = useState([]);
-
-    // useIonViewDidEnter(() => {
-    //     resetPage();
-    //     console.log('refresh');
-    // });
-
-    const resetPage = () => { setRefresh(!refresh) };
+    const [selectableItems, setSelectableItems] = useState(false);
 
     useEffect(() => {
-            (async () => {
-                const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-                setCars(cars);
-                console.log(getCurrentSelection().refreshPage, 'refresh page')
-                // setCurrentSelection({ ...getCurrentSelection(), refreshPage: false });
-            })();
-            console.log('refresh+++++++++++++')
-            deselectAll();
-        
+        (async () => {
+            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
+            setCars(cars);
+            console.log(getCurrentSelection().refreshPage, 'refresh page')
+        })();
+        console.log('refresh+++++++++++++')
+        deselectAll();
+
         return () => {
-            // setCars([]);
-            // setRefresh(false);
         };
     }, [getCurrentSelection().refreshPage]);
-
-    // if (getCurrentSelection().refreshPage) {
-    //     console.log('refresh page wtf',getCurrentSelection().refreshPage)
-    //     // setRefresh(true);
-    // }
 
     const setCheckValues = () => {
         let allChecked = true;
@@ -123,11 +111,9 @@ const VehiclePage = (props) => {
                     elements={elementsForUpload}
                     setUploading={setUploading}
                     uploading={uploading}
-                    // setRefresh={resetPage}
                 /> :
                 <>
                     <CustomHeader>
-
                         <IonButtons slot="start" >
                             {showCheckbox ? <IonButton onClick={editVehicleHandler}>Cancel</IonButton> :
                                 <IonButton defaultHref="/profile" >
@@ -146,14 +132,14 @@ const VehiclePage = (props) => {
                     </CustomHeader>
                     <CustomContent colSizesArr={[[12]]}>
                         <>
-                            <IonList>
+                            <IonList className='special-list'>
                                 {cars?.map((car, index) =>
-                                    <ItemWIthPhoto
+                                    <VehicleItem
                                         ref={(element) => elementsRef.current[index] = element}
                                         key={index}
                                         item={car}
                                         id={car.vehicle_id}
-                                        car={true}
+                                        // car={true}
                                         showCheckbox={showCheckbox}
                                     // image={car.image}
                                     />
