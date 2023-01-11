@@ -1,4 +1,4 @@
-import { IonList, IonTitle, IonButtons, IonButton, IonLoading, IonItem, IonIcon, IonRefresh, IonLabel, IonCheckbox, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
+import { IonList, IonTitle, IonButtons, IonButton, IonLoading, IonItem, useIonAlert, IonIcon, IonRefresh, IonLabel, IonCheckbox, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
 import { Page, CustomHeader, CustomContent, CustomFooter } from '../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../services/user/user';
@@ -11,10 +11,10 @@ import FooterAddVehicle from '../../components/page/pageMainComponents/footers/F
 import AdedVehiclesSearchItem from './searchVehicle/adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../components/page/pageMainComponents/footers/FooterDeleteUpload';
 import './vehiclePage.scss';
-import { useHistory, useLocation } from 'react-router-dom';
+
 import ItemWIthPhoto from '../../components/vehicleComponents/hotspotsComponents/ItemWIthPhoto';
 import FileUploader from '../../components/uploader/FileUploader';
-import SlidingListItem from '../../components/vehicleComponents/hotspotsComponents/SlidingListItem';
+
 import VehicleItem from '../../components/vehicleComponents/hotspotsComponents/VehicleItem';
 
 const VehiclePage = (props) => {
@@ -27,22 +27,23 @@ const VehiclePage = (props) => {
     const elementsRef = useRef([]);
     const [uploading, setUploading] = useState(false);
     const [elementsForUpload, setElementsForUpload] = useState([]);
-    const [selectableItems, setSelectableItems] = useState(false);
+    // const [selectableItems, setSelectableItems] = useState(false);
+    const [presentAlert] = useIonAlert();
 
     useEffect(() => {
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCars(cars);
-            console.log(getCurrentSelection().refreshPage, 'refresh page')
+            // console.log(getCurrentSelection().refreshPage, 'refresh page')
         })();
         console.log('refresh+++++++++++++')
         deselectAll();
-
-        return () => {
-        };
     }, [getCurrentSelection().refreshPage]);
 
+
+
     const setCheckValues = () => {
+        console.log('setCheckValues')
         let allChecked = true;
 
         elementsRef.current?.forEach(element => {
@@ -50,16 +51,15 @@ const VehiclePage = (props) => {
                 allChecked = false;
             }
         })
-
         elementsRef.current?.forEach(element => {
             element.querySelector('ion-checkbox').checked = !allChecked;
         });
-
     };
 
     const deselectAll = () => {
+        console.log('deselectAll')
         if (showCheckbox) {
-            elementsRef.current = elementsRef.current.filter(element => element !== null);
+            elementsRef.current = elementsRef.current?.filter(element => element !== null);
             elementsRef.current?.forEach(element => {
                 element.querySelector('ion-checkbox').checked = false;
             });
@@ -67,22 +67,55 @@ const VehiclePage = (props) => {
     };
 
     const editVehicleHandler = () => {
+        console.log('editVehicleHandler')
+        deselectAll();
         setShowCheckbox(!showCheckbox);
     };
 
 
+
     const deleteVehicleHandler = async () => {
         elementsRef.current = elementsRef.current.filter(element => element !== null);
-        await Promise.all(
-            elementsRef.current.map(async element => {
-                if (element.querySelector('ion-checkbox').checked) {
-                    console.log(element);
-                    return await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([element.id]));
-                }
-                return null;
+        const selectedVehicles = elementsRef.current.filter(element => element.querySelector('ion-checkbox').checked);
+        if (selectedVehicles.length) {
+            presentAlert({
+                header: 'Are you sure you want to delete selected vehicle/s?',
+                cssClass: 'custom-alert',
+                buttons: [
+                    {
+                        text: 'No',
+                        cssClass: 'alert-button-cancel',
+                    },
+                    {
+                        text: 'Yes',
+                        cssClass: 'alert-button-confirm',
+                        handler: async () => {
+                            await Promise.all(
+                                elementsRef.current.map(async element => {
+                                    if (element.querySelector('ion-checkbox').checked) {
+                                        console.log(element);
+                                        return await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([element.id]));
+                                    }
+                                    return null;
+                                })
+                            )
+                            setCurrentSelection('refresh');
+                        }
+                    },
+                ],
             })
-        )
-        setRefresh(!refresh);
+        } else {
+            presentAlert({
+                header: 'Please select at least one vehicle',
+                cssClass: 'custom-alert',
+                buttons: [
+                    {
+                        text: 'Ok',
+                        cssClass: 'alert-button-confirm',
+                    },
+                ],
+            })
+        }
     };
 
     const uploadVehicleHandler = () => {
@@ -125,7 +158,7 @@ const VehiclePage = (props) => {
                         <IonTitle className='ion-text-center'>Vehicles Page</IonTitle>
                         <IonButtons slot="end" >
                             <IonButton onClick={showCheckbox ? setCheckValues : editVehicleHandler}>
-                                {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg' /> : <IonIcon icon='/assets/svgs/edit1.svg'></IonIcon>}
+                                {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg' /> : <IonIcon icon='/assets/svgs/checklist.svg'></IonIcon>}
 
                             </IonButton>
                         </IonButtons>
@@ -141,6 +174,7 @@ const VehiclePage = (props) => {
                                         id={car.vehicle_id}
                                         // car={true}
                                         showCheckbox={showCheckbox}
+                                        setShowCheckbox={setShowCheckbox}
                                     // image={car.image}
                                     />
                                 )}

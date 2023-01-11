@@ -14,7 +14,7 @@ const ImageOrPlaceholderComponent = ({ img, checkmark }) => {
                     :
                     <IonImg src="/assets/img/carPicPlaceholder.png" className="placeholder" />
             }
-            {checkmark && <IonIcon className='car-checkmark' icon="/assets/svgs/VehicleCheck.svg" />}
+            <IonIcon className='car-checkmark' icon="/assets/svgs/VehicleCheck.svg" />
         </div>
     )
 }
