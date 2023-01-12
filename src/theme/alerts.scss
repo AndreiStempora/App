@@ -1,0 +1,18 @@
+ion-alert {
+    ion-backdrop {
+        --background: (0, 0, 0, 0.5);
+    }
+    .alert-wrapper {
+        &.ion-overlay-wrapper {
+            --background: #2e3134;
+            border-radius: 15px;
+            .alert-head {
+                font-family: "SF Pro Text", sans-serif;
+                font-weight: 400;
+                text-align: center;
+                font-size: 17px;
+                line-height: 22px;
+            }
+        }
+    }
+}

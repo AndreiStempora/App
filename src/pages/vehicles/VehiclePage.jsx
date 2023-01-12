@@ -23,18 +23,15 @@ const VehiclePage = (props) => {
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [showCheckbox, setShowCheckbox] = useState(false);
     const [cars, setCars] = useState([]);
-    const [refresh, setRefresh] = useState(false);
     const elementsRef = useRef([]);
     const [uploading, setUploading] = useState(false);
     const [elementsForUpload, setElementsForUpload] = useState([]);
-    // const [selectableItems, setSelectableItems] = useState(false);
     const [presentAlert] = useIonAlert();
 
     useEffect(() => {
         (async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCars(cars);
-            // console.log(getCurrentSelection().refreshPage, 'refresh page')
         })();
         console.log('refresh+++++++++++++')
         deselectAll();

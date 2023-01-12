@@ -18,6 +18,7 @@ import { Suspense } from "react";
 import { Redirect, Route } from 'react-router-dom';
 /* Theme variables */
 import './theme/variables.css';
+import './theme/alerts.scss';
 // import RestrictedRouting from './components/page/restrictedPages/RestrictedRouting';
 import DealershipsPage from './pages/dealerships/DealershipsPage';
 import LoginPage from './pages/login/LoginPage';

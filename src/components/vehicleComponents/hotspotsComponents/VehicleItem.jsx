@@ -12,12 +12,9 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
     const dbRequest = useDbRequest();
     const [itemImage, setItemImage] = useState(null);
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
-    const [checkmark, setCheckmark] = useState(false);
     const history = useHistory();
     const [img, setImg] = useState(null);
-    // const checkboxRef = useRef(null);
     const [startLongPress, setStartLongPress] = useState(false);
-    const checkboxClickHandler = () => { }
     const thisRef = useRef(null);
     const timerRef = useRef(null);
 
@@ -30,25 +27,20 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (showCheckbox) {
-    //         thisRef.current.closest('ion-item').querySelector('ion-checkbox').checked = true;
-    //     }
-    // }, [showCheckbox]);
-
     const start = useCallback((e) => {
         thisRef.current = e.target;
         timerRef.current = setTimeout(() => {
             setShowCheckbox(true);
-            // thisRef.current.closest('ion-item').querySelector('ion-checkbox').checked = true;
+            thisRef.current.closest('ion-item').querySelector('ion-checkbox').checked = true;
         }, 1000);
     }, []);
 
 
     const stop = useCallback((e) => {
         clearTimeout(timerRef.current);
-        console.log(showCheckbox, 'checkbox')
-        if (!showCheckbox) {
+        console.log(showCheckbox, 'checkbox');
+        console.log(thisRef.current.closest('ion-item').querySelector('ion-checkbox'), 'thisRef.current');
+        if (thisRef.current.closest('ion-item').querySelector('ion-checkbox') === null) {
             setCurrentSelection({ vehicle_id: item.vehicle_id });
             history.push("/vehicle-details");
         }
@@ -56,7 +48,6 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
 
     return (
         <IonItem
-            // onTouchStart={start}
             onTouchStart={start}
             onTouchEnd={stop}
             lines='full'
@@ -72,7 +63,6 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
             {showCheckbox &&
                 <IonCheckbox
                     slot="end"
-                // ref={checkboxRef}
                 />
             }
         </IonItem>
