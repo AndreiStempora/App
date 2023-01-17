@@ -37,7 +37,18 @@ const VehiclePage = (props) => {
         deselectAll();
     }, [getCurrentSelection().refreshPage]);
 
-
+    const alertSelectVehicles = () => {
+        return presentAlert({
+            header: 'Please select at least one vehicle',
+            cssClass: 'custom-alert',
+            buttons: [
+                {
+                    text: 'Ok',
+                    cssClass: 'alert-button-confirm',
+                },
+            ],
+        })
+    }
 
     const setCheckValues = () => {
         console.log('setCheckValues')
@@ -69,11 +80,8 @@ const VehiclePage = (props) => {
         setShowCheckbox(!showCheckbox);
     };
 
-
-
     const deleteVehicleHandler = async () => {
-        elementsRef.current = elementsRef.current.filter(element => element !== null);
-        const selectedVehicles = elementsRef.current.filter(element => element.querySelector('ion-checkbox').checked);
+        const selectedVehicles = getCurrentRefs();
         if (selectedVehicles.length) {
             presentAlert({
                 header: 'Are you sure you want to delete selected vehicle/s?',
@@ -102,30 +110,47 @@ const VehiclePage = (props) => {
                 ],
             })
         } else {
+            alertSelectVehicles();
+        }
+    };
+    const getCurrentRefs = () => {
+        elementsRef.current = elementsRef.current.filter(element => element !== null);
+        const selectedVehicles = elementsRef.current.filter(element => element.querySelector('ion-checkbox').checked);
+        return selectedVehicles;
+    }
+
+    const uploadVehicleHandler = () => {
+        const selectedVehicles = getCurrentRefs();
+        if (selectedVehicles.length) {
             presentAlert({
-                header: 'Please select at least one vehicle',
+                header: 'Are you sure you want to upload pictures of selected vehicle/s?',
                 cssClass: 'custom-alert',
                 buttons: [
                     {
-                        text: 'Ok',
+                        text: 'No',
+                        cssClass: 'alert-button-cancel',
+                    },
+                    {
+                        text: 'Yes',
                         cssClass: 'alert-button-confirm',
+                        handler: async () => {
+                            let forUpload = [];
+                            selectedVehicles.forEach(element => {
+                                if (element.querySelector('ion-checkbox').checked) {
+                                    forUpload.push(parseInt(element.id));
+                                }
+                            });
+                            console.log(forUpload);
+                            setElementsForUpload(forUpload);
+                            setUploading(true);
+                        }
                     },
                 ],
             })
-        }
-    };
 
-    const uploadVehicleHandler = () => {
-        elementsRef.current = elementsRef.current.filter(element => element !== null);
-        let forUpload = [];
-        elementsRef.current.forEach(element => {
-            if (element.querySelector('ion-checkbox').checked) {
-                forUpload.push(parseInt(element.id));
-            }
-        });
-        console.log(forUpload);
-        setElementsForUpload(forUpload);
-        setUploading(true);
+        } else {
+            alertSelectVehicles();
+        }
     };
 
     useEffect(() => {
@@ -169,10 +194,8 @@ const VehiclePage = (props) => {
                                         key={index}
                                         item={car}
                                         id={car.vehicle_id}
-                                        // car={true}
                                         showCheckbox={showCheckbox}
                                         setShowCheckbox={setShowCheckbox}
-                                    // image={car.image}
                                     />
                                 )}
                             </IonList>
@@ -196,159 +219,3 @@ const VehiclePage = (props) => {
 export default VehiclePage;
 
 
-// const dbRequest = useDbRequest();
-    // const [carsWithPics, setCarsWithPics] = useState([]);
-    // const [, getCurrentSelection] = useRSelection();
-    // const [userInfo] = useAtom(user.userDetails);
-    // const [showCheckbox, setShowCheckbox] = useState(false);
-    // const [checkedElements, setCheckedElements] = useState({});
-    // const [checkAll, setCheckAll] = useState(false);
-    // const delUpload = useDeleteUpload();
-    // // const locationRefresh = useLocation();
-    // const [refresh, setRefresh] = useState(true);
-    // // const refresh = useRef(true);
-    // const elementsRef = useRef([]);
-    // const history = useHistory();
-    // const [state, setState] = useState(props.location.state);
-
-    // if (props.location.state !== state) { setRefresh(true); setState(props.location.state) };
-
-    // const editVehicleHandler = () => {
-    //     setShowCheckbox(!showCheckbox);
-    // }
-
-    // const changeCheckedElements = (element) => {
-    //     setCheckedElements({ ...checkedElements, ...element });
-    // }
-
-    // const deleteVehicleHandler = async () => {
-    //     const collectedVehicles = getCheckValues();
-    //     const collectedVehicleIds = sortVehicles(collectedVehicles);
-    //     console.log("collectedVehicles: red", collectedVehicleIds);
-    //     await Promise.all(
-    //         collectedVehicleIds?.map(async (vehicle_id) => {
-    //             console.log("vehicle_id: ", vehicle_id);
-    //             let pictures = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle_id]));
-    //             console.log("pictures: ", pictures);
-    //             let deletedStatus = await Promise.all(
-    //                 pictures?.map(async (picture) => {
-    //                     return await dbRequest.requestFunction(async () => await imagesService.deleteImageById([picture.image_id]))
-    //                 })
-    //             )
-
-    //             if (deletedStatus?.every((status) => status === true)) {
-    //                 console.log("deletedStatus: ", deletedStatus);
-    //                 await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]));
-    //                 console.log(vehicle_id, " was deleted");
-    //             }
-    //             return null;
-    //         }));
-    //     setRefresh(true);
-    //     setCheckValues(false);
-    // }
-
-    // const uploadVehicleHandler = async () => {
-    //     const collectedVehicles = getCheckValues();
-    //     const collectedVehicleIds = sortVehicles(collectedVehicles);
-    //     console.log("collectedVehicles: upload", collectedVehicleIds);
-    //     // const collectedVehicleIds = sortVehicles(checkedElements);
-    //     let x = await Promise.all(collectedVehicleIds?.map(async (vehicle_id) => {
-    //         const pictures = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle_id]));
-    //         let x = await Promise.all(
-    //             pictures?.map(async (picture) => {
-    //                 console.log("picture: ", picture);
-    //                 let result = await delUpload.uploadImage(picture);
-    //                 console.log("result: ", result);
-    //                 return result;
-    //             })
-    //         )
-    //         console.log(x, "request.onreadystatechange")
-    //         await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([vehicle_id]));
-    //         return true;
-    //     }));
-    //     console.log(x, "wtf?")
-    //     // console.log(x, "wtf?")
-    //     setRefresh(true);
-    // }
-
-
-    // const sortVehicles = (elements) => {
-    //     const selectedElements = [];
-    //     Object.keys(elements).forEach((key) => {
-    //         if (elements[key]) {
-    //             selectedElements.push(parseInt(key));
-    //         }
-    //     });
-    //     return selectedElements;
-    // }
-
-    // const getCheckValues = () => {
-    //     const checkElements = {};
-    //     // console.log(elementsRef.current, "elementsRef.current")
-    //     if (elementsRef.current[elementsRef.current.length - 1] === null) {
-    //         elementsRef.current.pop();
-    //     }
-    //     elementsRef.current?.map((element, index) => {
-    //         if (element !== null) {
-    //             checkElements[element.data?.vehicle_id] = element.querySelector('ion-checkbox').checked;
-    //         }
-    //         // console.log(checkElements[element.data.vehicle_id] = element.querySelector('ion-checkbox').checked, "checkElements")
-    //         return null;
-    //     });
-    //     return checkElements;
-    // }
-
-    // const setCheckValues = (bull) => {
-    //     let newCheckValues;
-    //     if (bull !== true || bull !== false) {
-    //         if (Object.values(getCheckValues()).includes(false)) {
-    //             newCheckValues = true;
-    //         } else {
-    //             newCheckValues = false;
-    //         }
-    //         console.log('bull === undefined')
-    //     } else {
-    //         newCheckValues = bull;
-    //         console.log('bull =!!!!!= undefined')
-    //     }
-
-    //     while (elementsRef.current[elementsRef.current.length - 1] === null) {
-    //         elementsRef.current.pop();
-    //     }
-    //     console.log(newCheckValues, "newCheckValues")
-    //     elementsRef.current?.map((element, index) => {
-    //         element.querySelector('ion-checkbox').checked = newCheckValues;
-    //         return null;
-    //     });
-    // }
-
-    // const getAllPicturesForEachVehicle = async (vehicles) => {
-    //     console.log(vehicles, "vehicles");
-    //     return await Promise.all(vehicles.map(async (vehicle) => {
-    //         return await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([vehicle]));
-    //     }));
-    // }
-
-    // useEffect(() => {
-    //     if (refresh) {
-    //         (async () => {
-    //             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-    //             setCarsWithPics(cars);
-
-    //             console.log(cars, "cars activated");
-    //         })();
-    //         console.log(state, "state", refresh, "refresh", props.location.state, "props.location.state")
-    //         setRefresh(false);
-    //         // console.log(history.location.pathname, "history.location")
-    //     }
-    //     // return () => {
-    //     //     console.log("unmounted");
-    //     //     setCarsWithPics([]);
-    //     // }
-    //     // console.log(locationRefresh, "locationRefresh")
-    // }, [refresh]);
-
-    // // useIonViewDidEnter(() => {
-    // //     console.log("ionViewDidEnter");
-    // //     setRefresh(true);
-    // // });

@@ -27,40 +27,39 @@ const FileUploader = ({ elements, setUploading, uploading, setRefresh }) => {
         if (uploading) {
             (async () => {
                 let allPictures = await Promise.all(elements.map(async (element) => {
-                    // console.log(element, 'element')
                     const pics = await dbRequest.requestFunction(async () => imagesService.getAllImagesByVehicleId([element]));
                     return pics;
                 })
                 )
                 allPictures = allPictures.flat();
                 setUploadElements(allPictures);
-                // await for each image to be uploaded before moving on to the next one
                 let array = [];
                 console.log(allPictures, 'allPictures')
                 while (currentFile.current < allPictures.length) {
                     let data = await delUpload.uploadImage(allPictures[currentFile.current]);
-                    console.log(data, " -----------------------------------", currentFile.current)
                     const serverResponse = await axios.post(uploadURL, data, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         },
                         onUploadProgress: function (axiosProgressEvent) {
-                            const progress = Math.ceil(axiosProgressEvent.loaded / axiosProgressEvent.total) / allPictures.length;
+                            const progress = (Math.ceil(axiosProgressEvent.loaded / axiosProgressEvent.total) / allPictures.length);
                             currentLoadTotal.current = currentLoadTotal.current + progress;
                             setUploadPercent(currentLoadTotal.current);
+                            console.log(currentLoadTotal.current, 'currentLoadTotal.current', progress, 'progress', currentFile.current, 'currentFile.current', allPictures.length, 'allPictures.length')
                         },
                     }).then(async (res) => {
                         if (res.status === 200) {
+                            console.log('success', res.status)
                             return await delUpload.deleteImage(allPictures[currentFile.current]);
                         } else {
                             return false;
                         }
                     })
 
-                    array.push(serverResponse);
-
+                    array.push(await serverResponse);
+                    console.log(await serverResponse, 'serverResponse')
                     if (serverResponse) {
-                        currentFile.current++;
+                        currentFile.current = currentFile.current + 1;
                         setCurrentUpload(currentFile.current);
                     }
                 }
@@ -71,12 +70,6 @@ const FileUploader = ({ elements, setUploading, uploading, setRefresh }) => {
                     setAlertMessage('Something went wrong, the Pictures that have not been uploaded will not be deleted from the device, so you can try uploading them again');
                 }
                 setAlert(true);
-
-                // allPictures.map(async (element, index) => {
-                //     if (responses[index]) {
-                //         await delUpload.deleteImage(element);
-                //     }
-                // })
 
                 elements.map(async (element) => {
                     const picturesLeft = await dbRequest.requestFunction(async () => imagesService.getAllImagesByVehicleId([element]));
