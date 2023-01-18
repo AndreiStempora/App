@@ -1,6 +1,6 @@
 import { IonItem, IonImg, IonCheckbox, IonLabel, IonIcon } from "@ionic/react"
 import { useEffect, useState, useRef, useCallback } from "react"
-import { useDbRequest, imagesService } from "../../../packages/database";
+import { useDbRequest, imagesService, hotspotsService } from "../../../packages/database";
 import { useHistory } from "react-router";
 import { FS } from "../../../packages/filesystem";
 import React from "react";
@@ -19,12 +19,24 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
     const timerRef = useRef(null);
 
     useEffect(() => {
-        if (image) {
-            (async () => {
-                const actualImage = await FS.showPicture(image?.image_data);
-                setImg(actualImage);
-            })();
-        }
+        (async () => {
+            const vehicleImages = await dbRequest.requestFunction(async () => await imagesService.getAllImagesByVehicleId([item.vehicle_id]));
+            if (vehicleImages.length > 0) {
+                const hotspotsByType = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([getCurrentSelection().dealership_id, 2]));
+
+                const matchingImageWithHotspot = vehicleImages.filter((image) => {
+                    return hotspotsByType.some((hotspot) => {
+                        return image.hotspot_id === hotspot.hotspot_id;
+                    });
+                })
+                if (matchingImageWithHotspot.length > 0) {
+                    matchingImageWithHotspot.sort((a, b) => a.hotspot_id - b.hotspot_id);
+                    const actualImage = await FS.showPicture(matchingImageWithHotspot[0].image_data);
+                    setImg(actualImage);
+                }
+            }
+        })();
+
     }, []);
 
     const start = useCallback((e) => {

@@ -20,7 +20,7 @@ const AddVehicle = () => {
     const [scanResult, setScanResult] = useState('');
 
     const backToSelectVehiclesHandler = () => {
-        // setCurrentSelection({ ...getCurrentSelection(), refreshPage: true });
+        setCurrentSelection('refresh');
         history.push("/vehicle-search");
 
     }
@@ -29,8 +29,6 @@ const AddVehicle = () => {
         await searchInDbForVehicle(newCar);
         setCurrentSelection('refresh');
         history.push("/vehicle-search");
-
-        // history.push("/vehicle-search");
     }
 
     const extractIdAndUpdate = async (vehicle) => {

@@ -16,6 +16,7 @@ import ItemWIthPhoto from '../../components/vehicleComponents/hotspotsComponents
 import FileUploader from '../../components/uploader/FileUploader';
 
 import VehicleItem from '../../components/vehicleComponents/hotspotsComponents/VehicleItem';
+import { network } from '../../packages/network';
 
 const VehiclePage = (props) => {
     const dbRequest = useDbRequest();
@@ -33,7 +34,7 @@ const VehiclePage = (props) => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             setCars(cars);
         })();
-        console.log('refresh+++++++++++++')
+
         deselectAll();
     }, [getCurrentSelection().refreshPage]);
 
@@ -119,37 +120,50 @@ const VehiclePage = (props) => {
         return selectedVehicles;
     }
 
-    const uploadVehicleHandler = () => {
-        const selectedVehicles = getCurrentRefs();
-        if (selectedVehicles.length) {
-            presentAlert({
-                header: 'Are you sure you want to upload pictures of selected vehicle/s?',
+    const uploadVehicleHandler = async () => {
+        if (await network.getCurrentNetworkStatus()) {
+            const selectedVehicles = getCurrentRefs();
+            if (selectedVehicles.length) {
+                presentAlert({
+                    header: 'Are you sure you want to upload pictures of selected vehicle/s?',
+                    cssClass: 'custom-alert',
+                    buttons: [
+                        {
+                            text: 'No',
+                            cssClass: 'alert-button-cancel',
+                        },
+                        {
+                            text: 'Yes',
+                            cssClass: 'alert-button-confirm',
+                            handler: async () => {
+                                let forUpload = [];
+                                selectedVehicles.forEach(element => {
+                                    if (element.querySelector('ion-checkbox').checked) {
+                                        forUpload.push(parseInt(element.id));
+                                    }
+                                });
+                                console.log(forUpload);
+                                setElementsForUpload(forUpload);
+                                setUploading(true);
+                            }
+                        },
+                    ],
+                })
+
+            } else {
+                alertSelectVehicles();
+            }
+        } else {
+            return presentAlert({
+                header: 'No internet connection',
                 cssClass: 'custom-alert',
                 buttons: [
                     {
-                        text: 'No',
-                        cssClass: 'alert-button-cancel',
-                    },
-                    {
-                        text: 'Yes',
+                        text: 'Ok',
                         cssClass: 'alert-button-confirm',
-                        handler: async () => {
-                            let forUpload = [];
-                            selectedVehicles.forEach(element => {
-                                if (element.querySelector('ion-checkbox').checked) {
-                                    forUpload.push(parseInt(element.id));
-                                }
-                            });
-                            console.log(forUpload);
-                            setElementsForUpload(forUpload);
-                            setUploading(true);
-                        }
                     },
                 ],
             })
-
-        } else {
-            alertSelectVehicles();
         }
     };
 

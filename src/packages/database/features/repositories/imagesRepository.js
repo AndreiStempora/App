@@ -2,7 +2,7 @@ import DB from "../database";
 import { logService } from "../services/logService";
 
 const imagesRepository = {
-    
+
     //insert a new image
     insertImage: async ([image_status, image_type, hotspot_id, vehicle_id, image_data]) => {
         return new Promise(async (resolve, reject) => {
@@ -16,17 +16,17 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'insert error');
-                    logService.insertLog([new Date().getTime(), [image_status, image_type, hotspot_id, vehicle_id, image_data], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [image_status, image_type, hotspot_id, vehicle_id, image_data], "Image inserted successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'insert error');
+                        logService.insertLog([new Date().getTime(), [image_status, image_type, hotspot_id, vehicle_id, image_data], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [image_status, image_type, hotspot_id, vehicle_id, image_data], "Image inserted successfully"]);
+                    }
+                );
         });
     },
 
@@ -47,17 +47,17 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'getAllImages error');
-                    logService.insertLog([new Date().getTime(), "", error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), "", "All images retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'getAllImages error');
+                        logService.insertLog([new Date().getTime(), "", error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), "", "All images retrieved successfully"]);
+                    }
+                );
         });
     },
 
@@ -78,17 +78,17 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'getImageById error');
-                    logService.insertLog([new Date().getTime(), [image_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [image_id], "Image retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'getImageById error');
+                        logService.insertLog([new Date().getTime(), [image_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [image_id], "Image retrieved successfully"]);
+                    }
+                );
         });
     },
 
@@ -109,17 +109,17 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'getAllImagesByVehicleId error');
-                    logService.insertLog([new Date().getTime(), [vehicle_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_id], "All images retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'getAllImagesByVehicleId error');
+                        logService.insertLog([new Date().getTime(), [vehicle_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_id], "All images retrieved successfully"]);
+                    }
+                );
         });
     },
 
@@ -140,17 +140,17 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'getAllImagesByHotspotId error');
-                    logService.insertLog([new Date().getTime(), [hotspot_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [hotspot_id], "All images retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'getAllImagesByHotspotId error');
+                        logService.insertLog([new Date().getTime(), [hotspot_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [hotspot_id], "All images retrieved successfully"]);
+                    }
+                );
         });
     },
 
@@ -167,17 +167,17 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'deleteImage error');
-                    logService.insertLog([new Date().getTime(), [image_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [image_id], "Image deleted successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'deleteImage error');
+                        logService.insertLog([new Date().getTime(), [image_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [image_id], "Image deleted successfully"]);
+                    }
+                );
         });
     },
 
@@ -194,17 +194,17 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'deleteAllImagesByVehicleId error');
-                    logService.insertLog([new Date().getTime(), [vehicle_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_id], "All images deleted successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'deleteAllImagesByVehicleId error');
+                        logService.insertLog([new Date().getTime(), [vehicle_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_id], "All images deleted successfully"]);
+                    }
+                );
         });
     },
     //get image by vehicle id and hotspot id
@@ -224,20 +224,20 @@ const imagesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    // console.log(error, 'getImageByVehicleIdAndHotspotId error');
-                    logService.insertLog([new Date().getTime(), [vehicle_id, hotspot_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_id, hotspot_id], "Image retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        // console.log(error, 'getImageByVehicleIdAndHotspotId error');
+                        logService.insertLog([new Date().getTime(), [vehicle_id, hotspot_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_id, hotspot_id], "Image retrieved successfully"]);
+                    }
+                );
         });
-    }
-    
+    },
+
 
 
 }

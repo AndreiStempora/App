@@ -13,10 +13,6 @@ const useCamera = () => {
         quality: 100,
         storeToFile: true,
         enableHighResolution: true,
-        x: 100,
-        y: 0,
-        width: 100,
-        height: '80%',
     });
 
 

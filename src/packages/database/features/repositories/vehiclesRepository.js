@@ -8,27 +8,27 @@ const vehiclesRepository = {
             (await DB.dbInstance())
                 .transaction((tx) => {
                     tx.executeSql(
-                        `INSERT OR REPLACE INTO vehicles (dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim) VALUES (?,?,?,?,?,?,?)`, 
+                        `INSERT OR REPLACE INTO vehicles (dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim) VALUES (?,?,?,?,?,?,?)`,
                         [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim],
                         (tx, res) => {
                             resolve(res);
-                    });
+                        });
                 },
-                //transaction error
-                (error) => {
-                    console.log(error, 'transaction error');
-                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim], vehicle_vin, error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim] , "Vehicle inserted successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error, 'transaction error');
+                        logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim], vehicle_vin, error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim], "Vehicle inserted successfully"]);
+                    }
+                );
         });
     },
 
-    addVehicle : async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]) => {
+    addVehicle: async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]) => {
         return new Promise(async (resolve, reject) => {
             (await DB.dbInstance())
 
@@ -40,20 +40,20 @@ const vehiclesRepository = {
                             resolve(res);
                         });
                 },
-                //transaction error
-                (error) => {
-                    console.log(error, 'transaction error');
-                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior], "Vehicle inserted successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error, 'transaction error');
+                        logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior], "Vehicle inserted successfully"]);
+                    }
+                );
         });
     },
-    
+
     //get all vehicles
     getAllVehicles: async () => {
         return new Promise(async (resolve, reject) => {
@@ -71,17 +71,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), "", error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), "", "Vehicles retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), "", error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), "", "Vehicles retrieved successfully"]);
+                    }
+                );
         });
     },
     //get a vehicle by id
@@ -97,17 +97,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [vehicle_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_id], "Vehicle retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [vehicle_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_id], "Vehicle retrieved successfully"]);
+                    }
+                );
         });
     },
     //delete a vehicle by id
@@ -123,17 +123,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [vehicle_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_id], "Vehicle deleted successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [vehicle_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_id], "Vehicle deleted successfully"]);
+                    }
+                );
         });
     },
 
@@ -154,13 +154,13 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), "", error]);
-                    reject(error);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), "", error]);
+                        reject(error);
+                    }
+                );
         });
     },
 
@@ -181,17 +181,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin], "Vehicles retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [dealership_id, vehicle_vin], "Vehicles retrieved successfully"]);
+                    }
+                );
         });
     },
     //get all vehicles by dealership id
@@ -211,17 +211,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [dealership_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [dealership_id], "Vehicles retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [dealership_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [dealership_id], "Vehicles retrieved successfully"]);
+                    }
+                );
         });
     },
 
@@ -237,17 +237,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [dealership_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [dealership_id], "Vehicles deleted successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [dealership_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [dealership_id], "Vehicles deleted successfully"]);
+                    }
+                );
         });
     },
     //get vehicle by vin    
@@ -263,17 +263,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [vehicle_vin], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_vin], "Vehicle retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [vehicle_vin], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_vin], "Vehicle retrieved successfully"]);
+                    }
+                );
         });
     },
     //get vehicle by stock number
@@ -289,17 +289,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [vehicle_stock], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_stock], "Vehicle retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [vehicle_stock], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_stock], "Vehicle retrieved successfully"]);
+                    }
+                );
         });
     },
     //update vehicle hotspots and interior by id
@@ -315,17 +315,17 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_hotspots, vehicle_interior], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_hotspots, vehicle_interior], "Vehicle updated successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_hotspots, vehicle_interior], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_hotspots, vehicle_interior], "Vehicle updated successfully"]);
+                    }
+                );
         });
     },
 
@@ -346,20 +346,19 @@ const vehiclesRepository = {
                         }
                     );
                 },
-                //transaction error
-                (error) => {
-                    console.log(error);
-                    logService.insertLog([new Date().getTime(), [dealership_id], error]);
-                    reject(error);
-                },
-                //transaction success
-                () => {
-                    logService.insertLog([new Date().getTime(), [dealership_id], "Vehicles retrieved successfully"]);
-                }
-            );
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [dealership_id], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [dealership_id], "Vehicles retrieved successfully"]);
+                    }
+                );
         });
     }
-   
 
 
 
