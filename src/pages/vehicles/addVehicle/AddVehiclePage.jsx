@@ -22,10 +22,9 @@ const AddVehicle = () => {
     const backToSelectVehiclesHandler = () => {
         setCurrentSelection('refresh');
         history.push("/vehicle-search");
-
     }
 
-    const saveVehicleHandler = async (e) => {
+    const saveVehicleHandler = async () => {
         await searchInDbForVehicle(newCar);
         setCurrentSelection('refresh');
         history.push("/vehicle-search");

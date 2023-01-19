@@ -10,12 +10,12 @@ const OpenedScanner = ({ close }) => {
     }
     return (
         <>
-            <CustomHeader>
+            {/* <CustomHeader>
                 <IonButtons slot="start">
                     <IonButton onClick={closeScan}>X</IonButton>
                 </IonButtons>
                 <IonTitle className='ion-text-center'>SCAN</IonTitle>
-            </CustomHeader>
+            </CustomHeader> */}
             <CustomContent>
                 <div className="outer-layer">
 

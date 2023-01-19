@@ -1,10 +1,12 @@
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 
 const useBarcodeScanner = () => {
     const startScan = async () => {
         await BarcodeScanner.checkPermission({ force: true });
         // BarcodeScanner.hideBackground();
-        const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
+        ScreenOrientation.unlock();
+        const result = await BarcodeScanner.startScan({ targetedFormats: [SupportedFormat.CODE_39] }); // start scanning and wait for a result
         if (result.hasContent) {
             console.log(result.content); // log the raw scanned content
             // BarcodeScanner.showBackground();
@@ -14,6 +16,7 @@ const useBarcodeScanner = () => {
 
     const stopScan = async () => {
         // BarcodeScanner.showBackground();
+        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
         await BarcodeScanner.stopScan();
     };
 
