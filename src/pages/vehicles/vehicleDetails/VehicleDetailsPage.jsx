@@ -19,7 +19,7 @@ const VehicleDetails = () => {
     // const refreshX = useRef(true);
     // const [refresh, setRefresh] = useState(true);
     // let refresh = true;
-    const location = useLocation();
+    // const location = useLocation();
 
     const getPicturesFromHotspots = async (hotspots) => {
         return await Promise.all(
@@ -34,6 +34,7 @@ const VehicleDetails = () => {
             })
         )
     }
+
     const getPictureCount = async (hotspots) => {
         let counter = 0;
         hotspots.map(async (hotspot) => {
@@ -64,7 +65,7 @@ const VehicleDetails = () => {
 
 
 
-    }, [location]);
+    }, []);
 
 
 
@@ -82,7 +83,6 @@ const VehicleDetails = () => {
                 <IonButtons slot="start">
                     <CustomBackButton
                         href={'vehicle-search'}
-                    // extraFunction={goBackToVehiclesPageHandler} 
                     />
                 </IonButtons>
                 <IonTitle className='ion-text-center'>Vehicle Details</IonTitle>

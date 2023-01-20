@@ -51,27 +51,21 @@ const AddVehicle = () => {
 
     const openScannerHandler = async () => {
         setHidePageContent(true);
-        let result = await scanner.startScan();
+        const result = await scanner.startScan();
+        setScanResult(result);
         console.log('result', result, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         setNewCar(result);
-        setScanResult(result);
     }
 
     const closeScannerHandler = async () => {
         setHidePageContent(false);
+        setScanResult('');
         await scanner.stopScan();
     }
 
     useEffect(() => {
-        // console.log('scanResult', scanResult);
         setHidePageContent(false);
     }, [scanResult]);
-
-
-
-    useEffect(() => {
-
-    }, [disabledSave]);
 
     return (
         <Page pageClass={`addVehicle ${hidePageContent ? 'camera-open' : ''}`}>

@@ -18,28 +18,13 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const [allVehicles, setAllVehicles] = useState(null);
     const searchBar = useRef();
 
-    // console.log(searchText, 'searchText');
-
     useEffect(() => {
-        console.log(scanResult.length, 'scanResult++++++++++++++');
-        if (scanResult.length > 0) {
-            setSearchText(scanResult);
-            // console.log('scanResult', scanResult);
-        }
         (async () => {
             const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([getCurrentSelection().dealership_id]));
             setAllVehicles(response);
-            // console.log('response2', response);
+            setSearchText(scanResult);
         })();
     }, []);
-
-    // useEffect(() => {
-    //     if (scanResult !== '') {
-    //         // setSearchText(newCar);
-    //         setSearchText(scanResult);
-    //         console.log('scanResult', scanResult);
-    //     }
-    // }, [scanResult]);
 
     const filterFunc = async () => {
         if (allVehicles !== null) {
@@ -97,13 +82,12 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
             <IonSearchbar
                 value={searchText}
                 ref={searchBar}
-                debounce={1000}
+                debounce={1300}
                 onIonChange={e => setSearchText(e.target.value)}
                 setClearButton="focus"
             />
 
             <IonList >
-                {/* {searchText.length < 3 && <div className="ion-text-center">Search by Vin or Stock number, write at least 3 characters to see the filtered vehicles</div>} */}
                 {filteredVehicles && filteredVehicles?.map((vehicle, index) => (
                     <VehicleSearchItem
                         key={index}

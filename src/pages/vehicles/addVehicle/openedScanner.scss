@@ -1,5 +1,4 @@
 .addVehicle {
-    // position: relative;
     &.camera-open {
         background-image: none;
         > * {
@@ -7,44 +6,61 @@
         }
         ion-content {
             position: relative;
-            -webkit-box-shadow: inset 0px 0px 40px 90px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: inset 0px 0px 40px 90px rgba(0, 0, 0, 0.75);
-            box-shadow: inset 0px 0px 40px 90px rgba(0, 0, 0, 0.75);
             ion-row {
                 height: 100%;
-                .outer-layer {
-                    top: 0;
-                    width: 100vw;
-                    height: calc(100% + 30px);
-                    margin-left: -30px;
-                    // background-color: rgba(0, 0, 0, 0.5);
-                    transform: translateY(-15px);
+                ion-col {
                     position: relative;
-                    // clip-path: polygon(
-                    //     0% 0%,
-                    //     0% 100%,
-                    //     33% 100%,
-                    //     33% 24%,
-                    //     67% 24%,
-                    //     67% 76%,
-                    //     0% 77%,
-                    //     0% 100%,
-                    //     100% 100%,
-                    //     100% 0%
-                    // );
-
-                    .inner-layer {
-                        // clip-path: polygon(25% 22%, 69% 22%, 69% 78%, -113% 74%);
+                    .layer {
+                        position: absolute;
                         width: 100%;
                         height: 100%;
-                        .scan-area {
-                            width: 100%;
-                            height: 20%;
+                        top: 0;
+                        left: 0;
+
+                        &::before {
+                            border-top: 3px solid red;
+                            border-left: 3px solid red;
+                            border-radius: 40px 0 0 0;
+                            top: 35%;
+                            left: 15%;
+                        }
+
+                        &::after {
+                            border-bottom: 3px solid green;
+                            border-right: 3px solid green;
+                            border-radius: 0 0 40px;
+                            top: calc(65% - 40px);
+                            left: calc(85% - 40px);
+                        }
+                        &::before,
+                        &::after {
+                            content: "";
                             position: absolute;
-                            border: 5px solid yellow;
-                            top: 50%;
-                            left: 0;
-                            transform: translateY(-50%) rotate(90deg);
+                            width: 40px;
+                            height: 40px;
+                            box-sizing: border-box;
+                        }
+                        &:nth-child(2) {
+                            transform: scaleX(-1);
+                        }
+                    }
+                }
+            }
+        }
+        &.portrait-view {
+            ion-content {
+                ion-row {
+                    ion-col {
+                        .layer {
+                            &::before {
+                                top: 20%;
+                                left: 20%;
+                            }
+
+                            &::after {
+                                top: calc(80% - 40px);
+                                left: calc(80% - 40px);
+                            }
                         }
                     }
                 }

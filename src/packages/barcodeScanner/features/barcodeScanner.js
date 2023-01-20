@@ -4,18 +4,21 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 const useBarcodeScanner = () => {
     const startScan = async () => {
         await BarcodeScanner.checkPermission({ force: true });
-        // BarcodeScanner.hideBackground();
         ScreenOrientation.unlock();
-        const result = await BarcodeScanner.startScan({ targetedFormats: [SupportedFormat.CODE_39] }); // start scanning and wait for a result
-        if (result.hasContent) {
-            console.log(result.content); // log the raw scanned content
-            // BarcodeScanner.showBackground();
-            return result.content;
-        }
+        ScreenOrientation.onChange().subscribe(() => {
+
+            if ((ScreenOrientation.type).includes('landscape')) {
+                document.querySelector('.addVehicle')?.classList.add('portrait-view');
+            } else {
+                document.querySelector('.addVehicle')?.classList.remove('portrait-view');
+            }
+        })
+        const scannedCode = (await BarcodeScanner.startScan({ targetedFormats: [SupportedFormat.CODE_39] })).content;
+        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
+        return scannedCode;
     }
 
     const stopScan = async () => {
-        // BarcodeScanner.showBackground();
         ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
         await BarcodeScanner.stopScan();
     };
@@ -25,14 +28,10 @@ const useBarcodeScanner = () => {
     };
 
     const checkPermission = async () => {
-        // check or request permission
         const status = await BarcodeScanner.checkPermission({ force: true });
-
         if (status.granted) {
-            // the user granted permission
             return true;
         }
-
         return false;
     }
 
