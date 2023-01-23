@@ -1,4 +1,4 @@
-import { IonBackButton, IonButtons, IonLabel, IonTitle, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter } from "@ionic/react";
+import { IonBackButton, IonButtons, IonItem, IonLabel, IonTitle, IonButton, IonIcon, useIonViewWillEnter, useIonAlert, useIonViewDidEnter } from "@ionic/react";
 import { Page, CustomHeader, CustomContent } from "../../../components/page/Page";
 import { useHistory, useLocation } from "react-router";
 import { useDbRequest, vehiclesService, imagesService } from "../../../packages/database";
@@ -16,6 +16,7 @@ const VehicleDetails = () => {
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [vehicle, setVehicle] = useState({});
     const [elements, setElements] = useState({});
+    const [presentAlert] = useIonAlert();
     // const refreshX = useRef(true);
     // const [refresh, setRefresh] = useState(true);
     // let refresh = true;
@@ -60,21 +61,47 @@ const VehicleDetails = () => {
                 vehicle: vehicle
             };
             setElements(elements2);
-
         })();
-
-
-
-    }, []);
+    }, [getCurrentSelection().vehicle_id]);
 
 
 
     const goToPhotosHandler = (type) => {
-        setCurrentSelection({ hotspot_type: type });
+        setCurrentSelection({ hotspot_type: type, refresh: !getCurrentSelection().refresh });
         history.push('/vehicle-photos');
     }
 
+    const addVehicleNameHandler = () => {
+        presentAlert({
+            header: 'Add Car Name',
+            buttons: [
+                { text: 'Cancel', role: 'cancel' },
+                {
+                    text: 'Add',
+                    handler: async (data) => {
+                        console.log(data);
+                        await dbRequest.requestFunction(async () => await vehiclesService.updateVehicleMakeAndModelById([getCurrentSelection().vehicle_id, data[0], data[1]]));
+                        const vehicle = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id]));
+                        setElements({ ...elements, vehicle: vehicle });
+                    }
+                }
+            ],
+            inputs: [
+                {
+                    placeholder: 'Maker name',
+                    value: elements.vehicle?.vehicle_make
+                },
+                {
+                    placeholder: 'Car model',
+                    value: elements.vehicle?.vehicle_model
+                }
+            ],
+        })
+    }
+
     const goBackToVehiclesPageHandler = () => {
+        setCurrentSelection('refresh');
+        history.push('/vehicle-search');
     }
 
     return (
@@ -82,15 +109,19 @@ const VehicleDetails = () => {
             <CustomHeader>
                 <IonButtons slot="start">
                     <CustomBackButton
-                        href={'vehicle-search'}
+                        extraFunction={goBackToVehiclesPageHandler}
                     />
                 </IonButtons>
                 <IonTitle className='ion-text-center'>Vehicle Details</IonTitle>
             </CustomHeader>
             <CustomContent colSizesArr={[12, 12]}>
                 <div className="">
-                    <IonLabel>
+                    <IonItem lines="none" className="vehicle-name">
                         <h3>Vehicle: {elements.vehicle?.vehicle_make} {elements.vehicle?.vehicle_model}</h3>
+                        <IonButton fill='clear' slot="end" onClick={addVehicleNameHandler}><IonIcon icon='/assets/svgs/edit1.svg'></IonIcon></IonButton>
+                    </IonItem>
+                    <IonLabel>
+
                         <h3>VIN: {elements.vehicle?.vehicle_vin}</h3>
                     </IonLabel>
                 </div>

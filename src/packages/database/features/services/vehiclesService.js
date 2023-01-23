@@ -70,6 +70,9 @@ const vehiclesService = {
     getVehiclesWithPics: async ([dealership_id]) => {
         return await vehiclesRepository.getVehiclesWithPics([dealership_id]);
     },
+    updateVehicleMakeAndModelById: async ([vehicle_id, vehicle_make, vehicle_model]) => {
+        return await vehiclesRepository.updateVehicleMakeAndModelById([vehicle_id, vehicle_make, vehicle_model]);
+    }
 
 }
 

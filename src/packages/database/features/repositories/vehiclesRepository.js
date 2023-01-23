@@ -358,6 +358,33 @@ const vehiclesRepository = {
                     }
                 );
         });
+    },
+
+    //add or edit vehicle_make and vehicle_model to vehicle by vehicle_id
+    updateVehicleMakeAndModelById: async ([vehicle_id, vehicle_make, vehicle_model]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `UPDATE vehicles SET vehicle_make = ?, vehicle_model = ? WHERE vehicle_id = ?`,
+                        [vehicle_make, vehicle_model, vehicle_id],
+                        (tx, res) => {
+                            resolve(res);
+                        }
+                    );
+                },
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_make, vehicle_model], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [vehicle_id, vehicle_make, vehicle_model], "Vehicle updated successfully"]);
+                    }
+                );
+        });
     }
 
 

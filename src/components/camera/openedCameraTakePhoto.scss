@@ -7,20 +7,20 @@
     // height: 100vw;
     // position: relative;
     .camera-header {
-        transform-origin: top left;
-        transform: rotate(270deg) translateX(-100%);
-        transition: transform 1s linear;
-        width: 100vh;
-        top: 0;
-        left: 0;
-        position: absolute;
+        // transform-origin: top left;
+        // transform: rotate(270deg) translateX(-100%);
+        // transition: transform 1s linear;
+        // width: 100vh;
+        // top: 0;
+        // left: 0;
+        // position: absolute;
     }
     .camera-footer {
-        transform-origin: bottom right;
-        transform: rotate(270deg) translateX(100%);
-        width: 100vh;
-        bottom: 0;
-        right: 0;
-        position: absolute;
+        // transform-origin: bottom right;
+        // transform: rotate(270deg) translateX(100%);
+        // width: 100vh;
+        // bottom: 0;
+        // right: 0;
+        // position: absolute;
     }
 }

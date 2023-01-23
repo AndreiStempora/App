@@ -1,69 +1,71 @@
-.vehiclePhotos{
-    ion-row{
+.vehiclePhotos {
+    ion-row {
         height: 100%;
-        .centered-camera-button{
-            display:flex;
+        .centered-camera-button {
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
             justify-content: center;
-            ion-buttons{
+            ion-buttons {
                 justify-content: center;
-                ion-button{
+                ion-button {
                     height: 50px;
-                    margin-bottom:30px;
-                    ion-icon{
+                    margin-bottom: 30px;
+                    ion-icon {
                         font-size: 50px;
                     }
                 }
             }
-            ion-label{
-                width:50%;
+            ion-label {
+                width: 50%;
                 text-align: center;
             }
         }
     }
-    &.camera-open{
-        background-image:none;
-        // background-color:transparent;
-        ion-header,ion-content,ion-footer{
-            opacity:1;
+    &.camera-open {
+        background-image: none;
+        background-color: transparent;
+        ion-header,
+        ion-content,
+        ion-footer {
+            opacity: 1;
         }
-        .checkmarks{
+        .checkmarks {
             height: 80vh;
-            ion-list{
+            ion-list {
                 height: 100%;
-                ion-item{
+                ion-item {
                     height: 100%;
                     position: relative;
-                    &::part(native){
+                    &::part(native) {
                         transform-origin: center center;
                         width: 80vh;
                         height: 100vw;
                         // transform: rotate(90deg);
                     }
-                    >ion-checkbox{
+                    > ion-checkbox {
                         // position: absolute;
-                        top:0;
-                        left:0;
-                        &:nth-of-type(3){
-                            transform:translate(50px, 100px);
+                        top: 0;
+                        left: 0;
+                        &:nth-of-type(3) {
+                            transform: translate(50px, 100px);
                         }
-                        
-                        .item-native{
+
+                        .item-native {
                             height: 80vh;
                         }
-                        
                     }
                 }
             }
         }
     }
-    &:not(.camera-open){
-        ion-header,ion-content,ion-footer{
-            opacity:1;
+    &:not(.camera-open) {
+        ion-header,
+        ion-content,
+        ion-footer {
+            opacity: 1;
         }
     }
 }
-

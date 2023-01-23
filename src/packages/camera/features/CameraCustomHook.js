@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { FS } from '../../../packages/filesystem';
 import { useDbRequest, imagesService } from "../../../packages/database";
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 
 const useCamera = () => {
     const [cameraPreview, setCameraPreview] = useState(false);
@@ -13,6 +14,11 @@ const useCamera = () => {
         quality: 100,
         storeToFile: true,
         enableHighResolution: true,
+        // x: 0,
+        // y: 0,
+        // rotateWhenOrientationChanged: true,
+        // disableExifHeaderStripping: false,
+        // paddingBottom: 100,
     });
 
 
@@ -28,12 +34,23 @@ const useCamera = () => {
 
 
     const startCamera = async () => {
+        ScreenOrientation.unlock();
         await CameraPreview.start(cameraPreviewOptions);
         setCameraPreview(true);
+        ScreenOrientation.onChange().subscribe(async () => {
+            // await CameraPreview.stop();
+            // await CameraPreview.start(cameraPreviewOptions);
+            if ((ScreenOrientation.type).includes('landscape')) {
+                document.querySelector('.addVehicle')?.classList.add('portrait');
+            } else {
+                document.querySelector('.addVehicle')?.classList.remove('portrait');
+            }
+        })
     };
 
     const stopCamera = async () => {
         await CameraPreview.stop();
+        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
         setCameraPreview(false);
     };
 

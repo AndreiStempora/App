@@ -9,45 +9,42 @@ import FooterAddVehicle from "../../../components/page/pageMainComponents/footer
 import HotspotWithPic from "./hotspotWithPhotoItem/HotspotWithPic";
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
 import { useHistory } from "react-router";
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 import "./vehiclePhotos.scss";
 
 
 const VehiclePhotos = () => {
     const dbRequest = useDbRequest();
     const hotspotHook = useHotspot();
-    const [editCurrentSelection, getCurrentSelection] = useRSelection();
+    const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [hidePageContent, setHidePageContent] = useState(false);
     const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState([]);
     const history = useHistory();
     const camera = useCamera();
-    const [refresh, setRefresh] = useState(false);
 
     const openCameraHandler = async () => {
         setHidePageContent(true);
         console.log('open camera handler');
-        // await camera.startCamera();
+        await camera.startCamera();
     };
 
     useEffect(() => {
         (async () => {
-            if (getCurrentSelection().cameraOn) {
-                setHidePageContent(true);
-                console.log('effect camera start')
-                await camera.startCamera();
-            }
+            // if (getCurrentSelection().cameraOn) {
+            //     setHidePageContent(true);
+            //     console.log('effect camera start')
+            //     await camera.startCamera();
+            // }
         })();
 
         if (hidePageContent === false) {
+            ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
             (async () => {
                 const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
                 setHotspotsWithPhotos(currentHotspotsWithPhotos);
             })();
         }
     }, [hidePageContent]);
-
-    useIonViewWillEnter(() => {
-        setRefresh(true);
-    });
 
     useEffect(() => {
         (async () => {
@@ -57,7 +54,9 @@ const VehiclePhotos = () => {
             setHotspotsWithPhotos(currentHotspotsWithPhotos);
             console.log('entered vehicle photos')
         })();
-    }, [refresh]);
+
+    }, [getCurrentSelection().refresh]);
+
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
             {!hidePageContent ?

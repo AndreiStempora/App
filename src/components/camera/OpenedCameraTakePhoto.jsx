@@ -16,13 +16,14 @@ const OpenedCameraTakePhoto = ({ camera, setHidePageContent }) => {
     }
 
     useEffect(() => {
-        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE);
+        // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE);
         editCurrentSelection({ cameraOn: true });
     }, []);
 
     return (
         <>
-            <IonHeader className="opaque-bg camera-header">
+
+            <IonHeader className="camera-header">
                 <IonButtons>
                     <IonButton onClick={closeCameraHandler}><IonIcon src='/assets/svgs/previous.svg' /></IonButton>
                 </IonButtons>
