@@ -48,6 +48,7 @@ const VehicleDetails = () => {
 
     useEffect(() => {
         (async () => {
+            console.log('vehicle details page');
             const interior = await hotspotHook.getHotspotsWithPhotos(1);
             const exterior = await hotspotHook.getHotspotsWithPhotos(2);
             const interiorPhotos = await getPictureCount(interior);

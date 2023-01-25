@@ -14,11 +14,13 @@ const useCamera = () => {
         quality: 100,
         storeToFile: true,
         enableHighResolution: true,
-        // x: 0,
-        // y: 0,
+        x: 0,
+        y: 0,
         // rotateWhenOrientationChanged: true,
         // disableExifHeaderStripping: false,
         // paddingBottom: 100,
+        // width: window.screen.height,
+        // height: window.screen.width,
     });
 
 
@@ -34,23 +36,30 @@ const useCamera = () => {
 
 
     const startCamera = async () => {
-        ScreenOrientation.unlock();
+        // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE);
+        // ScreenOrientation.unlock();
+        console.log(window.screen.orientation, 'screen.orientation')
         await CameraPreview.start(cameraPreviewOptions);
         setCameraPreview(true);
-        ScreenOrientation.onChange().subscribe(async () => {
-            // await CameraPreview.stop();
-            // await CameraPreview.start(cameraPreviewOptions);
-            if ((ScreenOrientation.type).includes('landscape')) {
-                document.querySelector('.addVehicle')?.classList.add('portrait');
-            } else {
-                document.querySelector('.addVehicle')?.classList.remove('portrait');
-            }
-        })
+        // ScreenOrientation.onChange().subscribe(async () => {
+        await CameraPreview.stop();
+        await CameraPreview.start(cameraPreviewOptions);
+
+        if ((ScreenOrientation.type).includes('landscape')) {
+            document.querySelector('.addVehicle')?.classList.add('portrait');
+        } else {
+            document.querySelector('.addVehicle')?.classList.remove('portrait');
+        }
+        // })
     };
 
     const stopCamera = async () => {
+        // ScreenOrientation.prototype.get(ori => { console.log(ori, 'ori') })
         await CameraPreview.stop();
-        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
+        await ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
+
+        // await ScreenOrientation.onChange().unsubscribe();
+        console.log(ScreenOrientation.type, 'ScreenOrientation.type', ScreenOrientation.ORIENTATIONS, 'ScreenOrientation.ORIENTATIONS')
         setCameraPreview(false);
     };
 

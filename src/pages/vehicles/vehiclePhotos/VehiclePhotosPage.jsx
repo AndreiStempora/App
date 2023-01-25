@@ -38,7 +38,8 @@ const VehiclePhotos = () => {
         })();
 
         if (hidePageContent === false) {
-            ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
+            // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
+            // console.log(ScreenOrientation.ORIENTATIONS, 'portrait')
             (async () => {
                 const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
                 setHotspotsWithPhotos(currentHotspotsWithPhotos);
@@ -50,11 +51,9 @@ const VehiclePhotos = () => {
         (async () => {
             const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
             console.log(getCurrentSelection().hotspot_type, 'hotspot type', currentHotspotsWithPhotos);
-
             setHotspotsWithPhotos(currentHotspotsWithPhotos);
             console.log('entered vehicle photos')
         })();
-
     }, [getCurrentSelection().refresh]);
 
     return (
