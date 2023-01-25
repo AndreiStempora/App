@@ -11,17 +11,17 @@ import './cameraPage.scss';
 
 const CameraPage = () => {
     const [cameraOn, setCameraOn] = useState(false);
-    const [pic,setPic] = useState(null);
+    const [pic, setPic] = useState(null);
     const [filesUrl, setFilesUrl] = useState(null);
 
     useEffect(() => {
-        (async()=>{
+        (async () => {
             await FS.createDirectory('images');
             await FS.readDirectory('images');
-            const url = await Filesystem.getUri({path:'images',directory:Directory.Data});
+            const url = await Filesystem.getUri({ path: 'images', directory: Directory.Data });
             setFilesUrl(url.uri);
         })()
-    },[])
+    }, [])
 
     return (
         <Page pageClass={"cameraPage"}>
@@ -30,7 +30,7 @@ const CameraPage = () => {
             </IonHeader>
             <IonContent>
                 {/* <ExteriorCamera filesPath={filesUrl} /> */}
-                <Camera/>
+                <Camera />
             </IonContent>
             <IonFooter>
                 <CameraControls filesPath={filesUrl} />

@@ -68,7 +68,7 @@ const VehicleDetails = () => {
 
 
     const goToPhotosHandler = (type) => {
-        setCurrentSelection({ hotspot_type: type, refresh: !getCurrentSelection().refresh });
+        setCurrentSelection({ hotspot_type: type, refreshPage: !getCurrentSelection().refreshPage });
         history.push('/vehicle-photos');
     }
 

@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react';
 import { FS } from '../../../packages/filesystem';
 import { useDbRequest, imagesService } from "../../../packages/database";
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
+import { useRSelection } from '../../database/features/utils/utilityHooks';
 
 const useCamera = () => {
     const [cameraPreview, setCameraPreview] = useState(false);
     const dbRequest = useDbRequest();
     const [filesUrl, setFilesUrl] = useState(null);
+    const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [cameraPreviewOptions, setCameraPreviewOptions] = useState({
         toBack: true,
         quality: 100,
@@ -33,39 +34,35 @@ const useCamera = () => {
         })()
     }, [])
 
-
-
     const startCamera = async () => {
-        // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE);
-        // ScreenOrientation.unlock();
-        console.log(window.screen.orientation, 'screen.orientation')
+        window.screen.orientation.unlock();
+        let counter = 0;
+        window.screen.orientation.addEventListener('change', async () => {
+            if (window.screen.orientation.type.includes('landscape')) {
+                if (counter === 0) {
+                    await CameraPreview.stop();
+                    await CameraPreview.start(cameraPreviewOptions);
+                }
+                counter++;
+                document.querySelector('.vehiclePhotos')?.classList.add('landscape');
+            } else {
+                document.querySelector('.vehiclePhotos')?.classList.remove('landscape');
+            }
+        })
         await CameraPreview.start(cameraPreviewOptions);
         setCameraPreview(true);
-        // ScreenOrientation.onChange().subscribe(async () => {
-        await CameraPreview.stop();
-        await CameraPreview.start(cameraPreviewOptions);
-
-        if ((ScreenOrientation.type).includes('landscape')) {
-            document.querySelector('.addVehicle')?.classList.add('portrait');
-        } else {
-            document.querySelector('.addVehicle')?.classList.remove('portrait');
-        }
-        // })
     };
 
     const stopCamera = async () => {
-        // ScreenOrientation.prototype.get(ori => { console.log(ori, 'ori') })
         await CameraPreview.stop();
-        await ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
-
-        // await ScreenOrientation.onChange().unsubscribe();
-        console.log(ScreenOrientation.type, 'ScreenOrientation.type', ScreenOrientation.ORIENTATIONS, 'ScreenOrientation.ORIENTATIONS')
+        await window.screen.orientation.lock('portrait-primary');
+        window.screen.orientation.removeEventListener('change', () => { });
         setCameraPreview(false);
+        setCurrentSelection('refresh');
     };
 
     const takePicture = async (hotspot_id, vehicle_id) => {
         const existingImage = await dbRequest.requestFunction(async () => await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot_id]));
-        console.log(existingImage, 'existingImage');
         if (existingImage.length !== 0) {
             console.log(existingImage[0].image_data, "wtfffff")
             await dbRequest.requestFunction(async () => await imagesService.deleteImageById([existingImage[0].image_id]));
@@ -74,17 +71,6 @@ const useCamera = () => {
         const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesUrl + '/' + Date.now() + '.jpg')).uri;
         await dbRequest.requestFunction(async () => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, copiedPictureUri]));
 
-        const dirContent = await FS.readDirectory('images');
-        console.log(dirContent, 'dirContent');
-
-        // console.log(filesPath, 'filesPath');
-        // console.log(result);
-        // const contents = await Filesystem.readFile({ path: copiedPictureUri });
-        // const base64PictureData = "data:image/jpg;base64," + contents.data;
-        // console.log(base64PictureData);
-
-        // let x = await dbRequest.requestFunction(() => imagesService.getAllImages());
-        // console.log(x, 'x');
     };
 
     return {

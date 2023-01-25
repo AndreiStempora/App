@@ -29,17 +29,8 @@ const VehiclePhotos = () => {
     };
 
     useEffect(() => {
-        (async () => {
-            // if (getCurrentSelection().cameraOn) {
-            //     setHidePageContent(true);
-            //     console.log('effect camera start')
-            //     await camera.startCamera();
-            // }
-        })();
-
         if (hidePageContent === false) {
-            // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
-            // console.log(ScreenOrientation.ORIENTATIONS, 'portrait')
+            window.screen.orientation.lock('portrait-primary');
             (async () => {
                 const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
                 setHotspotsWithPhotos(currentHotspotsWithPhotos);
@@ -49,12 +40,11 @@ const VehiclePhotos = () => {
 
     useEffect(() => {
         (async () => {
+            setHotspotsWithPhotos([]);
             const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
-            console.log(getCurrentSelection().hotspot_type, 'hotspot type', currentHotspotsWithPhotos);
             setHotspotsWithPhotos(currentHotspotsWithPhotos);
-            console.log('entered vehicle photos')
         })();
-    }, [getCurrentSelection().refresh]);
+    }, [getCurrentSelection().refreshPage]);
 
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
