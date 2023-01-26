@@ -13,23 +13,23 @@ const HotspotSwiper = ({ camera }) => {
     const hotspotHook = useHotspot();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [slides, setSlides] = useState(null);
-    const [swiper,setSwiper] = useState(null);
-    const [image,setImage] = useState(null);
+    const [swiper, setSwiper] = useState(null);
+    const [image, setImage] = useState(null);
     const history = useHistory();
     const [imageLoading, setImageLoading] = useState(true);
 
     const getPicture = async () => {
-        try{
+        try {
             const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
-            if(imageObj.length > 0){
+            if (imageObj.length > 0) {
                 const img = await FS.showPicture(imageObj[0].image_data);
                 setImage(img);
             } else {
                 setImage(null);
             }
-        } catch(err){
+        } catch (err) {
             console.log(err);
-        } finally{
+        } finally {
             setImageLoading(false);
         }
 
@@ -37,12 +37,12 @@ const HotspotSwiper = ({ camera }) => {
 
     const takePictureHandler = async () => {
         await camera.takePicture(getCurrentSelection().hotspot_id, getCurrentSelection().vehicle_id);
-        if(swiper.activeIndex === swiper.slides.length - 1){
+        if (swiper.activeIndex === swiper.slides.length - 1) {
             swiper.slideTo(0);
         } else {
             swiper.slideNext();
         }
-        
+
     }
 
     const selectInitialSlide = async (hotspots) => {
@@ -61,7 +61,7 @@ const HotspotSwiper = ({ camera }) => {
 
     useEffect(() => {
         (async () => {
-            if(swiper !== null){
+            if (swiper !== null) {
                 const hotspots = await hotspotHook.getCurrentHotspotsByType();
                 await selectInitialSlide(hotspots);
             }
@@ -70,7 +70,7 @@ const HotspotSwiper = ({ camera }) => {
 
     const pictureClickHandler = async () => {
         const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
-        editCurrentSelection({photo_id: imageObj[0].image_id});
+        editCurrentSelection({ photo_id: imageObj[0].image_id });
         console.log('picture clicked', imageObj);
         await camera.stopCamera();
         history.push('/hotspot-photo');
@@ -82,8 +82,8 @@ const HotspotSwiper = ({ camera }) => {
                 <div className="img-container" onClick={pictureClickHandler}>
                     {
                         imageLoading ?
-                        <IonSpinner name="lines-sharp"></IonSpinner> :
-                        <IonImg src={image!==null ? image : '/assets/img/carPicPlaceholder.png'}></IonImg>
+                            <IonSpinner name="lines-sharp"></IonSpinner> :
+                            <IonImg src={image !== null ? image : '/assets/img/carPicPlaceholder.png'}></IonImg>
                     }
                 </div>
             </IonCol>
@@ -101,7 +101,7 @@ const HotspotSwiper = ({ camera }) => {
                     initialSlide={0}
                     onSlideChange={async (swiper) => {
                         const id = swiper.slides[swiper.activeIndex].getAttribute('data-id');
-                        editCurrentSelection({hotspot_id: parseInt(id)});
+                        editCurrentSelection({ hotspot_id: parseInt(id) });
                         await getPicture();
                     }}
                     onInit={(swiper) => {

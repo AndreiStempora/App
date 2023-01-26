@@ -9,15 +9,17 @@ const OpenedCameraTakePhoto = ({ camera, setHidePageContent }) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
 
     const closeCameraHandler = async () => {
-        await camera.stopCamera();
-        editCurrentSelection({ cameraOn: false });
         setHidePageContent(false);
-        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
+        await camera.stopCamera();
+        // editCurrentSelection({ cameraOn: false });
+        // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
+
+        // editCurrentSelection('refresh');
     }
 
     useEffect(() => {
         // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE);
-        editCurrentSelection({ cameraOn: true });
+
     }, []);
 
     return (

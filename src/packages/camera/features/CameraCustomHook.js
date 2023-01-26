@@ -50,6 +50,7 @@ const useCamera = () => {
             }
         })
         await CameraPreview.start(cameraPreviewOptions);
+        setCurrentSelection({ cameraOn: true });
         setCameraPreview(true);
     };
 

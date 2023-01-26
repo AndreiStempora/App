@@ -5,7 +5,7 @@ import { FS } from '../../../../packages/filesystem';
 import ImageOrPlaceholderComponent from '../../../../components/image/ImageOrPlaceholderComponent';
 import './hotspotWithPic.scss';
 
-const HotspotItemWithPic = ({ hotspotWithPhoto, openCamera }) => {
+const HotspotWithPic = ({ hotspotWithPhoto, openCamera }) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [currentHotspot, setCurrentHotspot] = useState();
     const [hotspotImage, setHotspotImage] = useState();
@@ -26,7 +26,7 @@ const HotspotItemWithPic = ({ hotspotWithPhoto, openCamera }) => {
                     const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
                     setHotspotImage(image);
                 } else {
-                    setHotspotImage(null);
+                    // setHotspotImage(null);
                 }
             } catch (err) {
                 console.log(err);
@@ -49,4 +49,4 @@ const HotspotItemWithPic = ({ hotspotWithPhoto, openCamera }) => {
     )
 }
 
-export default HotspotItemWithPic;
+export default HotspotWithPic;

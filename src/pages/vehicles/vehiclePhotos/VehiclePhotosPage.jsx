@@ -18,7 +18,7 @@ const VehiclePhotos = () => {
     const hotspotHook = useHotspot();
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [hidePageContent, setHidePageContent] = useState(false);
-    const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState([]);
+    const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState();
     const history = useHistory();
     const camera = useCamera();
 
@@ -28,20 +28,21 @@ const VehiclePhotos = () => {
         await camera.startCamera();
     };
 
-    useEffect(() => {
-        if (hidePageContent === false) {
-            window.screen.orientation.lock('portrait-primary');
-            (async () => {
-                const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
-                setHotspotsWithPhotos(currentHotspotsWithPhotos);
-            })();
-        }
-    }, [hidePageContent]);
+    // useEffect(() => {
+    //     if (hidePageContent === false) {
+    //         window.screen.orientation.lock('portrait-primary');
+    //         (async () => {
+    //             // const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+    //             // setHotspotsWithPhotos(currentHotspotsWithPhotos);
+    //         })();
+    //     }
+    // }, [hidePageContent]);
 
     useEffect(() => {
+        // setHotspotsWithPhotos([]);
         (async () => {
-            setHotspotsWithPhotos([]);
             const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+            console.log('currentHotspotsWithPhotos', currentHotspotsWithPhotos)
             setHotspotsWithPhotos(currentHotspotsWithPhotos);
         })();
     }, [getCurrentSelection().refreshPage]);
@@ -54,7 +55,7 @@ const VehiclePhotos = () => {
                         <CustomHeader>
                             <IonButtons slot="start">
                                 <CustomBackButton //extraFunction={backButtonHandler} 
-                                    href={'vehicle-details'}
+                                    href={'/vehicle-details'}
                                 />
                             </IonButtons>
                             <IonTitle className='ion-text-center'>Vehicle Photos</IonTitle>
@@ -82,7 +83,9 @@ const VehiclePhotos = () => {
                         <FooterAddVehicle photoBtn={true} />
                     </>
                 ) : (
-                    <OpenedCameraTakePhoto setHidePageContent={setHidePageContent} camera={camera} />
+                    <OpenedCameraTakePhoto
+                        setHidePageContent={setHidePageContent} camera={camera}
+                    />
                 )}
         </Page>
     )
