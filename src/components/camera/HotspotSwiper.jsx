@@ -6,10 +6,11 @@ import { Navigation } from 'swiper';
 import { useHotspot } from '../../packages/database/features/utils/utilityHooks';
 import { useHistory } from 'react-router';
 import { FS } from '../../packages/filesystem';
+import useCamera from '../../packages/camera/features/CameraCustomHook';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const HotspotSwiper = ({ camera }) => {
+const HotspotSwiper = () => {
     const hotspotHook = useHotspot();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [slides, setSlides] = useState(null);
@@ -17,6 +18,7 @@ const HotspotSwiper = ({ camera }) => {
     const [image, setImage] = useState(null);
     const history = useHistory();
     const [imageLoading, setImageLoading] = useState(true);
+    const camera = useCamera();
 
     const getPicture = async () => {
         try {

@@ -10,6 +10,7 @@ import HotspotWithPic from "./hotspotWithPhotoItem/HotspotWithPic";
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
 import { useHistory } from "react-router";
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
+import { FS } from "../../../packages/filesystem";
 import "./vehiclePhotos.scss";
 
 
@@ -18,9 +19,10 @@ const VehiclePhotos = () => {
     const hotspotHook = useHotspot();
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [hidePageContent, setHidePageContent] = useState(false);
-    const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState();
+    const [hotspotsWithPhoto, setHotspotsWithPhotos] = useState([]);
     const history = useHistory();
     const camera = useCamera();
+    const [imageLoading, setImageLoading] = useState(true);
 
     const openCameraHandler = async () => {
         setHidePageContent(true);
@@ -28,24 +30,28 @@ const VehiclePhotos = () => {
         await camera.startCamera();
     };
 
-    // useEffect(() => {
-    //     if (hidePageContent === false) {
-    //         window.screen.orientation.lock('portrait-primary');
-    //         (async () => {
-    //             // const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
-    //             // setHotspotsWithPhotos(currentHotspotsWithPhotos);
-    //         })();
-    //     }
-    // }, [hidePageContent]);
-
     useEffect(() => {
-        // setHotspotsWithPhotos([]);
         (async () => {
-            const currentHotspotsWithPhotos = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
-            console.log('currentHotspotsWithPhotos', currentHotspotsWithPhotos)
-            setHotspotsWithPhotos(currentHotspotsWithPhotos);
+            const hotspotsWithPhotoLocations = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+            let newEl = Promise.all(hotspotsWithPhotoLocations.map(async (hotspotWithPhoto) => {
+                if (hotspotWithPhoto[1] !== undefined) {
+                    const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
+                    hotspotWithPhoto[1] = image;
+                } else {
+                    hotspotWithPhoto[1] = null;
+                }
+                return hotspotWithPhoto;
+            }));
+
+            setHotspotsWithPhotos(await newEl);
+            setImageLoading(false);
         })();
     }, [getCurrentSelection().refreshPage]);
+
+    const backButtonHandler = async () => {
+        setCurrentSelection('refresh');
+        history.push('/vehicle-details');
+    };
 
     return (
         <Page pageClass={`vehiclePhotos ${hidePageContent ? 'camera-open' : ''}`}>
@@ -54,9 +60,7 @@ const VehiclePhotos = () => {
                     <>
                         <CustomHeader>
                             <IonButtons slot="start">
-                                <CustomBackButton //extraFunction={backButtonHandler} 
-                                    href={'/vehicle-details'}
-                                />
+                                <CustomBackButton extraFunction={backButtonHandler} />
                             </IonButtons>
                             <IonTitle className='ion-text-center'>Vehicle Photos</IonTitle>
                         </CustomHeader>
@@ -65,6 +69,7 @@ const VehiclePhotos = () => {
                                 {hotspotsWithPhoto?.map((hotspotWithPhoto, index) => (
                                     <HotspotWithPic
                                         key={index}
+                                        imageLoading={imageLoading}
                                         hotspotWithPhoto={hotspotWithPhoto}
                                         openCamera={openCameraHandler}
                                     >

@@ -3,18 +3,21 @@ import { useRSelection } from "../../packages/database/features/utils/utilityHoo
 import HotspotSwiper from "./HotspotSwiper";
 import { ScreenOrientation } from "@awesome-cordova-plugins/screen-orientation";
 import { useEffect } from "react";
+import useCamera from "../../packages/camera/features/CameraCustomHook";
 import "./openedCameraTakePhoto.scss";
 
-const OpenedCameraTakePhoto = ({ camera, setHidePageContent }) => {
+const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
+    const camera = useCamera();
 
     const closeCameraHandler = async () => {
         setHidePageContent(false);
         await camera.stopCamera();
+
         // editCurrentSelection({ cameraOn: false });
         // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
 
-        // editCurrentSelection('refresh');
+        editCurrentSelection('refresh');
     }
 
     useEffect(() => {

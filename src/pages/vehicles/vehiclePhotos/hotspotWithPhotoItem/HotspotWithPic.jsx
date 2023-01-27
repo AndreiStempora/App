@@ -5,11 +5,11 @@ import { FS } from '../../../../packages/filesystem';
 import ImageOrPlaceholderComponent from '../../../../components/image/ImageOrPlaceholderComponent';
 import './hotspotWithPic.scss';
 
-const HotspotWithPic = ({ hotspotWithPhoto, openCamera }) => {
+const HotspotWithPic = ({ hotspotWithPhoto, openCamera, imageLoading }) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [currentHotspot, setCurrentHotspot] = useState();
     const [hotspotImage, setHotspotImage] = useState();
-    const [imageLoading, setImageLoading] = useState(true);
+    // const [imageLoading, setImageLoading] = useState(true);
 
 
     const selectItemHandler = async () => {
@@ -17,33 +17,14 @@ const HotspotWithPic = ({ hotspotWithPhoto, openCamera }) => {
         await openCamera();
     }
 
-    useEffect(() => {
-        (async () => {
-            setCurrentHotspot(hotspotWithPhoto[0]);
-            // console.log('i am confused')
-            try {
-                if (hotspotWithPhoto[1] !== undefined) {
-                    const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
-                    setHotspotImage(image);
-                } else {
-                    // setHotspotImage(null);
-                }
-            } catch (err) {
-                console.log(err);
-            } finally {
-                setImageLoading(false);
-            }
-        })();
-    }, []);
-
     return (
         <IonItem onClick={selectItemHandler} className={'item-with-picture'}>
             {
                 imageLoading ?
                     <IonSpinner name="lines-sharp"></IonSpinner> :
-                    <ImageOrPlaceholderComponent img={hotspotImage} />
+                    <ImageOrPlaceholderComponent img={hotspotWithPhoto[1]} />
             }
-            <IonLabel>{currentHotspot?.hotspot_name}</IonLabel>
+            <IonLabel>{hotspotWithPhoto[0]?.hotspot_name}</IonLabel>
             <IonIcon class='forward-icon' icon={`/assets/svgs/next.svg`}></IonIcon>
         </IonItem>
     )

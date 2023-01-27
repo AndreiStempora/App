@@ -63,7 +63,7 @@ const VehicleDetails = () => {
             };
             setElements(elements2);
         })();
-    }, [getCurrentSelection().vehicle_id]);
+    }, [getCurrentSelection().vehicle_id, getCurrentSelection().refreshPage]);
 
 
 
