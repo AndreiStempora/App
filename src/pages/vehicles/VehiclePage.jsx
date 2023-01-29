@@ -36,6 +36,9 @@ const VehiclePage = (props) => {
         })();
 
         deselectAll();
+        return () => {
+            setCars([]);
+        }
     }, [getCurrentSelection().refreshPage]);
 
     const alertSelectVehicles = () => {
@@ -184,7 +187,7 @@ const VehiclePage = (props) => {
                 <>
                     <CustomHeader>
                         <IonButtons slot="start" >
-                            {showCheckbox ? <IonButton onClick={editVehicleHandler}>Cancel</IonButton> :
+                            {showCheckbox ? <IonButton onClick={editVehicleHandler}><IonIcon icon='/assets/svgs/cancel.svg' /></IonButton> :
                                 <IonButton defaultHref="/profile" >
                                     {userInfo.avatar ? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg' />}
                                 </IonButton>

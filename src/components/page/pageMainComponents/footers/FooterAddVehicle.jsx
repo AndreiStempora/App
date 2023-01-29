@@ -18,6 +18,10 @@ const FooterAddVehicle = ({ photoBtn }) => {
         history.push("/dealerships");
         // history.push({ pathname: `${history.location.pathname}` });
     }
+
+    const goToProfileHandler = () => {
+        history.push("/profile");
+    }
     return (
         <CustomFooter>
             <IonButtons>
@@ -31,7 +35,7 @@ const FooterAddVehicle = ({ photoBtn }) => {
                     <IonButton onClick={addVehicleHandler} className='icon-over-text'>
                         <div className="container">
                             <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
-                            <IonLabel>Add Vehicle</IonLabel>
+                            <IonLabel>Vehicle</IonLabel>
                         </div>
                     </IonButton>
                 }
@@ -41,7 +45,7 @@ const FooterAddVehicle = ({ photoBtn }) => {
                         <IonLabel>Dealerships</IonLabel>
                     </div>
                 </IonButton>
-                <IonButton className='icon-over-text'>
+                <IonButton onClick={goToProfileHandler} className='icon-over-text'>
                     <div className="container">
                         <IonIcon icon='/assets/svgs/user.svg' />
                         <IonLabel>Profile</IonLabel>

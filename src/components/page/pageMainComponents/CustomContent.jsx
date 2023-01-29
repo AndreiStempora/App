@@ -1,4 +1,5 @@
 import {IonContent, IonGrid, IonRow, IonCol} from '@ionic/react';
+import './customContent.scss'
 
 const CustomContent = ({children, colSizesArr, gridClassStr}) => {
 
