@@ -30,9 +30,9 @@ const imagesService = {
     //delete an image
     deleteImageById: async ([image_id]) => {
         return await imagesRepository.getImageById([image_id]).then(async (image) => {
-            console.log("deleteImageById: image: ", image);
-            let wasFileDeleted = await FS.deleteFile(image[0].image_data);
-            console.log("deleteImageById: wasFileDeleted: ", wasFileDeleted)
+            // console.log("deleteImageById: image: ", image);
+            let wasFileDeleted = await FS.deleteFile(image[0]?.image_data);
+            // console.log("deleteImageById: wasFileDeleted: ", wasFileDeleted)
             if (wasFileDeleted === true || wasFileDeleted === "File does not exist") {
                 await imagesRepository.deleteImageById([image_id])
                 return true;

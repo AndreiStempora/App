@@ -25,13 +25,12 @@ import LoginPage from './pages/login/LoginPage';
 import ProtectedRoute from "./components/page/restrictedPages/ProtectedRoute"
 import TwoFAPage from './pages/twoFA/TwoFAPage';
 import TwoFACodePage from './pages/twoFA/TwoFACodePage';
-import CameraPage from './pages/camera/CameraPage';
 import VehiclePage from './pages/vehicles/VehiclePage';
-import AddVehicle from './pages/vehicles/addVehicle/AddVehiclePage';
-import VehicleDetails from './pages/vehicles/vehicleDetails/VehicleDetailsPage';
+import AddVehiclePage from './pages/vehicles/addVehicle/AddVehiclePage';
+import VehicleDetailsPage from './pages/vehicles/vehicleDetails/VehicleDetailsPage';
 import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotosPage';
-import HotspotPhoto from './pages/vehicles/hotspotPhoto/HotspotPhoto';
-import Profile from './pages/profile/Profile';
+import HotspotPhotoPage from './pages/vehicles/hotspotPhoto/HotspotPhotoPage';
+import ProfilePage from './pages/profile/ProfilePage';
 
 setupIonicReact();
 
@@ -46,19 +45,12 @@ const App = () => {
 							<Route exact={true} path="/2fa" component={TwoFAPage} />
 							<Route exact={true} path="/2fa/code" component={TwoFACodePage} />
 							<ProtectedRoute exact={true} path="/dealerships" component={DealershipsPage} />
-							{/* <ProtectedRoute exact={true} path="/camera" component={CameraPage} /> */}
 							<ProtectedRoute exact={true} path="/vehicle-search" component={VehiclePage} />
-							<ProtectedRoute exact={true} path="/add-vehicle" component={AddVehicle} />
-							<ProtectedRoute exact={true} path="/vehicle-details" component={VehicleDetails} />
+							<ProtectedRoute exact={true} path="/add-vehicle" component={AddVehiclePage} />
+							<ProtectedRoute exact={true} path="/vehicle-details" component={VehicleDetailsPage} />
 							<ProtectedRoute exact={true} path="/vehicle-photos" component={VehiclePhotos} />
-							<ProtectedRoute exact={true} path="/hotspot-photo" component={HotspotPhoto} />
-							<ProtectedRoute exact={true} path="/profile" component={Profile} />
-
-							{/* <ProtectedRoute exact={true} path="/dealerships/:id" component={VehiclePage} />
-							<ProtectedRoute exact={true} path="/dealerships/:id/add-vehicle" component={AddVehicle} />
-							<ProtectedRoute exact={true} path="/dealerships/:id/:id" component={VehicleDetails} />
-							<ProtectedRoute exact={true} path="/dealerships/:id/:id/:id" component={VehiclePhotos} /> */}
-
+							<ProtectedRoute exact={true} path="/hotspot-photo" component={HotspotPhotoPage} />
+							<ProtectedRoute exact={true} path="/profile" component={ProfilePage} />
 							<Route render={() => <Redirect to="/dealerships" />} />
 						</IonRouterOutlet>
 					</IonReactRouter>

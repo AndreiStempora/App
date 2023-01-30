@@ -51,7 +51,11 @@ const AddVehicle = () => {
 
     const openScannerHandler = async () => {
         setHidePageContent(true);
-        const result = await scanner.startScan();
+        let result = await scanner.startScan();
+        // if result is longer than 17 characters, remove first character
+        if (result.length > 17) {
+            result = result.slice(1);
+        }
         setScanResult(result);
         console.log('result', result, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         setNewCar(result);
@@ -92,7 +96,7 @@ const AddVehicle = () => {
                         <CustomContent colSizesArr={[[12], [12]]} >
                             <>
                                 <IonButtons className="ion-justify-content-between">
-                                    <IonLabel>VIN / Stock number</IonLabel>
+                                    <IonLabel>VIN number</IonLabel>
                                     <IonButton
                                         onClick={openScannerHandler}
                                         className="ion-text-right"

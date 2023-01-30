@@ -28,6 +28,32 @@ const vehiclesRepository = {
         });
     },
 
+    //insert all vehicles
+    insertAllVehicles: async ([vehicles, dealership_id]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .sqlBatch(
+                    vehicles.map((vehicle) => [
+                        `INSERT OR REPLACE INTO vehicles (dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim) VALUES (?,?,?,?,?,?,?)`,
+                        [dealership_id, vehicle.vin, vehicle.stock, vehicle.date, vehicle.make, vehicle.model, vehicle.trim]]),
+
+                    (tx, res) => {
+                        resolve(res);
+                    },
+                    //transaction error
+                    (error) => {
+                        console.log(error, 'transaction error');
+                        logService.insertLog([new Date().getTime(), vehicles, error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), vehicles, "Vehicles inserted successfully"]);
+                    }
+                );
+        });
+    },
+
     addVehicle: async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]) => {
         return new Promise(async (resolve, reject) => {
             (await DB.dbInstance())

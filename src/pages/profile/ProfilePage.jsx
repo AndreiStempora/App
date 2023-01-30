@@ -3,14 +3,14 @@ import { IonButtons, IonTitle, IonIcon, IonImg, IonItem, IonList, IonLabel, useI
 import { useHistory } from "react-router-dom";
 import CustomBackButton from "../../components/buttons/CustomBackButton";
 import { useAtom } from "jotai";
-import { user } from '../../services/user/user' 
+import { user } from '../../services/user/user'
 import { useEffect } from "react";
 
-const Profile = () => {
+const ProfilePage = () => {
     const history = useHistory();
-    const [currentUser,setCurrentUser] = useAtom(user.userDetails);
-    const [currentToken,setCurrentToken] = useAtom(user.userDetails);
-    const [isLoggedin,setIsLoggedin] = useAtom(user.loggedIn);
+    const [currentUser, setCurrentUser] = useAtom(user.userDetails);
+    const [currentToken, setCurrentToken] = useAtom(user.userDetails);
+    const [isLoggedin, setIsLoggedin] = useAtom(user.loggedIn);
     const [presentAlert] = useIonAlert();
 
     const goBackHandler = () => {
@@ -18,7 +18,7 @@ const Profile = () => {
         // console.log(history)
     }
 
-    useEffect   (() => {
+    useEffect(() => {
         console.log(currentUser)
     }, [])
 
@@ -28,9 +28,11 @@ const Profile = () => {
             message: 'Are you sure you want to logout?',
             buttons: [
                 'Cancel',
-                { text: 'Ok', handler: () => {
-                    history.push('/login')
-                }}
+                {
+                    text: 'Ok', handler: () => {
+                        history.push('/login')
+                    }
+                }
             ]
         })
     }
@@ -66,4 +68,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default ProfilePage;

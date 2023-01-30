@@ -1,8 +1,9 @@
-import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, tests } from "../../../packages/database";
-import { IonList} from '@ionic/react';
+import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, logService, tests } from "../../../packages/database";
+import { IonList } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import DealershipElement from './DealershipElement';
 import './dealershipSelector.scss'
+
 
 
 const DealershipSelector = ({ info }) => {
@@ -20,7 +21,10 @@ const DealershipSelector = ({ info }) => {
 		const d1 = await dbRequest.requestFunction(async () => settingsService.getAllSettingsByDealershipId([1]));
 		const d2 = await dbRequest.requestFunction(async () => settingsService.getAllSettingsByDealershipId([2]));
 		const e = await dbRequest.requestFunction(async () => imagesService.getAllImages());
-		console.log(a, b, c, d1, d2, e, "all");
+		const f = await dbRequest.requestFunction(async () => logService.getAllLogs());
+		const aaaaaaa = await dbRequest.requestFunction(async () => vehiclesService.getVehicleByVin(['Red market']));
+		console.log(a, b, c, d1, d2, e, f, "all");
+		console.log(aaaaaaa, "aaaaaaa");
 	}
 
 	const dealershipsToAdd = async () => {
@@ -94,9 +98,9 @@ const DealershipSelector = ({ info }) => {
 	}
 
 	useEffect(() => {
-
 		const databaseInitialOperations = async () => {
 			dbRequest.setLoading(true);
+			const start = performance.now();
 
 			const newDealerships = await dealershipsToAdd();
 			await Promise.all(newDealerships.map(async (dealership) => {
@@ -115,18 +119,9 @@ const DealershipSelector = ({ info }) => {
 			const currentDealerships = await dbRequest.requestFunction(async () => dealershipsService.getAllDealerships());
 			await Promise.all(currentDealerships?.map(async (dealership) => {
 				const newVehicles = await vehiclesToAdd([dealership.dealership_id]);
-				await Promise.all(newVehicles?.map(async (vehicle) => {
-					await dbRequest.requestFunction(async () => vehiclesService.insertVehicle([
-						dealership.dealership_id,
-						vehicle.vin,
-						vehicle.stock,
-						vehicle.year,
-						vehicle.make,
-						vehicle.model,
-						vehicle.trim,
-					]));
-					return true;
-				}))
+				await dbRequest.requestFunction(async () => await vehiclesService.insertAllVehicles([
+					newVehicles, dealership.dealership_id
+				]));
 				const listToDelete = await vehiclesToDelete([dealership.dealership_id]);
 				await Promise.all(listToDelete?.map(async (vehicle) => {
 					return await dbRequest.requestFunction(async () => vehiclesService.deleteVehicleById([vehicle.vehicle_id]));
@@ -134,15 +129,20 @@ const DealershipSelector = ({ info }) => {
 			}))
 
 			const allDealerships = await dbRequest.requestFunction(async () => await dealershipsService.getAllDealerships());
-			// console.log(allDealerships, "allDealerships");
 			setDealershipElements(allDealerships);
+			const end = performance.now();
+			console.log(`Database initial operations took ${end - start} milliseconds.`);
 			dbRequest.setLoading(false);
+			// getAllDBContents();
 		}
+
 
 		if (info !== null) {
 			// deleteDatabase();
 			databaseInitialOperations();
+			// getAllDBContents()
 		}
+
 	}, [info]);
 
 	return (

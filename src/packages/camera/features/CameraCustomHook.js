@@ -57,9 +57,10 @@ const useCamera = () => {
     const stopCamera = async () => {
         await CameraPreview.stop();
         await window.screen.orientation.lock('portrait-primary');
-        window.screen.orientation.removeEventListener('change', () => { });
         setCameraPreview(false);
+        setCurrentSelection({ cameraOn: false });
         setCurrentSelection('refresh');
+        window.screen.orientation.removeEventListener('change', () => { });
     };
 
     const takePicture = async (hotspot_id, vehicle_id) => {

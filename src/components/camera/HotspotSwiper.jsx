@@ -75,6 +75,7 @@ const HotspotSwiper = () => {
         editCurrentSelection({ photo_id: imageObj[0].image_id });
         console.log('picture clicked', imageObj);
         await camera.stopCamera();
+
         history.push('/hotspot-photo');
     }
 

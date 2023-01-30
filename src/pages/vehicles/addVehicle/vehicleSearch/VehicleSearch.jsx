@@ -29,9 +29,9 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const filterFunc = async () => {
         if (allVehicles !== null) {
             const filtered = await Promise.all(allVehicles?.filter(vehicle => {
-                return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase()) || (vehicle.vehicle_stock)?.startsWith(searchText.toUpperCase());
+                return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase());
             }));
-            if (filtered.length === 1 && searchText.length > 0) {
+            if (filtered.length === 1 && searchText.length === 17) {
                 disableSave(false);
             }
             return filtered;
@@ -62,7 +62,6 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
 
     useEffect(() => {
         disableSave(true);
-
         (async () => {
             if (searchText.length > 0) {
                 const filteredList = await filterFunc();
@@ -70,12 +69,18 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
                     setFilteredVehicles(filteredList);
                     newCar(searchText);
                 }
-                disableSave(false);
+                if (searchText.length === 17) {
+                    disableSave(false);
+                }
             } else {
                 setFilteredVehicles(null);
             }
         })()
     }, [searchText]);
+
+    useEffect(() => {
+        setSearchText('');
+    }, [getCurrentSelection().refreshPage]);
 
     return (
         <>

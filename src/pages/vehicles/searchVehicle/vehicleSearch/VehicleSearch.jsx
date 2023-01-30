@@ -41,7 +41,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
             return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase()) || (vehicle.vehicle_stock)?.startsWith(searchText.toUpperCase());
         }
         ));
-        if (filtered?.length < 2 && searchText?.length > 0) {
+        if (filtered?.length === 17 && searchText?.length === 17) {
             disableSave(false);
         }
         return filtered;
@@ -72,7 +72,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
         disableSave(true);
 
         (async () => {
-            if (searchText.length >= 3) {
+            if (searchText.length === 17) {
                 const filteredList = await filterFunc();
                 setFilteredVehicles(filteredList);
                 newCar(searchText);

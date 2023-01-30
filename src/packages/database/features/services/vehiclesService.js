@@ -9,6 +9,10 @@ const vehiclesService = {
         return await vehiclesRepository.insertVehicle([dealership_id, vehicle_vin, vehicle_stock, vehicle_date, vehicle_make, vehicle_model, vehicle_trim, vehicle_interior, vehicle_exterior, vehicle_hotspots]);
     },
 
+    insertAllVehicles: async ([vehicles, dealership_id]) => {
+        return await vehiclesRepository.insertAllVehicles([vehicles, dealership_id]);
+    },
+
     addVehicle: async ([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]) => {
         return await vehiclesRepository.addVehicle([dealership_id, vehicle_vin, vehicle_hotspots, vehicle_interior]);
     },

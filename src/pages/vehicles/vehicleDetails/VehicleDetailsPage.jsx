@@ -9,7 +9,7 @@ import { useHotspot } from "../../../packages/database/features/utils/utilityHoo
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
 import './vehicleDetails.scss';
 
-const VehicleDetails = () => {
+const VehicleDetailsPage = () => {
     const dbRequest = useDbRequest();
     const history = useHistory();
     const hotspotHook = useHotspot();
@@ -157,4 +157,4 @@ const VehicleDetails = () => {
     )
 }
 
-export default VehicleDetails;
+export default VehicleDetailsPage;
