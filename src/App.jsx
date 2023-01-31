@@ -20,17 +20,17 @@ import { Redirect, Route } from 'react-router-dom';
 import './theme/variables.css';
 import './theme/alerts.scss';
 // import RestrictedRouting from './components/page/restrictedPages/RestrictedRouting';
-import DealershipsPage from './pages/dealerships/DealershipsPage';
-import LoginPage from './pages/login/LoginPage';
+import DealershipsPage from './pages/dealerships/page/DealershipsPage';
+import LoginPage from './pages/login/page/LoginPage';
 import ProtectedRoute from "./components/page/restrictedPages/ProtectedRoute"
-import TwoFAPage from './pages/twoFA/TwoFAPage';
-import TwoFACodePage from './pages/twoFA/TwoFACodePage';
-import VehiclePage from './pages/vehicles/VehiclePage';
-import AddVehiclePage from './pages/vehicles/addVehicle/AddVehiclePage';
-import VehicleDetailsPage from './pages/vehicles/vehicleDetails/VehicleDetailsPage';
-import VehiclePhotos from './pages/vehicles/vehiclePhotos/VehiclePhotosPage';
+import TwoFAPage from './pages/twoFA/page/TwoFAPage';
+import TwoFACodePage from './pages/twoFA/page/TwoFACodePage';
+import VehiclePage from './pages/vehicles/main/page/VehiclePage';
+import AddVehiclePage from './pages/vehicles/addVehicle/page/AddVehiclePage';
+import VehicleDetailsPage from './pages/vehicles/vehicleDetails/page/VehicleDetailsPage';
+import VehiclePhotos from './pages/vehicles/hotspotType/page/hotspotTypePage';
 import HotspotPhotoPage from './pages/vehicles/hotspotPhoto/HotspotPhotoPage';
-import ProfilePage from './pages/profile/ProfilePage';
+import ProfilePage from './pages/profile/page/ProfilePage';
 
 setupIonicReact();
 

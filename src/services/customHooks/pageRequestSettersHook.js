@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { request } from "../Requests/request";
 import { reqBody } from "../Requests/requestBody";
 import { error } from "../../packages/errors";
-import { formAtoms } from "../../pages/login/form";
+import { formAtoms } from "../../pages/login/components/form";
 import { useHistory } from "react-router";
 import { user } from "../user/user";
 

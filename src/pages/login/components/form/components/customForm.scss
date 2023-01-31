@@ -1,0 +1,51 @@
+@import "../../../../../theme/app";
+
+ion-item{
+    &.item{
+        --background:transparent;
+        --border-color:#F8F9FA;
+        --highlight-color-focused:transparent;
+        &.item-has-focus{
+            caret-color: white;
+            --border-color:white;
+            --highlight-height: 0px;
+            --highlight-color-focused:white;
+            
+        }
+        ion-label{
+            &.label-stacked{
+                span{
+                    color:$inactive-grey;
+                    @include context(".item",".item.item-has-focus"){
+                        color:white;
+                    }
+                }
+            }
+        }
+        &::part(native){
+            --padding-start:0px;
+        }
+        ion-label{
+            span{
+                font-weight: 600;
+                font-size: 17px;
+            }
+            &.label-stacked{
+                transform:translateY(50%) scale(1);
+            }
+        }
+        ion-input{
+            &.has-value{
+                --color:#F8F9FA;
+            }
+            &.has-focus{
+                &.has-value{
+                    --color:#fff;
+                }
+            }
+        }
+        + ion-item{
+            padding-top:30px;
+        }
+    }
+}
