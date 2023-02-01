@@ -10,7 +10,7 @@ import useCamera from '../../packages/camera/features/CameraCustomHook';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const HotspotSwiper = () => {
+const HotspotSwiper = ({setHidePageContent}) => {
     const hotspotHook = useHotspot();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [slides, setSlides] = useState(null);
@@ -74,7 +74,9 @@ const HotspotSwiper = () => {
         const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
         editCurrentSelection({ photo_id: imageObj[0].image_id });
         console.log('picture clicked', imageObj);
+        setHidePageContent(false);
         await camera.stopCamera();
+        editCurrentSelection('refresh');
 
         history.push('/hotspot-photo');
     }

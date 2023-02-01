@@ -13,10 +13,6 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
     const closeCameraHandler = async () => {
         setHidePageContent(false);
         await camera.stopCamera();
-
-        // editCurrentSelection({ cameraOn: false });
-        // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
-
         editCurrentSelection('refresh');
     }
 
@@ -46,7 +42,7 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
             <IonFooter className="opaque-bg camera-footer">
                 <IonGrid>
                     <IonRow className="ion-align-items-center">
-                        <HotspotSwiper camera={camera}></HotspotSwiper>
+                        <HotspotSwiper setHidePageContent={setHidePageContent}></HotspotSwiper>
                     </IonRow>
                 </IonGrid>
 

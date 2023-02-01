@@ -14,7 +14,7 @@ const ProfilePage = () => {
     const [presentAlert] = useIonAlert();
 
     const goBackHandler = () => {
-        history.go('-1');
+        history.push('/vehicle-search');
         // console.log(history)
     }
 

@@ -5,5 +5,18 @@ ion-header{
             margin:0;
             padding:0;
         }
+            ion-title{
+                font-size: 17px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                max-width: calc(100vw - 40px - 70px);
+            }
+        ion-button{
+            ion-icon{
+                font-size: 20px;
+            }
+        }
     }
 }

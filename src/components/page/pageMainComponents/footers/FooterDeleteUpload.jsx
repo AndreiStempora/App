@@ -1,5 +1,6 @@
 import { IonButtons, IonButton, IonIcon, IonLabel } from '@ionic/react'
-import CustomFooter from '../CustomFooter'
+import CustomFooter from '../CustomFooter';
+import './footerDeleteUpload.scss'
 
 const FooterDeleteUpload = ({ del, retake, upload }) => {
     return (
@@ -7,7 +8,7 @@ const FooterDeleteUpload = ({ del, retake, upload }) => {
             <IonButtons>
                 {del &&
                     <IonButton onClick={del} className='icon-over-text'>
-                        <div className="container">
+                        <div className="container delete">
                             <IonIcon icon='/assets/svgs/delete.svg'></IonIcon>
                             <IonLabel>delete</IonLabel>
                         </div>

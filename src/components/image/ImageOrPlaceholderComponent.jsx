@@ -5,15 +5,14 @@ import './imageOrPlaceholderComponent.scss';
 const ImageOrPlaceholderComponent = ({ img, checkmark }) => {
     return (
         <div className="image-component">
+                    <div className="image-container">
             {
                 img?.length ?
-                    <div className="image-container">
-                        <IonImg src={img} />
-                    </div>
-
-                    :
+                    <IonImg src={img} />
+                          :
                     <IonImg src="/assets/img/carPicPlaceholder.png" className="placeholder" />
             }
+                    </div>
             <IonIcon className='car-checkmark' icon="/assets/svgs/VehicleCheck.svg" />
         </div>
     )

@@ -31,13 +31,12 @@ const VehiclePhotos = () => {
     };
 
     useEffect(() => {
-        if (!getCurrentSelection().cameraOn) {
-            console.log('camera off');
-            setHidePageContent(false);
-        } else {
-            console.log('camera on');
-            setHidePageContent(true);
-        }
+        // if (getCurrentSelection().cameraOn) {
+        //
+        //     setHidePageContent(false);
+        // } else {
+        //     setHidePageContent(true);
+        // }
         (async () => {
             const hotspotsWithPhotoLocations = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
             let newEl = Promise.all(hotspotsWithPhotoLocations.map(async (hotspotWithPhoto) => {
