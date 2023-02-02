@@ -10,6 +10,14 @@
         top: 0;
         left: 0;
         position: absolute;
+        border-bottom-width: 0px;
+        border-image:none;
+       padding:10px;
+        display: flex;
+        flex-direction: row-reverse;
+        &::after {
+            content: none;
+        }
     }
     .camera-footer {
         transform-origin: bottom right;
@@ -18,6 +26,11 @@
         bottom: 0;
         right: 0;
         position: absolute;
+        border-top-width: 0px;
+        border-image:none;
+        &::before{
+            content:none;
+        }
     }
     .hide-content {
         position: absolute;
@@ -48,9 +61,15 @@
         }
     }
     &:not(.landscape) {
+        //.camera-header {
+        //    transform: none;
+        //}
         .hide-content {
             opacity: 1;
             visibility: visible;
+            .camera-header{
+
+            }
         }
     }
 }

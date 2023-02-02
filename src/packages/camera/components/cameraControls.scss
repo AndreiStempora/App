@@ -1,25 +1,25 @@
-.take-picture-btn{
-    width:60px;
-    height: 60px;
-    --border-radius: 50%;
-    --background: transparent;
-    --border-width: 3px;
-    --border-color: #fff;
-    --border-style: solid;
-    position: relative;
-    &::before{
-        border-radius: 50%;
-        content:'';
-        position: absolute;
-        top:6px;
-        left:6px;
-        width: calc(100% - 12px);
-        height: calc(100% - 12px);
-        background: #fff;
-    }
-}
-
-.swiper-button-prev,
-.swiper-button-next{
-    color:rgba(255,255,255,0.5);
-}
+//.take-picture-btn{
+//    width:60px;
+//    height: 60px;
+//    --border-radius: 50%;
+//    --background: transparent;
+//    --border-width: 3px;
+//    --border-color: #fff;
+//    --border-style: solid;
+//    position: relative;
+//    &::before{
+//        border-radius: 50%;
+//        content:'';
+//        position: absolute;
+//        top:6px;
+//        left:6px;
+//        width: calc(100% - 12px);
+//        height: calc(100% - 12px);
+//        background: #fff;
+//    }
+//}
+//
+//.swiper-button-prev,
+//.swiper-button-next{
+//    color:rgba(255,255,255,0.5);
+//}

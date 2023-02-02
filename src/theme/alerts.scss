@@ -7,11 +7,16 @@ ion-alert {
             --background: #2e3134;
             border-radius: 15px;
             .alert-head {
-                font-family: "SF Pro Text", sans-serif;
-                font-weight: 400;
-                text-align: center;
-                font-size: 17px;
-                line-height: 22px;
+                 *{
+                     font-family: "SF Pro Text", sans-serif;
+                     font-weight: 400;
+                     text-align: center;
+                     font-size: 17px;
+                     line-height: 22px;
+                 }
+            }
+            .alert-button-inner{
+                font-size: 16px;
             }
         }
     }

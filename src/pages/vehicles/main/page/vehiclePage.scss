@@ -1,4 +1,11 @@
 .vehiclesSearch {
+    ion-content{
+        ion-row{
+            ion-col{
+                padding-top:0;
+            }
+        }
+    }
     .special-list {
         contain: none;
     }

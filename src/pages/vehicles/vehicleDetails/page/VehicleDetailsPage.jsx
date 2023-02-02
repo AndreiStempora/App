@@ -72,8 +72,8 @@ const VehicleDetailsPage = () => {
         history.push('/vehicle-photos');
     }
 
-    const addVehicleNameHandler = () => {
-        presentAlert({
+    const addVehicleNameHandler = async() => {
+        await presentAlert({
             header: 'Add Car Name',
             buttons: [
                 { text: 'Cancel', role: 'cancel' },

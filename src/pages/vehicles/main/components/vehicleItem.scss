@@ -1,8 +1,45 @@
 .vehiclesSearch {
     .special-list {
+        padding-top:0;
         ion-item {
             ion-checkbox {
                 opacity: 0;
+            }
+            &.item-checkbox-checked{
+                position: relative;
+                overflow: visible;
+                background-color: rgba(255,255,255, 0.1);
+                &::before,
+                &::after{
+                    height:calc(100% - 1px);
+                    content:'';
+                    position: absolute;
+                    bottom: 0;
+                    width:30px;
+                    //height:1px;
+                    background-color: rgba(255,255,255, 0.1);
+                    border-bottom:1px solid;
+                    border-top: 1px solid;
+                    border-color:rgba( 248,249,250, 0.25)
+                }
+                &::before{
+                    left: -30px;
+                }
+                &::after{
+                    right:-30px;
+                }
+                &:first-child{
+                    &::before,
+                    &::after{
+                        border-top-width:0px;
+                    }
+                }
+                & + .item-checkbox-checked{
+                    &::before,
+                    &::after{
+                        border-top-width:0;
+                    }
+                }
             }
         }
     }

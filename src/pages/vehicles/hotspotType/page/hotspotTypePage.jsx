@@ -3,10 +3,10 @@ import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonList, IonI
 import { useState, useEffect } from "react";
 import { useDbRequest, hotspotsService, imagesService } from "../../../../packages/database";
 import { useRSelection, useHotspot } from "../../../../packages/database/features/utils/utilityHooks";
-import OpenedCameraTakePhoto from "../../../../components/camera/OpenedCameraTakePhoto";
+import OpenedCameraTakePhoto from "../components/camera/OpenedCameraTakePhoto";
 import useCamera from "../../../../packages/camera/features/CameraCustomHook";
 import FooterAddVehicle from "../../../../components/page/pageMainComponents/footers/FooterAddVehicle";
-import HotspotWithPic from "../hotspotWithPhotoItem/HotspotWithPic";
+import HotspotWithPic from "../components/hotspotWithPhotoItem/HotspotWithPic";
 import CustomBackButton from "../../../../components/buttons/CustomBackButton";
 import { useHistory } from "react-router";
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';

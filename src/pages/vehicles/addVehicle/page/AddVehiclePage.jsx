@@ -79,14 +79,14 @@ const AddVehicle = () => {
                         <CustomHeader>
                             <IonButtons slot="start">
                                 <IonButton
-                                    className='ion-text-capitalize'
+                                    className='ion-text-capitalize blue'
                                     onClick={backToSelectVehiclesHandler}
                                 >cancel</IonButton>
                             </IonButtons>
                             <IonTitle className='ion-text-center'>Add vehicle</IonTitle>
                             <IonButtons slot="end">
                                 <IonButton
-                                    className='ion-text-capitalize'
+                                    className='ion-text-capitalize blue'
                                     disabled={disabledSave}
                                     onClick={saveVehicleHandler}
                                 >Save</IonButton>

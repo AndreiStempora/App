@@ -12,7 +12,7 @@ const OpenedScanner = ({ close }) => {
     return (
         <>
             <IonFab>
-                <IonFabButton size='small' color="transparent">
+                <IonFabButton size='small' color="transparent" className={'exit-scanner'}>
                     <IonIcon icon={'/assets/svgs/closeIcon.svg'} onClick={closeScan} color="#fff"></IonIcon>
                 </IonFabButton>
             </IonFab>

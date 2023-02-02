@@ -1,0 +1,16 @@
+ion-toolbar{
+    ion-buttons{
+        ion-button {
+            &.blue {
+                &:not(.button-disabled){
+                    color: rgba(84, 166, 255, 1);
+                }
+            }
+            &.red {
+                &:not([disabled]) {
+                    color: rgba(255, 70, 70, 1);
+                }
+            }
+        }
+    }
+}

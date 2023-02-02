@@ -1,12 +1,13 @@
 import { IonCol, IonImg, IonButton, IonSpinner } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useRSelection } from '../../packages/database/features/utils/utilityHooks';
+import { useRSelection } from '../../../../../packages/database/features/utils/utilityHooks';
 import { Navigation } from 'swiper';
-import { useHotspot } from '../../packages/database/features/utils/utilityHooks';
+import { useHotspot } from '../../../../../packages/database/features/utils/utilityHooks';
 import { useHistory } from 'react-router';
-import { FS } from '../../packages/filesystem';
-import useCamera from '../../packages/camera/features/CameraCustomHook';
+import { FS } from '../../../../../packages/filesystem';
+import useCamera from '../../../../../packages/camera/features/CameraCustomHook';
+import './hotspotSwiper.scss';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -71,14 +72,14 @@ const HotspotSwiper = ({setHidePageContent}) => {
     }, [swiper]);
 
     const pictureClickHandler = async () => {
-        const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
-        editCurrentSelection({ photo_id: imageObj[0].image_id });
-        console.log('picture clicked', imageObj);
-        setHidePageContent(false);
-        await camera.stopCamera();
-        editCurrentSelection('refresh');
-
-        history.push('/hotspot-photo');
+        // const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
+        // editCurrentSelection({ photo_id: imageObj[0].image_id });
+        // console.log('picture clicked', imageObj);
+        // setHidePageContent(false);
+        // await camera.stopCamera();
+        // editCurrentSelection('refresh');
+        //
+        // history.push('/hotspot-photo');
     }
 
     return (

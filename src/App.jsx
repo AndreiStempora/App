@@ -19,6 +19,7 @@ import { Redirect, Route } from 'react-router-dom';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/alerts.scss';
+import './theme/buttons.scss';
 // import RestrictedRouting from './components/page/restrictedPages/RestrictedRouting';
 import DealershipsPage from './pages/dealerships/page/DealershipsPage';
 import LoginPage from './pages/login/page/LoginPage';

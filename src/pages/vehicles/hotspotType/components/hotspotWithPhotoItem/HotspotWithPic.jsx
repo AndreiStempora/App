@@ -1,8 +1,8 @@
 import { useIonViewWillEnter, IonSpinner, IonItem, IonLabel, IonImg, IonIcon, ionViewWillEnter } from '@ionic/react';
-import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
+import { useRSelection } from '../../../../../packages/database/features/utils/utilityHooks';
 import { useEffect, useState } from 'react';
-import { FS } from '../../../../packages/filesystem';
-import ImageOrPlaceholderComponent from '../../../../components/image/ImageOrPlaceholderComponent';
+import { FS } from '../../../../../packages/filesystem';
+import ImageOrPlaceholderComponent from '../../../../../components/image/ImageOrPlaceholderComponent';
 import './hotspotWithPic.scss';
 
 const HotspotWithPic = ({ hotspotWithPhoto, openCamera, imageLoading }) => {
