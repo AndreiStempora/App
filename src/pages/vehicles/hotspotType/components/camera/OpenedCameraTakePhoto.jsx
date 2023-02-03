@@ -1,4 +1,4 @@
-import { IonHeader, IonButtons, IonFooter, IonGrid, IonRow, IonButton, IonIcon, IonContent, IonLabel } from "@ionic/react";
+import { IonHeader, IonButtons, IonFooter, IonGrid, IonRow, IonButton, IonIcon, IonContent, IonLabel, IonImg } from "@ionic/react";
 import { useRSelection } from "../../../../../packages/database/features/utils/utilityHooks";
 import HotspotSwiper from "./HotspotSwiper";
 import { ScreenOrientation } from "@awesome-cordova-plugins/screen-orientation";
@@ -20,7 +20,9 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
         // ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE);
 
     }, []);
-
+    const closePicHandler= (e) =>{
+        const x = e.target.parentElement.parentElement.classList.remove('show');
+    }
     return (
         <>
             <div className="hide-content">
@@ -42,7 +44,13 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
                 </IonButtons>
             </IonHeader>
             <IonContent>
+                <div className={'full-image-container'}>
 
+                        <IonButton fill={'clear'} onClick={closePicHandler}>
+                            <IonIcon icon={'/assets/svgs/cancel.svg'}></IonIcon>
+                        </IonButton>
+
+                </div>
             </IonContent>
             <IonFooter className="opaque-bg camera-footer">
                 <IonGrid>

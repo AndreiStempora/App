@@ -1,44 +1,44 @@
-.ion-page{
-    &.cameraPage{
-        background-image:none;
-        // background-color:transparent;
-        
-        .checkmarks{
-            height: 80vh;
-            ion-list{
-                height: 100%;
-                ion-item{
-                    height: 100%;
-                    position: relative;
-                    &::part(native){
-                        transform-origin: center center;
-                        width: 80vh;
-                        height: 100vw;
-                        // transform: rotate(90deg);
-                    }
-                    >ion-checkbox{
-                        // position: absolute;
-                        top:0;
-                        left:0;
-                        &:nth-of-type(3){
-                            transform:translate(50px, 100px);
-                        }
-                        
-                        .item-native{
-                            height: 80vh;
-                        }
-                        
-                    }
-                }
-            }
-        }
-    }
-    
-}
-
-
-
-.red{
-    margin-left:300px;
-}
-
+//.ion-page{
+//    &.cameraPage{
+//        background-image:none;
+//        // background-color:transparent;
+//
+//        .checkmarks{
+//            height: 80vh;
+//            ion-list{
+//                height: 100%;
+//                ion-item{
+//                    height: 100%;
+//                    position: relative;
+//                    &::part(native){
+//                        transform-origin: center center;
+//                        width: 80vh;
+//                        height: 100vw;
+//                        // transform: rotate(90deg);
+//                    }
+//                    >ion-checkbox{
+//                        // position: absolute;
+//                        top:0;
+//                        left:0;
+//                        &:nth-of-type(3){
+//                            transform:translate(50px, 100px);
+//                        }
+//
+//                        .item-native{
+//                            height: 80vh;
+//                        }
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//}
+//
+//
+//
+//.red{
+//    margin-left:300px;
+//}
+//

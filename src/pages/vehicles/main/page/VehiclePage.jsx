@@ -1,24 +1,18 @@
-import { IonList, IonTitle, IonButtons, IonButton, IonLoading, IonItem, useIonAlert, IonIcon, IonRefresh, IonLabel, IonCheckbox, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
-import { Page, CustomHeader, CustomContent, CustomFooter } from '../../../../components/page/Page';
+import { IonList, IonTitle, IonButtons, IonButton,  useIonAlert, IonIcon } from '@ionic/react';
+import { Page, CustomHeader, CustomContent } from '../../../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../../../services/user/user';
-import { imagesService, useDbRequest, vehiclesService } from '../../../../packages/database';
+import { useDbRequest, vehiclesService } from '../../../../packages/database';
 import { useEffect, useState, useRef } from 'react';
-import { useDeleteUpload, useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
-import { FS } from '../../../../packages/filesystem';
-// import { useNavigation } from 'react-router-dom';
+import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
 import FooterAddVehicle from '../../../../components/page/pageMainComponents/footers/FooterAddVehicle';
-import AdedVehiclesSearchItem from '../../../../components/garbage/adedVehicleSearch/AdedVehiclesSearchItem';
 import FooterDeleteUpload from '../../../../components/page/pageMainComponents/footers/FooterDeleteUpload';
-import './vehiclePage.scss';
-
-import ItemWIthPhoto from '../../../../components/vehicleComponents/hotspotsComponents/ItemWIthPhoto';
 import FileUploader from '../../../../components/uploader/FileUploader';
-
 import VehicleItem from '../components/VehicleItem';
 import { network } from '../../../../packages/network';
+import './vehiclePage.scss';
 
-const VehiclePage = (props) => {
+const VehiclePage = () => {
     const dbRequest = useDbRequest();
     const userInfo = useAtom(user.userDetails);
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
@@ -55,9 +49,9 @@ const VehiclePage = (props) => {
     }
 
     const setCheckValues = () => {
-        console.log('setCheckValues')
-        let allChecked = true;
 
+        let allChecked = true;
+        getCurrentRefs();
         elementsRef.current?.forEach(element => {
             if (!element.querySelector('ion-checkbox').checked) {
                 allChecked = false;
@@ -69,7 +63,7 @@ const VehiclePage = (props) => {
     };
 
     const deselectAll = () => {
-        console.log('deselectAll')
+
         if (showCheckbox) {
             elementsRef.current = elementsRef.current?.filter(element => element !== null);
             elementsRef.current?.forEach(element => {
@@ -79,7 +73,7 @@ const VehiclePage = (props) => {
     };
 
     const editVehicleHandler = () => {
-        console.log('editVehicleHandler')
+
         deselectAll();
         setShowCheckbox(!showCheckbox);
     };
@@ -87,7 +81,7 @@ const VehiclePage = (props) => {
     const deleteVehicleHandler = async () => {
         const selectedVehicles = getCurrentRefs();
         if (selectedVehicles.length) {
-            presentAlert({
+            await presentAlert({
                 header: 'Are you sure you want to delete selected vehicle/s?',
                 cssClass: 'custom-alert',
                 buttons: [
@@ -114,7 +108,7 @@ const VehiclePage = (props) => {
                 ],
             })
         } else {
-            alertSelectVehicles();
+            await alertSelectVehicles();
         }
     };
     const getCurrentRefs = () => {
@@ -127,7 +121,7 @@ const VehiclePage = (props) => {
         if (await network.getCurrentNetworkStatus()) {
             const selectedVehicles = getCurrentRefs();
             if (selectedVehicles.length) {
-                presentAlert({
+                await presentAlert({
                     header: 'Are you sure you want to upload pictures of selected vehicle/s?',
                     cssClass: 'custom-alert',
                     buttons: [
@@ -154,7 +148,7 @@ const VehiclePage = (props) => {
                 })
 
             } else {
-                alertSelectVehicles();
+                await alertSelectVehicles();
             }
         } else {
             return presentAlert({

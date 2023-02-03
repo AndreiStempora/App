@@ -43,7 +43,7 @@ const Camera = () => {
 
         return async () => {
             if (cameraOn) {
-                CameraPreview.stop();
+                await CameraPreview.stop();
                 console.log('camera stopped');
                 setCameraOn(false);
             }

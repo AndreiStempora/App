@@ -32,6 +32,44 @@
             content:none;
         }
     }
+    ion-content{
+        position: relative;
+        //z-index: 1;
+            transition: opacity 1s linear;
+        .full-image-container{
+            //background:red;
+            position: absolute;
+            overflow:hidden;
+            top:calc(100% - 65px);
+            bottom: 55px;
+            right: 80px;
+            left:calc(100% - 100px);
+            height: 10px;
+            width: 10px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
+            transition: width 0.3s linear,
+                        height 0.3s linear,
+                        top 0.3s linear,
+                        left 0.3s linear,
+                        bottom 0.3s linear,
+                        right 0.3s linear;
+        }
+            &.show{
+                z-index: 11;
+                .full-image-container{
+                width:100vw;
+                height:100vh;
+                bottom:0;
+                left:0;
+                top:0;
+                right:0;
+
+                }
+            }
+    }
     .hide-content {
         position: absolute;
         transition: opacity 0.4s linear;

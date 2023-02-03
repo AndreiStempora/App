@@ -71,25 +71,22 @@ const HotspotSwiper = ({setHidePageContent}) => {
         })();
     }, [swiper]);
 
-    const pictureClickHandler = async () => {
-        // const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
-        // editCurrentSelection({ photo_id: imageObj[0].image_id });
-        // console.log('picture clicked', imageObj);
-        // setHidePageContent(false);
-        // await camera.stopCamera();
-        // editCurrentSelection('refresh');
-        //
-        // history.push('/hotspot-photo');
+    const pictureClickHandler = async (e) => {
+        const fullImage = document.querySelector('.full-image-container')
+        fullImage.parentNode.classList.add('show');
+        fullImage.style.backgroundImage = `url(${e.target.src})`;
     }
 
     return (
         <>
             <IonCol size='3'>
-                <div className="img-container" onClick={pictureClickHandler}>
+                <div className="img-container" >
                     {
                         imageLoading ?
                             <IonSpinner name="lines-sharp"></IonSpinner> :
-                            <IonImg src={image !== null ? image : '/assets/img/carPicPlaceholder.png'}></IonImg>
+                            <IonImg src={image !== null ? image : '/assets/img/carPicPlaceholder.png'}
+                            onClick={image !== null ? pictureClickHandler:null}
+                            ></IonImg>
                     }
                 </div>
             </IonCol>

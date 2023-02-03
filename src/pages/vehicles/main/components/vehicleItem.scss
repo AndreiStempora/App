@@ -2,6 +2,17 @@
     .special-list {
         padding-top:0;
         ion-item {
+            ion-label{
+                h2{
+                    font-weight: 600;
+                    + h3{
+                        margin-top:8px;
+                    }
+                }
+                h3{
+                    font-size: 13px;
+                }
+            }
             ion-checkbox {
                 opacity: 0;
             }
