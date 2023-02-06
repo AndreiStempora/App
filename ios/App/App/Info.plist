@@ -2,18 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This app does not use your microphone</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>This app wants access to your local network</string>
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>This app wants to save files on the device</string>
-	<key>NSFileProviderDomainUsageDescription</key>
-	<string>This app wants to save files on the device</string>
+	<string></string>
+	<key>NSFileProviderPresenceUsageDescription</key>
+	<string>...</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>App does not use microphone but still needs access to it</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Need access to camera to take pictures</string>
-	<key>UIApplicationExitsOnSuspend</key>
-	<true/>
+	<string>App needs access to camera</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -44,16 +40,15 @@
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>

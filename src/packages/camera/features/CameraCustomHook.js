@@ -15,6 +15,7 @@ const useCamera = () => {
         quality: 100,
         storeToFile: true,
         enableHighResolution: true,
+        disableAudio:true,
         x: 0,
         y: 0,
         // rotateWhenOrientationChanged: true,

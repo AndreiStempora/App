@@ -1,6 +1,7 @@
 import { IonGrid, IonLabel, IonRow, IonCol, IonContent, IonHeader, IonToolbar, IonSearchbar, IonTitle, IonButtons, IonButton, IonIcon, IonBackButton } from '@ionic/react';
 import { useHistory } from 'react-router';
 import { CustomFooter } from '../../Page';
+import "./footerAddVehicle.scss";
 
 const FooterAddVehicle = ({ photoBtn }) => {
     const history = useHistory();
