@@ -3,13 +3,15 @@ import { IonButtons, IonBackButton, IonTitle } from '@ionic/react';
 import { TwoFaSelector } from '../TwoFA';
 import { CustomHeader, CustomContent } from '../../../components/page/Page';
 import './twoFAPage.scss';
+import CustomBackButton from '../../../components/buttons/CustomBackButton';
 
 const TwoFAPage = () => {
     return (
         <Page pageClass={'twoFaSelect'}>
             <CustomHeader>
                 <IonButtons slot="start" >
-                    <IonBackButton defaultHref="/login" icon="assets/svgs/previous.svg" />
+                    {/* <IonBackButton defaultHref="/login" icon="assets/svgs/previous.svg"></IonBackButton> */}
+                    <CustomBackButton href='/login'/>
                 </IonButtons>
                 <IonTitle class="ion-text-center page-title">Two-Factor Authentication</IonTitle>
             </CustomHeader>

@@ -7,13 +7,16 @@ ion-item{
         --highlight-color-focused:transparent;
         &.item-has-focus{
             caret-color: white;
-            --border-color:white;
+            --border-color:#ffffff;
             --highlight-height: 0px;
-            --highlight-color-focused:white;
-            
+            --highlight-color-focused:#ffffff;
+        }
+        &.item-has-value{
+            --border-color:#ffffff;
         }
         ion-label{
             &.label-stacked{
+                margin-right:0;
                 span{
                     color:$inactive-grey;
                     @include context(".item",".item.item-has-focus"){
@@ -24,6 +27,7 @@ ion-item{
         }
         &::part(native){
             --padding-start:0px;
+            --padding-end:0px;
         }
         ion-label{
             span{
@@ -34,9 +38,18 @@ ion-item{
                 transform:translateY(50%) scale(1);
             }
         }
+        &.item-has-value,
+        &.item-has-focus{
+            ion-label{
+                &.label-stacked{
+                    transform:translateY(0) scale(1);
+                }
+            }
+        }
         ion-input{
             &.has-value{
                 --color:#F8F9FA;
+                transform:translate(0) scale(1);
             }
             &.has-focus{
                 &.has-value{
@@ -47,5 +60,6 @@ ion-item{
         + ion-item{
             padding-top:30px;
         }
+        --ion-safe-area-right:0;
     }
 }

@@ -5,14 +5,15 @@
 }
 
 .loginPage{
-
+    
     .login-btn{
-        
+        margin-left:0;
+        margin-right:0;
         position: relative;
-        margin:60px 0 0 0;
         padding: 2px;
         width:100%;
-        border-radius: 23px;
+        margin-top:60px;
+        border-radius: 25px;
         --border-radius: 25px;
         height: 46px;
         border-width: 0;
@@ -20,13 +21,7 @@
         --box-shadow:none;
         --background:linear-gradient(to right, #181818 , #202124);
         overflow: hidden;
-        
-        &::part(native){
-            --border-width:2px;
-            --border-style:solid;
-            --border-color:transparent;
-            position: relative;
-        }
+        transform: translateZ(0);
         &::before{
             position: absolute;
             content:'';
@@ -35,6 +30,7 @@
             width:100vw;
             border-radius: 50%;
             height:100vw;
+            // aspect-ratio: 1/1;
             transform-origin: center;
             background: rgb(60,64,67);
             border-color:green;
@@ -66,5 +62,13 @@
                 }
             }
         }
+        
+        &::part(native){
+            --border-width:2px;
+            --border-style:solid;
+            --border-color:transparent;
+            position: relative;
+        }
+        
     }
 }

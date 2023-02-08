@@ -18,12 +18,14 @@ const Password = ({field})=>{
                 placeholder={field.placeholder}
                 name={field.name}
                 autocomplete={true}
+                
             >
                 {field.icon && (
                     <IonIcon icon={field.icon}></IonIcon>
                 )}
             </IonInput>
             <IonIcon
+                className="pass"
                 slot="end"
                 icon={`assets/svgs/${toggleIcon}.svg`}
                 onClick={toggleShowPass}

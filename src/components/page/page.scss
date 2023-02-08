@@ -50,9 +50,13 @@ ion-app {
             @include context(".ion-page", ".ion-page.show-page") {
                 opacity: 1;
             }
+            
             --background: none;
             ion-grid {
                 padding: 15px;
+                ion-row{
+                    width:100%;
+                }
                 @include context("ion-content", "ion-header + ion-content") {
                     padding: 0 15px;
                 }

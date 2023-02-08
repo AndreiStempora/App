@@ -87,8 +87,11 @@ const CustomForm = ({submitForm,autofocus}) => {
                     </IonLabel>
                 </IonItem>
             ))}
-            
+            <div className="button-effect">
             <IonButton className="login-btn" type="submit" onClick={submitForm} >{buttons?.sign_in}</IonButton>
+
+            </div>
+
         </form>
     );
 };
