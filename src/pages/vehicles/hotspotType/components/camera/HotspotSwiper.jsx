@@ -79,7 +79,7 @@ const HotspotSwiper = ({setHidePageContent}) => {
 
     return (
         <>
-            <IonCol size='3'>
+            <IonCol size='3' className={'image-col'}>
                 <div className="img-container" >
                     {
                         imageLoading ?

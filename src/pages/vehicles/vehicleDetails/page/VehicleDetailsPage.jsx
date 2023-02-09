@@ -1,11 +1,11 @@
-import { IonBackButton, IonButtons, IonItem, IonLabel, IonTitle, IonButton, IonIcon, useIonViewWillEnter, useIonAlert, useIonViewDidEnter } from "@ionic/react";
+import { IonButtons, IonItem, IonLabel, IonTitle, IonButton, IonIcon, useIonAlert } from "@ionic/react";
 import { Page, CustomHeader, CustomContent } from "../../../../components/page/Page";
-import { useHistory, useLocation } from "react-router";
-import { useDbRequest, vehiclesService, imagesService } from "../../../../packages/database";
-import { useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router";
+import { useDbRequest, vehiclesService } from "../../../../packages/database";
+import { useEffect, useState } from "react";
 import { useRSelection } from "../../../../packages/database/features/utils/utilityHooks";
-import FooterAddVehicle from "../../../../components/page/pageMainComponents/footers/FooterAddVehicle";
 import { useHotspot } from "../../../../packages/database/features/utils/utilityHooks";
+import FooterAddVehicle from "../../../../components/page/pageMainComponents/footers/FooterAddVehicle";
 import CustomBackButton from "../../../../components/buttons/CustomBackButton";
 import './vehicleDetailsPage.scss';
 
@@ -14,27 +14,8 @@ const VehicleDetailsPage = () => {
     const history = useHistory();
     const hotspotHook = useHotspot();
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
-    const [vehicle, setVehicle] = useState({});
     const [elements, setElements] = useState({});
     const [presentAlert] = useIonAlert();
-    // const refreshX = useRef(true);
-    // const [refresh, setRefresh] = useState(true);
-    // let refresh = true;
-    // const location = useLocation();
-
-    const getPicturesFromHotspots = async (hotspots) => {
-        return await Promise.all(
-            hotspots.map(async (hotspot) => {
-                let x = await dbRequest.requestFunction(async () => imagesService.getImageByVehicleIdAndHotspotId([getCurrentSelection().vehicle_id, hotspot.hotspot_id]));
-                if (x.length > 0) {
-                    console.log(x, 'x');
-                    return x[0];
-                } else {
-                    return null;
-                }
-            })
-        )
-    }
 
     const getPictureCount = async (hotspots) => {
         let counter = 0;

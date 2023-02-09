@@ -2,6 +2,10 @@
     .special-list {
         padding-top:0;
         ion-item {
+            &::part(native){
+                border-bottom-width:0;
+            }
+            border-bottom-color:rgba(248, 249, 250, 0.25);
             ion-label{
                 h2{
                     font-weight: 600;
@@ -19,19 +23,22 @@
             &.item-checkbox-checked{
                 position: relative;
                 overflow: visible;
+                border-bottom-color:rgba(248, 249, 250, 0.15);
+                    
+                
                 background-color: rgba(255,255,255, 0.1);
                 &::before,
                 &::after{
-                    height:calc(100% - 1px);
+                    height:100%;
                     content:'';
                     position: absolute;
-                    bottom: 0;
+                    bottom: -1px;
                     width:30px;
                     //height:1px;
                     background-color: rgba(255,255,255, 0.1);
                     border-bottom:1px solid;
                     border-top: 1px solid;
-                    border-color:rgba( 248,249,250, 0.25)
+                    border-color:rgba( 248,249,250, 0.15)
                 }
                 &::before{
                     left: -30px;
@@ -42,13 +49,14 @@
                 &:first-child{
                     &::before,
                     &::after{
-                        border-top-width:0px;
+                        border-top-color:transparent;
                     }
                 }
                 & + .item-checkbox-checked{
                     &::before,
                     &::after{
-                        border-top-width:0;
+                        border-top-color:transparent;
+                        height:calc(100% - 1px);
                     }
                 }
             }

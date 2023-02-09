@@ -1,8 +1,9 @@
 import { Page } from '../../../components/page/Page';
-import { IonButtons, IonBackButton, IonTitle } from '@ionic/react';
+import { IonButtons, IonTitle } from '@ionic/react';
 import { TwoFaCode, TwoFA } from '../TwoFA';
 import { useAtom } from 'jotai';
 import { CustomHeader, CustomContent } from '../../../components/page/Page';
+import CustomBackButton from '../../../components/buttons/CustomBackButton';
 import "./twoFACodePage.scss";
 
 const TwoFACodePage = () => {
@@ -12,7 +13,7 @@ const TwoFACodePage = () => {
         <Page pageClass={'twoFaCode'}>
             <CustomHeader>
                 <IonButtons slot="start" >
-                    <IonBackButton defaultHref="/login" icon="assets/svgs/previous.svg" />
+                    <CustomBackButton href="/login"></CustomBackButton>
                 </IonButtons>
                 <IonTitle class="ion-text-center page-title">{selectedOption?.widget}</IonTitle>
             </CustomHeader>

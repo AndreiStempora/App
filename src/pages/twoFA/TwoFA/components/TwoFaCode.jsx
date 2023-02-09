@@ -19,7 +19,6 @@ const TwoFaCode = () => {
 
 	const getIcon = () => {
 		const str = selectedOption?.icon;
-		//remove from string spaces and svgicon
 		const str2 = str.replace(/ /g, '');
 		const str3 = str2.replace('svgicon', '');
 		return str3;
@@ -61,7 +60,7 @@ const TwoFaCode = () => {
 		<div className='code-block'>
 			<IonIcon className="big-icon" icon={`/assets/svgs/${getIcon()}.svg`}></IonIcon>
 			{ pageInfo && parser(pageInfo)}
-			<div className="input-group">
+			<div className="input-group digit-form">
 				<CodeDigits fields={fields} />
 			</div>
 			{buttonResend && <IonButton fill='clear' className="resend-button" onClick={clickHandler}>Didn't get a code?</IonButton>}

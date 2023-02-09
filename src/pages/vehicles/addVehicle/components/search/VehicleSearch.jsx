@@ -1,13 +1,10 @@
-import { IonSearchbar, IonLabel, IonRadio, IonRadioGroup, IonVirtualScroll, IonGrid, IonContent, IonCol, IonRow, IonSpinner, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidEnter } from "@ionic/react";
+import { IonSearchbar, IonLabel, IonList } from "@ionic/react";
 import { useState, useEffect, useRef } from "react";
 import { vehiclesService } from "../../../../../packages/database/features/services/vehiclesService";
-import { useAtom } from 'jotai';
-import { user } from '../../../../../services/user/user';
+import { useRSelection } from "../../../../../packages/database/features/utils/utilityHooks";
 import useDbRequest from "../../../../../packages/database/features/utils/databaseOperationsHook";
 import VehicleSearchItem from "./VehicleSearchItem";
 import './vehicleSearch.scss';
-import { useRSelection } from "../../../../../packages/database/features/utils/utilityHooks";
-
 
 const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const dbRequest = useDbRequest();

@@ -3,16 +3,18 @@
 ion-item{
     &.item{
         --background:transparent;
-        --border-color:#F8F9FA;
+        // --border-color:#F8F9FA;
+        --border-color:transparent;
+        border-bottom:1px solid #f8f9fa;
         --highlight-color-focused:transparent;
         &.item-has-focus{
             caret-color: white;
-            --border-color:#ffffff;
+            --border-color:transparent;
             --highlight-height: 0px;
             --highlight-color-focused:#ffffff;
         }
         &.item-has-value{
-            --border-color:#ffffff;
+            --border-color:transparent;
         }
         ion-label{
             &.label-stacked{

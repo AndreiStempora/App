@@ -1,4 +1,4 @@
-import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, logService, tests } from "../../../packages/database";
+import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, logService } from "../../../packages/database";
 import { IonList } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import DealershipElement from './DealershipElement';

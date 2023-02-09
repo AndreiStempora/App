@@ -39,6 +39,7 @@ const useCamera = () => {
         window.screen.orientation.unlock();
         let counter = 0;
         window.screen.orientation.addEventListener('change', async () => {
+            console.log(window.screen.orientation.type,'()()()()()()()')
             if (window.screen.orientation.type.includes('landscape-primary')) {
                 if (counter === 0) {
                     await CameraPreview.stop();

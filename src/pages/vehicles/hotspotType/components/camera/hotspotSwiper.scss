@@ -10,6 +10,7 @@ ion-footer{
             --border-style: solid;
             position: relative;
             margin-bottom:20px;
+            margin-top:20px;
             &::before{
                 border-radius: 50%;
                 content:'';
@@ -22,14 +23,10 @@ ion-footer{
             }
         }
         .img-container{
-            //margin-left:2rem;
-            transform: rotate(90deg);
-            position: absolute;
             bottom: -20px;
             right: -20px;
             ion-img{
-                width:80px;
-                object-fit: cover;
+                height:80px
             }
         }
 

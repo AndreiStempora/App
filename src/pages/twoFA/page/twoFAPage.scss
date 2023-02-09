@@ -1,5 +1,5 @@
-ion-content{
-    &.twofa{
+.twoFaSelect{
+    ion-content{
         p{
             margin-block-start: 0px;
             margin-block-end: 0px;
@@ -7,9 +7,14 @@ ion-content{
         .title{
             font-size: 17px;
         }
-        .list-md{
-            padding:0;
+        ion-list{
+            ion-item{
+                ion-icon{
+                    width:18px;
+                    height:18px;
+                }
+            }
         }
-    }
+    }    
 
 }

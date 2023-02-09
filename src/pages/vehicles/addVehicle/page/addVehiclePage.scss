@@ -1,7 +1,31 @@
 .addVehicle{
-    ion-searchbar{
-        .searchbar-input-container{
-            --box-shadow: none;
+    ion-searchbar{   
+        &.sc-ion-searchbar-ios-h{
+            padding-left:0px;
+            padding-right:0px;
+            padding-top:10px;
+            padding-bottom:10px;
+            
+            --background:transparent;
+            border-radius: 0;
+            border-bottom:1px solid rgba(248, 249, 250, 0.25); 
+            input{
+                caret-color: #fff;
+            }
+        }
+    }
+    ion-list{
+        .item{
+            border-bottom-color:rgba(248, 249, 250, 0.25); 
+            &::part(native) {
+                display:flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+                --detail-icon-color:  rgba(248, 249, 250, 1);
+                --detail-icon-font-size:22px;          
+                --detail-icon-opacity:1
+            }
         }
     }
 }

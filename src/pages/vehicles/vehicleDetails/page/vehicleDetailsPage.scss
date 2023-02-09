@@ -1,8 +1,14 @@
 .vehicleDetails{
     ion-row{
         height:100%;
+        overflow: scroll;
         flex-direction: column;
+        flex-wrap: nowrap;
         ion-col{
+            position: relative;
+            ion-item{
+                border-bottom-color:transparent;
+            }
             flex:0 0 auto!important;
             &:nth-of-type(2){
                 text-align: right;
@@ -33,6 +39,7 @@
                     left:0;
                     padding:25px 0 40px 0;
                     transform: translate(-38%);
+                    box-sizing: border-box;
                     img{
                         height: 100%;
                         width: 100%;

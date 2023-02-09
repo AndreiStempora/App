@@ -1,7 +1,7 @@
 import { Page, CustomHeader, CustomContent } from "../../../../components/page/Page";
-import { IonButtons, IonTitle, IonButton, IonLabel, IonBackButton, IonList, IonIcon, useIonViewWillEnter } from "@ionic/react";
+import { IonButtons, IonTitle, IonButton, IonLabel, IonList, IonIcon } from "@ionic/react";
 import { useState, useEffect } from "react";
-import { useDbRequest, hotspotsService, imagesService } from "../../../../packages/database";
+import { useDbRequest } from "../../../../packages/database";
 import { useRSelection, useHotspot } from "../../../../packages/database/features/utils/utilityHooks";
 import OpenedCameraTakePhoto from "../components/camera/OpenedCameraTakePhoto";
 import useCamera from "../../../../packages/camera/features/CameraCustomHook";
@@ -9,7 +9,6 @@ import FooterAddVehicle from "../../../../components/page/pageMainComponents/foo
 import HotspotWithPic from "../components/hotspotWithPhotoItem/HotspotWithPic";
 import CustomBackButton from "../../../../components/buttons/CustomBackButton";
 import { useHistory } from "react-router";
-import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 import { FS } from "../../../../packages/filesystem";
 import "./hotspotTypePage.scss";
 

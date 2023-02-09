@@ -1,5 +1,6 @@
 import { useHistory } from "react-router";
 import { IonButton, IonIcon } from "@ionic/react";
+import './customBackButton.scss'
 
 const CustomBackButton = ({ href, extraFunction }) => {
     const history = useHistory();
@@ -14,7 +15,7 @@ const CustomBackButton = ({ href, extraFunction }) => {
     }
 
     return (
-        <IonButton slot="start" onClick={clickHandler}>
+        <IonButton slot="start" onClick={clickHandler} className={'return-btn'}>
             <IonIcon icon="assets/svgs/previous.svg"></IonIcon>
         </IonButton>
     )

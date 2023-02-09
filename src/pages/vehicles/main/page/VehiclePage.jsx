@@ -5,11 +5,11 @@ import { user } from '../../../../services/user/user';
 import { useDbRequest, vehiclesService } from '../../../../packages/database';
 import { useEffect, useState, useRef } from 'react';
 import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
+import { network } from '../../../../packages/network';
 import FooterAddVehicle from '../../../../components/page/pageMainComponents/footers/FooterAddVehicle';
 import FooterDeleteUpload from '../../../../components/page/pageMainComponents/footers/FooterDeleteUpload';
 import FileUploader from '../../../../components/uploader/FileUploader';
 import VehicleItem from '../components/VehicleItem';
-import { network } from '../../../../packages/network';
 import './vehiclePage.scss';
 
 const VehiclePage = () => {
