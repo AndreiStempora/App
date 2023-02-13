@@ -1,8 +1,8 @@
-import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
-import { useState, useEffect } from 'react';
+import { CameraPreview } from '@capacitor-community/camera-preview';
+import { useState, useEffect, useRef } from 'react';
 import { FS } from '../../../packages/filesystem';
 import { useDbRequest, imagesService } from "../../../packages/database";
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 import { useRSelection } from '../../database/features/utils/utilityHooks';
 
 const useCamera = () => {
@@ -10,6 +10,7 @@ const useCamera = () => {
     const dbRequest = useDbRequest();
     const [filesUrl, setFilesUrl] = useState(null);
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
+
     const [cameraPreviewOptions, setCameraPreviewOptions] = useState({
         toBack: true,
         quality: 100,
@@ -18,11 +19,10 @@ const useCamera = () => {
         disableAudio:true,
         x: 0,
         y: 0,
-        // rotateWhenOrientationChanged: true,
-        // disableExifHeaderStripping: false,
-        // paddingBottom: 100,
-        // width: window.screen.height,
-        // height: window.screen.width,
+        // width:window.screen.height,
+        // height:window.screen.width,
+        disableExifHeaderStripping:false,
+        // rotateWhenOrientationChanged:false,
     });
 
 
@@ -39,8 +39,9 @@ const useCamera = () => {
         window.screen.orientation.unlock();
         let counter = 0;
         window.screen.orientation.addEventListener('change', async () => {
-            console.log(window.screen.orientation.type,'()()()()()()()')
+            
             if (window.screen.orientation.type.includes('landscape-primary')) {
+                
                 if (counter === 0) {
                     await CameraPreview.stop();
                     await CameraPreview.start(cameraPreviewOptions);
@@ -48,6 +49,7 @@ const useCamera = () => {
                 counter++;
                 document.querySelector('.vehiclePhotos')?.classList.add('landscape');
             } else {
+                
                 document.querySelector('.vehiclePhotos')?.classList.remove('landscape');
             }
         })
@@ -71,7 +73,7 @@ const useCamera = () => {
             console.log(existingImage[0].image_data, "wtfffff")
             await dbRequest.requestFunction(async () => await imagesService.deleteImageById([existingImage[0].image_id]));
         }
-        const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100, width: 2880, height: 2160 })).value;
+        const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100 })).value;
         const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesUrl + '/' + Date.now() + '.jpg')).uri;
         await dbRequest.requestFunction(async () => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, copiedPictureUri]));
 

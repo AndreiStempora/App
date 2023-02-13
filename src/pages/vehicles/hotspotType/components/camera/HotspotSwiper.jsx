@@ -72,9 +72,9 @@ const HotspotSwiper = ({setHidePageContent}) => {
     }, [swiper]);
 
     const pictureClickHandler = async (e) => {
-        const fullImage = document.querySelector('.full-image-container')
+        const fullImage = document.querySelector('.full-image-container');
         fullImage.parentNode.classList.add('show');
-        fullImage.style.backgroundImage = `url(${e.target.src})`;
+        document.querySelector(".image-full").src = e.target.src;
     }
 
     return (

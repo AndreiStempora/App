@@ -4,20 +4,23 @@
     overflow: hidden;
     margin: 15px 15px 15px 0;
     display: block;
-
+    position: relative;
     ion-img {
+        position: absolute;
         transition: transform 0.2s linear;
-        transform: rotate(-90deg);
-        width: 100%;
-        height: 100%;
-        margin-right:0;
-        //margin: 0 15px 15px 15px !important;
+        width:60px;
+        left:10px;
+        top:0;
+        height: auto;
+        transform: rotate(-90deg) translate(40%);
         object-fit: cover;
+        transform-origin: center;
         &.placeholder {
             transform: rotate(0deg);
             height: 60px;
             width: 80px;
-            //margin: 15px 15px 15px 0px !important;
+            left:0;
+            
         }
     }
 }
