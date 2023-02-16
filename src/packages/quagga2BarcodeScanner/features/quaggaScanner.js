@@ -4,26 +4,38 @@ const quaga = {
     init: () => {
         Quagga.init({
             inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: document.querySelector('ion-content')    // Or '#yourElement' (optional)
+                type: 'LiveStream',
+               
+                // target: scannerRef.current,
             },
-            decoder: {
-                readers: ["code_39_vin_reader"]
-            }
-        }, function (err) {
+            // locator,
+            // numOfWorkers,
+            decoder: { readers: ["code_39_reader","code_39_vin_reader"] },
+            // locate,
+        }, (err) => {
+            Quagga.onProcessed((e)=>{console.log(e,'ff')});
+
             if (err) {
-                console.log(err);
-                return
+                return console.log('Error starting Quagga:', err);
             }
-            console.log("Initialization finished. Ready to start");
-            Quagga.start();
+            
+                Quagga.start();
+            
+                    
+            
+            
         });
-        console.log("Quagga initialized")
+        Quagga.onDetected((e)=>{console.log(e)});
+        
     },
     detect: () => {
         Quagga.onDetected(function (result) {
             console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result)
+        })
+    },
+    processed:()=>{
+        Quagga.onProcessed(function (result){
+            console.log(result, 'quaga result')
         })
     }
 }

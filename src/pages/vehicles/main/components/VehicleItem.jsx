@@ -50,8 +50,6 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
 
     const stop = useCallback((e) => {
         clearTimeout(timerRef.current);
-        console.log(showCheckbox, 'checkbox');
-        console.log(thisRef.current.closest('ion-item').querySelector('ion-checkbox'), 'thisRef.current');
         if (thisRef.current.closest('ion-item').querySelector('ion-checkbox') === null) {
             setCurrentSelection({ vehicle_id: item.vehicle_id });
             history.push("/vehicle-details");

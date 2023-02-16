@@ -110,7 +110,7 @@ const FileUploader = ({ elements, setUploading, uploading, setRefresh }) => {
                 ></IonAlert>
                 {!alert &&
                     <>
-                        <IonButton onClick={() => setUploading(false)}>Upload</IonButton>
+                        {/* <IonButton onClick={() => setUploading(false)}>Upload</IonButton> */}
                         <IonItem lines={'none'}>
                             <IonLabel className='ion-text-center'>Files Uploaded : {currentUpload} / {uploadElements.length} </IonLabel>
                         </IonItem>

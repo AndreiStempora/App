@@ -19,7 +19,6 @@ const FS = {
             return result.files;
 
         } catch (e) {
-            console.log(e);
             return null;
         }
     },
@@ -44,7 +43,6 @@ const FS = {
             })
             return true;
         } catch (e) {
-            console.log(e, "deleteFile" + path);
             return e.message;
         }
 

@@ -17,10 +17,10 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
 
  
 
-    const closePicHandler= (e) =>{
-        const x = e.target.parentElement.parentElement.classList.remove('show');
+    const closePicHandler= () =>{
+        const x = document.querySelector('.vehiclePhotos').classList.remove("show");
     }
-    return (
+    return ( 
         <>
                 <CustomHeader className="camera-header">
                     <IonButtons>

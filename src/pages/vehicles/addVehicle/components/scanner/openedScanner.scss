@@ -4,6 +4,13 @@
         > * {
             opacity: 1;
         }
+        ion-header{
+            border-bottom:none;
+            ion-toolbar{
+                --background:transparent;
+                --border-width:0;
+            }
+        }
         ion-content {
             position: relative;
             ion-row {

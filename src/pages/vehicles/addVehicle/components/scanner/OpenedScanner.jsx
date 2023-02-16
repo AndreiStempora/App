@@ -1,6 +1,6 @@
 import CustomHeader from "../../../../../components/page/pageMainComponents/CustomHeader";
 import "./openedScanner.scss";
-import { IonButton, IonButtons, IonTitle, IonFab, IonFabButton, IonIcon } from "@ionic/react";
+import { IonButton, IonButtons, IonIcon, IonHeader } from "@ionic/react";
 import { CustomContent } from "../../../../../components/page/Page";
 
 
@@ -11,11 +11,15 @@ const OpenedScanner = ({ close }) => {
     }
     return (
         <>
-            <IonFab>
-                <IonFabButton size='small' color="transparent" className={'exit-scanner'}>
-                    <IonIcon icon={'/assets/svgs/closeIcon.svg'} onClick={closeScan} color="#fff"></IonIcon>
-                </IonFabButton>
-            </IonFab>
+            <CustomHeader>
+                <IonButtons>
+                    <IonButton onClick={closeScan}>
+
+                        <IonIcon icon={'/assets/svgs/closeIcon.svg'}  color="#fff"></IonIcon>
+                    </IonButton>
+                </IonButtons>
+            </CustomHeader>
+            
             <CustomContent >
                 <>
                     <div className="layer" ></div>

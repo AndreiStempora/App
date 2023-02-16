@@ -7,10 +7,6 @@ import './hotspotWithPic.scss';
 
 const HotspotWithPic = ({ hotspotWithPhoto, openCamera, imageLoading }) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
-    const [currentHotspot, setCurrentHotspot] = useState();
-    const [hotspotImage, setHotspotImage] = useState();
-    // const [imageLoading, setImageLoading] = useState(true);
-
 
     const selectItemHandler = async () => {
         editCurrentSelection({ hotspot_id: hotspotWithPhoto[0].hotspot_id });

@@ -1,5 +1,6 @@
 import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
+import { quaga } from '../../quagga2BarcodeScanner';
 
 const useBarcodeScanner = () => {
     const startScan = async () => {
@@ -13,6 +14,8 @@ const useBarcodeScanner = () => {
                 document.querySelector('.addVehicle')?.classList.remove('portrait-view');
             }
         })
+        // quaga.init();
+        // quaga.detect();
         const scannedCode = (await BarcodeScanner.startScan({ targetedFormats: [SupportedFormat.CODE_39] })).content;
         ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
         return scannedCode;

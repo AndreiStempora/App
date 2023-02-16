@@ -23,10 +23,15 @@ ion-footer{
             }
         }
         .img-container{
-            bottom: -20px;
-            right: -20px;
+            // bottom: -20px;
+            // right: -20px;
+            margin-top:-25px;
+            transform: rotate(90deg);
+            // transform-origin: 60px right;
             ion-img{
-                height:80px
+                height:60px;
+                width:80px;
+                object-fit: cover;
             }
         }
 

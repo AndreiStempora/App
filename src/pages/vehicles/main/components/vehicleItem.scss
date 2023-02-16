@@ -7,6 +7,7 @@
             }
             border-bottom-color:rgba(248, 249, 250, 0.25);
             ion-label{
+                max-width: calc(100vw - 60px - 95px );
                 h2{
                     font-weight: 600;
                     + h3{

@@ -25,7 +25,6 @@ const VehiclePhotos = () => {
 
     const openCameraHandler = async () => {
         setHidePageContent(true);
-        console.log('open camera handler');
         await camera.startCamera();
     };
 
@@ -46,12 +45,14 @@ const VehiclePhotos = () => {
                     hotspotWithPhoto[1] = null;
                 }
                 return hotspotWithPhoto;
-            }));
+            })); 
 
             setHotspotsWithPhotos(await newEl);
-            setImageLoading(false);
+            setImageLoading(false); 
         })();
-    }, [getCurrentSelection().refreshPage]);
+    }, [
+        getCurrentSelection().refreshPage
+    ]);
 
     const backButtonHandler = async () => {
         setCurrentSelection('refresh');

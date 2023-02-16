@@ -1,8 +1,8 @@
-import { Page, CustomHeader, CustomContent, CustomFooter } from "../../../../components/page/Page"
-import { IonButtons, IonTitle, IonButton, IonLabel, IonIcon, IonSearchbar, IonToolbar } from "@ionic/react"
+import { Page, CustomHeader, CustomContent } from "../../../../components/page/Page"
+import { IonButtons, IonTitle, IonButton, IonLabel, IonIcon } from "@ionic/react"
 import { useHistory } from "react-router";
 import { useState, useEffect } from "react";
-import { useDbRequest, vehiclesService, hotspotsService } from "../../../../packages/database";
+import { useDbRequest, vehiclesService } from "../../../../packages/database";
 import VehicleSearch from "../components/search/VehicleSearch";
 import "./addVehiclePage.scss"
 import { useRSelection } from "../../../../packages/database/features/utils/utilityHooks";
@@ -51,7 +51,9 @@ const AddVehicle = () => {
 
     const openScannerHandler = async () => {
         setHidePageContent(true);
+
         let result = await scanner.startScan();
+    
         // if result is longer than 17 characters, remove first character
         if (result.length > 17) {
             result = result.slice(1);

@@ -44,7 +44,9 @@ const VehicleDetailsPage = () => {
             };
             setElements(elements2);
         })();
-    }, [getCurrentSelection().vehicle_id, getCurrentSelection().refreshPage]);
+    }, [getCurrentSelection().vehicle_id , 
+        getCurrentSelection().refreshPage
+    ]);
 
 
 

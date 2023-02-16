@@ -72,15 +72,20 @@ const HotspotSwiper = ({setHidePageContent}) => {
     }, [swiper]);
 
     const pictureClickHandler = async (e) => {
-        const fullImage = document.querySelector('.full-image-container');
-        fullImage.parentNode.classList.add('show');
+        const fullImageContainer = document.querySelector('.full-image-container');
+        const smallImage = document.querySelector('.small-image');
+        // var rect = smallImage.getBoundingClientRect();
+        // document.querySelector(".image-full").style.left = rect.left;
+        // document.querySelector(".image-full").style.top = rect.top;
+        // console.log(rect.top, rect.right, rect.bottom, rect.left, '------');
+        fullImageContainer.parentNode.parentNode.classList.add('show');
         document.querySelector(".image-full").src = e.target.src;
     }
 
     return (
         <>
             <IonCol size='3' className={'image-col'}>
-                <div className="img-container" >
+                <div className="img-container small-image" >
                     {
                         imageLoading ?
                             <IonSpinner name="lines-sharp"></IonSpinner> :
