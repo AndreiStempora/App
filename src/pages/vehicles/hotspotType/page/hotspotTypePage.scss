@@ -110,6 +110,13 @@
         }
         
         &.landscape{
+            ion-header{
+                ion-toolbar{
+                    ion-button{
+                        display: none;
+                    }
+                }
+            }
             ion-footer{
                 display: block;
                 transform-origin: bottom right;

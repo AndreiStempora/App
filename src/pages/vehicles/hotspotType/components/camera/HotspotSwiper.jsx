@@ -11,7 +11,7 @@ import './hotspotSwiper.scss';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const HotspotSwiper = ({setHidePageContent}) => {
+const HotspotSwiper = () => {
     const hotspotHook = useHotspot();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [slides, setSlides] = useState(null);
@@ -23,10 +23,15 @@ const HotspotSwiper = ({setHidePageContent}) => {
 
     const getPicture = async () => {
         try {
+            setImageLoading(true);
             const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
             if (imageObj.length > 0) {
                 const img = await FS.showPicture(imageObj[0].image_data);
-                setImage(img);
+                if (img === undefined){
+                    setImage(null);    
+                } else {
+                    setImage(img);
+                }
             } else {
                 setImage(null);
             }
@@ -74,10 +79,6 @@ const HotspotSwiper = ({setHidePageContent}) => {
     const pictureClickHandler = async (e) => {
         const fullImageContainer = document.querySelector('.full-image-container');
         const smallImage = document.querySelector('.small-image');
-        // var rect = smallImage.getBoundingClientRect();
-        // document.querySelector(".image-full").style.left = rect.left;
-        // document.querySelector(".image-full").style.top = rect.top;
-        // console.log(rect.top, rect.right, rect.bottom, rect.left, '------');
         fullImageContainer.parentNode.parentNode.classList.add('show');
         document.querySelector(".image-full").src = e.target.src;
     }
@@ -88,6 +89,7 @@ const HotspotSwiper = ({setHidePageContent}) => {
                 <div className="img-container small-image" >
                     {
                         imageLoading ?
+                        // true ?
                             <IonSpinner name="lines-sharp"></IonSpinner> :
                             <IonImg src={image !== null ? image : '/assets/img/carPicPlaceholder.png'}
                             onClick={image !== null ? pictureClickHandler:null}
@@ -107,11 +109,14 @@ const HotspotSwiper = ({setHidePageContent}) => {
                     navigation
                     slidesPerView={1}
                     initialSlide={0}
-                    onSlideChange={async (swiper) => {
-                        const id = swiper.slides[swiper.activeIndex].getAttribute('data-id');
-                        editCurrentSelection({ hotspot_id: parseInt(id) });
-                        await getPicture();
-                    }}
+                    
+                    onSlideChangeTransitionEnd = {
+                        async swiper => {
+                            const id = swiper.slides[swiper.activeIndex].getAttribute('data-id');
+                            editCurrentSelection({ hotspot_id: parseInt(id) });
+                            await getPicture();
+                        }
+                    }
                     onInit={(swiper) => {
                         setSwiper(swiper);
                     }}

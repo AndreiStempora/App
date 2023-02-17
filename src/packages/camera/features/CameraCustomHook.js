@@ -4,12 +4,14 @@ import { FS } from '../../../packages/filesystem';
 import { useDbRequest, imagesService } from "../../../packages/database";
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { useRSelection } from '../../database/features/utils/utilityHooks';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 
 const useCamera = () => {
     const [cameraPreview, setCameraPreview] = useState(false);
     const dbRequest = useDbRequest();
     const [filesUrl, setFilesUrl] = useState(null);
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
+    const orientationListener = useRef(0);
 
     const [cameraPreviewOptions, setCameraPreviewOptions] = useState({
         toBack: true,
@@ -37,22 +39,17 @@ const useCamera = () => {
 
     const startCamera = async () => {
         window.screen.orientation.unlock();
-        let counter = 0;
-        window.screen.orientation.addEventListener('change', async () => {
-            
-            if (window.screen.orientation.type.includes('landscape-primary')) {
-                
-                if (counter === 0) {
-                    await CameraPreview.stop();
-                    await CameraPreview.start(cameraPreviewOptions);
+        if(orientationListener.current === 0){
+            window.screen.orientation.addEventListener('change', async () => {
+                orientationListener.current = 1;
+                if (window.screen.orientation.type === 'landscape-primary') {
+                    document.querySelector('.vehiclePhotos')?.classList.add('landscape');
+                } else {
+                    document.querySelector('.vehiclePhotos')?.classList.remove('landscape');
                 }
-                counter++;
-                document.querySelector('.vehiclePhotos')?.classList.add('landscape');
-            } else {
-                
-                document.querySelector('.vehiclePhotos')?.classList.remove('landscape');
-            }
-        })
+            })
+        }
+       
         await CameraPreview.start(cameraPreviewOptions);
         setCurrentSelection({ cameraOn: true });
         setCameraPreview(true);
@@ -64,7 +61,7 @@ const useCamera = () => {
         setCameraPreview(false);
         setCurrentSelection({ cameraOn: false });
         setCurrentSelection('refresh');
-        window.screen.orientation.removeEventListener('change', () => { });
+        window.screen.orientation.removeEventListener('change');
     };
 
     const takePicture = async (hotspot_id, vehicle_id) => {
