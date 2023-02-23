@@ -21,7 +21,7 @@ const VehicleSearchItem = ({ vehicle, match, click }) => {
                             Stock:
                         </span>
                         <span className="value">
-                            {vehicle.vehicle_stock}
+                            {match(vehicle.vehicle_stock)}
                         </span>
                     </span>
                 </div>

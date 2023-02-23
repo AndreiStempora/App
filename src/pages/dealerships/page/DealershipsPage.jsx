@@ -43,7 +43,10 @@ const DealershipsPage = () => {
 				const response = await pageRequest.requestFunction(requestTableContentDealerships);
 				const vehicleArrays = await requestTableContentVehicles(response?.dealerships);
 				setRequestInfo({ dealerships: response?.dealerships, vehicles: vehicleArrays });
+			} else {
+				setRequestInfo(null);
 			}
+			
 			await FS.createDirectory('images')
 		})()
 	}, []);

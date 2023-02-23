@@ -1,5 +1,5 @@
 import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, logService } from "../../../packages/database";
-import { IonList } from '@ionic/react';
+import { IonList, useIonAlert } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import DealershipElement from './DealershipElement';
 import './dealershipSelector.scss'
@@ -9,6 +9,7 @@ import './dealershipSelector.scss'
 const DealershipSelector = ({ info }) => {
 	const dbRequest = useDbRequest();
 	const [dealershipElements, setDealershipElements] = useState([]);
+	const [presentAlert] = useIonAlert();
 
 	const deleteDatabase = async () => {
 		await dbRequest.requestFunction(() => DB.dropAllTables());
@@ -23,8 +24,8 @@ const DealershipSelector = ({ info }) => {
 		const e = await dbRequest.requestFunction(async () => imagesService.getAllImages());
 		const f = await dbRequest.requestFunction(async () => logService.getAllLogs());
 		const aaaaaaa = await dbRequest.requestFunction(async () => vehiclesService.getVehicleByVin(['Red market']));
-		console.log(a, b, c, d1, d2, e, f, "all");
-		console.log(aaaaaaa, "aaaaaaa");
+		// console.log(a, b, c, d1, d2, e, f, "all");
+		console.log(a,b,c,d1,d2,e,f,aaaaaaa, "aaaaaaa");
 	}
 
 	const dealershipsToAdd = async () => {
@@ -97,6 +98,24 @@ const DealershipSelector = ({ info }) => {
 		})
 	}
 
+	const alertDBNotInitialized = () => {
+        return presentAlert({
+            header: 'On your first login on this device you will need to have access to the Internet',
+            cssClass: 'custom-alert',
+            buttons: [
+                {
+                    text: 'Ok',
+                    cssClass: 'alert-button-confirm',
+                },
+				{
+					text: 'retry',
+					handler: () =>{
+						window.location.reload();
+					}
+				}
+            ],
+        })
+    }
 	useEffect(() => {
 		const databaseInitialOperations = async () => {
 			dbRequest.setLoading(true);
@@ -136,11 +155,22 @@ const DealershipSelector = ({ info }) => {
 			// getAllDBContents();
 		}
 
+		const setDefaultdealerships = async() =>{
+			const dealerships =  await dbRequest.requestFunction(async () => dealershipsService.getAllDealerships());
+			
+			if(!dealerships.length){
+				alertDBNotInitialized();
+			} else {
+				setDealershipElements(dealerships);
+			}
+		}
 
 		if (info !== null) {
 			// deleteDatabase();
 			databaseInitialOperations();
 			// getAllDBContents()
+		} else {
+			setDefaultdealerships();
 		}
 
 	}, [info]);

@@ -181,10 +181,10 @@ const VehiclePage = () => {
                 <>
                     <CustomHeader>
                         <IonButtons slot="start" >
-                            {showCheckbox ? <IonButton onClick={editVehicleHandler}><IonIcon icon='/assets/svgs/cancel.svg' /></IonButton> :
-                                <IonButton defaultHref="/profile" >
-                                    {userInfo.avatar ? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg' />}
-                                </IonButton>
+                            {showCheckbox ? <IonButton onClick={editVehicleHandler}><IonIcon icon='/assets/svgs/cancel.svg' /></IonButton> : null
+                                // <IonButton defaultHref="/profile" >
+                                //     {userInfo.avatar ? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg' />}
+                                // </IonButton>
                             }
                         </IonButtons>
 
