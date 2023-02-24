@@ -17,8 +17,8 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
 
     useEffect(() => {
         (async () => {
-            const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([getCurrentSelection().dealership_id]));
-            setAllVehicles(response);
+            // const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([getCurrentSelection().dealership_id]));
+            // setAllVehicles(response);
             setSearchText(scanResult);
         })();
     }, []);
@@ -46,54 +46,54 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     }
 
     const filterFunc = async () => {
-        if (allVehicles !== null) {
-            const filtered = await Promise.all(allVehicles?.filter(vehicle => {
-                return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase());
-            }));
-            if (filtered.length === 1 && searchText.length === 17) {
-                disableSave(false);
-            }
-            return filtered;
-        } else {
-            return null;
-        }
+        // if (allVehicles !== null) {
+        //     const filtered = await Promise.all(allVehicles?.filter(vehicle => {
+        //         return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase()) || (vehicle.vehicle_stock)?.startsWith(searchText.toUpperCase());
+        //     }));
+        //     if (filtered.length === 1 && searchText.length === 17) {
+        //         disableSave(false);
+        //     }
+        //     return filtered;
+        // } else {
+        //     return null;
+        // }
     }
 
     const transformStringMatch = (string) => {
         //if string starts with searchText, return the string with the searchText in bold
-        if (searchText.length > 0) {
-            if (string?.startsWith(searchText.toUpperCase())) {
-                const stringArray = string.split(searchText.toUpperCase());
-                return <>{stringArray[0]}<span className="matched" data-highlight={string}>{searchText.toUpperCase()}</span>{stringArray[1]}</>
-            } else {
-                return string;
-            }
-        } else {
-            return string;
-        }
+        // if (searchText.length > 0) {
+        //     if (string?.startsWith(searchText.toUpperCase())) {
+        //         const stringArray = string.split(searchText.toUpperCase());
+        //         return <>{stringArray[0]}<span className="matched" data-highlight={string}>{searchText.toUpperCase()}</span>{stringArray[1]}</>
+        //     } else {
+        //         return string;
+        //     }
+        // } else {
+        //     return string;
+        // }
     }
 
     const searcFieldCompletionHandler = async (e) => {
-        const target = e.target.closest('ion-item');
-        const attribute = target.querySelector('.matched').getAttribute('data-highlight');
-        setSearchText(attribute);
+        // const target = e.target.closest('ion-item');
+        // const attribute = target.querySelector('.matched').getAttribute('data-highlight');
+        // setSearchText(attribute);
     }
 
     useEffect(() => {
         disableSave(true);
         (async () => {
-            if (searchText.length > 0) {
-                const filteredList = await filterFunc();
-                if (filteredList !== null) {
-                    setFilteredVehicles(filteredList);
-                    newCar(searchText);
-                }
-                if (searchText.length === 17) {
-                    disableSave(false);
-                }
-            } else {
-                setFilteredVehicles(null);
-            }
+            // if (searchText.length > 0) {
+            //     const filteredList = await filterFunc();
+            //     if (filteredList !== null) {
+            //         setFilteredVehicles(filteredList);
+            //         newCar(searchText);
+            //     }
+            //     if (searchText.length === 17) {
+            //         disableSave(false);
+            //     }
+            // } else {
+            //     setFilteredVehicles(null);
+            // }
         })()
     }, [searchText]);
 
@@ -126,6 +126,25 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
                     </div>
                 }
             </IonList>
+
+            {/* <IonList>
+        {items.map((item, index) => (
+          <IonItem key={item}>
+            <IonAvatar slot="start">
+              <img src={'https://picsum.photos/80/80?random=' + index} alt="avatar" />
+            </IonAvatar>
+            <IonLabel>{item}</IonLabel>
+          </IonItem>
+        ))}
+      </IonList>
+      <IonInfiniteScroll
+        onIonInfinite={(ev) => {
+          generateItems();
+          setTimeout(() => ev.target.complete(), 500);
+        }}
+      >
+        <IonInfiniteScrollContent></IonInfiniteScrollContent>
+      </IonInfiniteScroll> */}
         </>
     )
 }

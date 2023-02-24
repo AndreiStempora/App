@@ -411,11 +411,37 @@ const vehiclesRepository = {
                     }
                 );
         });
+    },
+    // get vehicles by dealership id and string that mathces vehicle_vin or vehicle_stock with an offset of 10
+    getVehiclesByDealershipIdAndString: async ([dealership_id, string, offset]) => {
+        return new Promise(async (resolve, reject) => {
+            (await DB.dbInstance())
+                .transaction((tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM vehicles WHERE dealership_id = ? AND (vehicle_vin LIKE ? OR vehicle_stock LIKE ?) LIMIT 10 OFFSET ?`,
+                        [dealership_id, string + '%', string + '%', offset],
+                        (tx, results) => {
+                            let arr = [];
+                            for (let i = 0; i < results.rows.length; i++) {
+                                arr.push(results.rows.item(i));
+                            }
+                            resolve(arr);
+                        }
+                    );
+                },
+                    //transaction error
+                    (error) => {
+                        console.log(error);
+                        logService.insertLog([new Date().getTime(), [dealership_id, string, offset], error]);
+                        reject(error);
+                    },
+                    //transaction success
+                    () => {
+                        logService.insertLog([new Date().getTime(), [dealership_id, string, offset], "Vehicles retrieved successfully"]);
+                    }
+                );
+        });
     }
-
-
-
-
 }
 
 export { vehiclesRepository };

@@ -1,8 +1,53 @@
 .return-btn{
     margin-left:0;
     .button-native{
-            padding-left:30px;
-        }
+        padding-left:30px;
+    } 
+}
 
-    
+.ion-page{
+    &.portrait-view{
+        ion-header{
+            ion-toolbar{
+                padding:10px 18px 0 18px;
+            }   
+        } 
+    }
+    ion-header{
+        ion-toolbar{
+            --padding-top:0;
+            --padding-bottom:0;
+            padding:44px 18px 0 18px;
+            ion-buttons{
+                min-height: 44px;
+             
+                ion-button{
+                    min-height:44px;
+                    min-width:44px;
+                    -webkit-margin-start: 0;
+                    -webkit-margin-end:0;
+                    &::part(native){
+                        padding:12px;
+                    }
+                    
+                }
+            }
+        }
+    }
+    ion-footer{
+        ion-toolbar{
+            margin-top:0;
+            ion-buttons{
+                .icon-over-text{
+
+                }
+                margin-top:0;
+                margin-bottom:0;
+                ion-button{
+                    // padding-top:15px;
+                    padding:15px 5px 10px 5px;
+                }
+            }
+        }
+    }
 }

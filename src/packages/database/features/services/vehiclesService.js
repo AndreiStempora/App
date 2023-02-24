@@ -76,7 +76,10 @@ const vehiclesService = {
     },
     updateVehicleMakeAndModelById: async ([vehicle_id, vehicle_make, vehicle_model]) => {
         return await vehiclesRepository.updateVehicleMakeAndModelById([vehicle_id, vehicle_make, vehicle_model]);
-    }
+    },
+    getVehiclesByDealershipIdAndString: async ([dealership_id, string, offset]) => {
+        return await vehiclesRepository.getVehiclesByDealershipIdAndString([dealership_id, string, offset]);
+    },
 
 }
 

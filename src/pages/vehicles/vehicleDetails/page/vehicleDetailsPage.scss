@@ -1,4 +1,15 @@
 .vehicleDetails{
+    &.ion-page{
+        ion-header{
+            +ion-content{
+                ion-grid{
+                    ion-row{
+                        overflow: visible;
+                    }
+                }
+            }
+        }
+    }
     ion-row{
         height:100%;
         overflow: scroll;
