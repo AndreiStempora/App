@@ -126,25 +126,6 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
                     </div>
                 }
             </IonList>
-
-            {/* <IonList>
-        {items.map((item, index) => (
-          <IonItem key={item}>
-            <IonAvatar slot="start">
-              <img src={'https://picsum.photos/80/80?random=' + index} alt="avatar" />
-            </IonAvatar>
-            <IonLabel>{item}</IonLabel>
-          </IonItem>
-        ))}
-      </IonList>
-      <IonInfiniteScroll
-        onIonInfinite={(ev) => {
-          generateItems();
-          setTimeout(() => ev.target.complete(), 500);
-        }}
-      >
-        <IonInfiniteScrollContent></IonInfiniteScrollContent>
-      </IonInfiniteScroll> */}
         </>
     )
 }
