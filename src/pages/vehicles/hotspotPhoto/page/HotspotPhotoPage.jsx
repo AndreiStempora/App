@@ -1,15 +1,15 @@
-import { useHotspot, useRSelection, useDeleteUpload } from "../../../packages/database/features/utils/utilityHooks";
+import { useHotspot, useRSelection, useDeleteUpload } from "../../../../packages/database/features/utils/utilityHooks";
 import { IonButtons, IonImg, IonSpinner, IonContent, useIonAlert } from "@ionic/react";
 import { useState, useEffect } from "react";
-import { Page, CustomHeader } from "../../../components/page/Page";
+import { Page, CustomHeader } from "../../../../components/page/Page";
 import { useHistory } from "react-router";
-import { FS } from "../../../packages/filesystem/index";
-import CustomBackButton from "../../../components/buttons/CustomBackButton";
-import FooterDeleteUpload from "../../../components/page/pageMainComponents/footers/FooterDeleteUpload";
-import useCamera from "../../../packages/camera/features/CameraCustomHook";
-import { imagesService, useDbRequest } from "../../../packages/database";
-import { network } from "../../../packages/network";
-import FileUploader from "../../../components/uploader/FileUploader";
+import { FS } from "../../../../packages/filesystem/index";
+import CustomBackButton from "../../../../components/buttons/CustomBackButton";
+import FooterDeleteUpload from "../../../../components/page/pageMainComponents/footers/FooterDeleteUpload";
+import useCamera from "../../../../packages/camera/features/CameraCustomHook";
+import { imagesService, useDbRequest } from "../../../../packages/database";
+import { network } from "../../../../packages/network";
+import FileUploader from "../../../../components/uploader/FileUploader";
 
 const HotspotPhotoPage = () => {
     const history = useHistory();

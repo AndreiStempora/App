@@ -1,7 +1,9 @@
 import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, logService } from "../../../packages/database";
 import { IonList, useIonAlert } from '@ionic/react';
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import DealershipElement from './DealershipElement';
+import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import './dealershipSelector.scss'
 
 
@@ -10,6 +12,8 @@ const DealershipSelector = ({ info }) => {
 	const dbRequest = useDbRequest();
 	const [dealershipElements, setDealershipElements] = useState([]);
 	const [presentAlert] = useIonAlert();
+	const history = useHistory();
+	const [editSelection, getSelection] = useRSelection();
 
 	const deleteDatabase = async () => {
 		await dbRequest.requestFunction(() => DB.dropAllTables());
@@ -25,7 +29,7 @@ const DealershipSelector = ({ info }) => {
 		const f = await dbRequest.requestFunction(async () => logService.getAllLogs());
 		const aaaaaaa = await dbRequest.requestFunction(async () => vehiclesService.getVehicleByVin(['Red market']));
 		// console.log(a, b, c, d1, d2, e, f, "all");
-		console.log(a,b,c,d1,d2,e,f,aaaaaaa, "aaaaaaa");
+		console.log(a, b, c, d1, d2, e, f, aaaaaaa, "aaaaaaa");
 	}
 
 	const dealershipsToAdd = async () => {
@@ -99,23 +103,33 @@ const DealershipSelector = ({ info }) => {
 	}
 
 	const alertDBNotInitialized = () => {
-        return presentAlert({
-            header: 'On your first login on this device you will need to have access to the Internet',
-            cssClass: 'custom-alert',
-            buttons: [
-                {
-                    text: 'Ok',
-                    cssClass: 'alert-button-confirm',
-                },
+		return presentAlert({
+			header: 'On your first login on this device you will need to have access to the Internet',
+			cssClass: 'custom-alert',
+			buttons: [
+				{
+					text: 'Ok',
+					cssClass: 'alert-button-confirm',
+				},
 				{
 					text: 'retry',
-					handler: () =>{
+					handler: () => {
 						window.location.reload();
 					}
 				}
-            ],
-        })
-    }
+			],
+		})
+	}
+
+	const skipPageIfOnlyOneDealership = async () => {
+		const dealerships = await dbRequest.requestFunction(async () => dealershipsService.getAllDealerships());
+		if (dealerships.length === 1) {
+			editSelection({ ...getSelection(), dealership_id: dealerships[0].dealership_id });
+			history.push("/vehicle-search");
+		}
+		return;
+	}
+
 	useEffect(() => {
 		const databaseInitialOperations = async () => {
 			dbRequest.setLoading(true);
@@ -151,14 +165,18 @@ const DealershipSelector = ({ info }) => {
 			setDealershipElements(allDealerships);
 			const end = performance.now();
 			console.log(`Database initial operations took ${end - start} milliseconds.`);
-			dbRequest.setLoading(false);
-			// getAllDBContents();
+
+
+			await skipPageIfOnlyOneDealership();
+			setTimeout(() => {
+				dbRequest.setLoading(false);
+			}, 500);
 		}
 
-		const setDefaultdealerships = async() =>{
-			const dealerships =  await dbRequest.requestFunction(async () => dealershipsService.getAllDealerships());
-			
-			if(!dealerships.length){
+		const setDefaultdealerships = async () => {
+			const dealerships = await dbRequest.requestFunction(async () => dealershipsService.getAllDealerships());
+
+			if (!dealerships.length) {
 				alertDBNotInitialized();
 			} else {
 				setDealershipElements(dealerships);

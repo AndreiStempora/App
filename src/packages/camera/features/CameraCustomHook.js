@@ -18,13 +18,10 @@ const useCamera = () => {
         quality: 100,
         storeToFile: true,
         enableHighResolution: true,
-        disableAudio:true,
+        disableAudio: true,
+        disableExifHeaderStripping: false,
         x: 0,
         y: 0,
-        // width:window.screen.height,
-        // height:window.screen.width,
-        disableExifHeaderStripping:false,
-        // rotateWhenOrientationChanged:false,
     });
 
 
@@ -39,7 +36,7 @@ const useCamera = () => {
 
     const startCamera = async () => {
         window.screen.orientation.unlock();
-        if(orientationListener.current === 0){
+        if (orientationListener.current === 0) {
             window.screen.orientation.addEventListener('change', async () => {
                 orientationListener.current = 1;
                 if (window.screen.orientation.type === 'landscape-primary') {
@@ -49,7 +46,7 @@ const useCamera = () => {
                 }
             })
         }
-       
+
         await CameraPreview.start(cameraPreviewOptions);
         setCurrentSelection({ cameraOn: true });
         setCameraPreview(true);
@@ -66,13 +63,24 @@ const useCamera = () => {
 
     const takePicture = async (hotspot_id, vehicle_id) => {
         const existingImage = await dbRequest.requestFunction(async () => await imagesService.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot_id]));
+        console.log(existingImage, "existingImage");
+        console.log(await FS.readDirectory('images'), "readDirectory");
         if (existingImage.length !== 0) {
-            console.log(existingImage[0].image_data, "wtfffff")
-            await dbRequest.requestFunction(async () => await imagesService.deleteImageById([existingImage[0].image_id]));
+            existingImage.map(async (image) => {
+                console.log(image.image_data, "wtfffff")
+                await dbRequest.requestFunction(async () => await imagesService.deleteImageById([image.image_id]));
+            })
         }
-        const pictureTakenPath = 'file://' + (await CameraPreview.capture({ quality: 100 })).value;
-        const copiedPictureUri = (await FS.copyFile(pictureTakenPath, filesUrl + Date.now() + '.jpg')).uri;
+        console.log("image deleted")
+        let imgPath = await CameraPreview.capture({ quality: 100 });
+        const pictureTakenPath = imgPath.value;
+        console.log(pictureTakenPath, "pictureTakenPath");
+        let imgCopy = await FS.copyFile(pictureTakenPath, filesUrl + Date.now() + '.jpg');
+        const copiedPictureUri = imgCopy.uri;
+        console.log(copiedPictureUri, "copiedPictureUri");
+
         await dbRequest.requestFunction(async () => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, copiedPictureUri]));
+        console.log(await dbRequest.requestFunction(async () => await imagesService.getAllImages()), "getAllImages");
 
     };
 

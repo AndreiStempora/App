@@ -2,6 +2,7 @@ import { CustomContent, CustomHeader, Page } from "../../../components/page/Page
 import { IonButtons, IonTitle, IonIcon, IonImg, IonItem, IonList, IonLabel, useIonAlert } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import CustomBackButton from "../../../components/buttons/CustomBackButton";
+import { URL, usePageRequest, usePageSetters } from "../../../services";
 import { useAtom } from "jotai";
 import { user } from '../../../services/user/user'
 import { useEffect } from "react";
@@ -9,17 +10,17 @@ import { useEffect } from "react";
 const ProfilePage = () => {
     const history = useHistory();
     const [currentUser, setCurrentUser] = useAtom(user.userDetails);
-    const [currentToken, setCurrentToken] = useAtom(user.userDetails);
-    const [isLoggedin, setIsLoggedin] = useAtom(user.loggedIn);
     const [presentAlert] = useIonAlert();
+    const pageRequest = usePageRequest();
+    const requestSetters = usePageSetters();
+    const [logoutUrl] = useAtom(URL.logOut);
 
-    const goBackHandler = () => {
+    const goBackHandler = async () => {
         history.push('/vehicle-search');
-        // console.log(history)
     }
 
     useEffect(() => {
-        console.log(currentUser)
+        console.log(currentUser, "aaaaaa")
     }, [])
 
     const logoutHandler = () => {
@@ -29,8 +30,14 @@ const ProfilePage = () => {
             buttons: [
                 'Cancel',
                 {
-                    text: 'Ok', handler: () => {
-                        history.push('/login')
+                    text: 'Ok', handler: async () => {
+                        requestSetters.setUrl("logoutUrl");
+                        requestSetters.setRequestBody();
+                        let response = await requestSetters.fetch();
+                        console.log(response)
+                        if (response.status === "ok") {
+                            history.push('/login');
+                        }
                     }
                 }
             ]

@@ -1,13 +1,18 @@
 .vehiclesSearch {
-    ion-content{
-        ion-row{
-            ion-col{
-                padding-top:0;
+    ion-content {
+        ion-row {
+            ion-col {
+                padding-top: 0;
             }
         }
     }
+
+    .vehicles-btn {
+        display: none;
+    }
+
     .special-list {
         contain: none;
-        
+
     }
 }

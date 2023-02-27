@@ -30,7 +30,7 @@ import VehiclePage from './pages/vehicles/main/page/VehiclePage';
 import AddVehiclePage from './pages/vehicles/addVehicle/page/AddVehiclePage';
 import VehicleDetailsPage from './pages/vehicles/vehicleDetails/page/VehicleDetailsPage';
 import VehiclePhotos from './pages/vehicles/hotspotType/page/hotspotTypePage';
-import HotspotPhotoPage from './pages/vehicles/hotspotPhoto/HotspotPhotoPage';
+import HotspotPhotoPage from './pages/vehicles/hotspotPhoto/page/HotspotPhotoPage';
 import ProfilePage from './pages/profile/page/ProfilePage';
 
 setupIonicReact();

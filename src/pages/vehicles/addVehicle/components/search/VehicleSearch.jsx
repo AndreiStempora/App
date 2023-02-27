@@ -1,4 +1,4 @@
-import { IonSearchbar, IonLabel, IonList } from "@ionic/react";
+import { IonSearchbar, IonLabel, IonList, IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react";
 import { useState, useEffect, useRef } from "react";
 import { vehiclesService } from "../../../../../packages/database/features/services/vehiclesService";
 import { useRSelection } from "../../../../../packages/database/features/utils/utilityHooks";
@@ -11,91 +11,83 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const [, getCurrentSelection] = useRSelection();
     const [searchText, setSearchText] = useState('');
     const [filteredVehicles, setFilteredVehicles] = useState(null);
-    const [spinnerOn, setSpinnerOn] = useState(true);
-    const [allVehicles, setAllVehicles] = useState(null);
+    // const [spinnerOn, setSpinnerOn] = useState(true);
     const searchBar = useRef();
+    const refOffset = useRef(0);
+
+    //*get search input value
+    //*get 10 vehicles from db based on input value
+    //*if input value is 17 characters long, check if it's a valid vin
+    //*if it's a valid vin, enable save button
+    //*on scroll down get next 10 vehicles from db based on input value
+    //*if input value changed remove all vehicles from list and start from the beginning
+
+    const getListOfVehicles = async (string) => {
+        const listOfVehicles = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesByDealershipIdAndString([
+            getCurrentSelection().dealership_id,
+            string,
+            refOffset.current]));
+        setFilteredVehicles((prev) => [...prev, ...listOfVehicles]);
+        refOffset.current += 10;
+    };
+
 
     useEffect(() => {
         (async () => {
-            // const response = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([getCurrentSelection().dealership_id]));
-            // setAllVehicles(response);
-            setSearchText(scanResult);
+            if (searchText.length !== 0) {
+                console.log("searchText called", searchText, searchText.length);
+                getListOfVehicles(searchText);
+            }
+
+            if (!validateVin(searchText)) {
+                console.log("invalid vin", searchText);
+                return
+            }
+            disableSave(false);
         })();
-    }, []);
+        console.log(searchText, searchText.length);
+
+        return () => {
+            refOffset.current = 0;
+            setFilteredVehicles([]);
+        }
+    }, [searchText]);
+
+
+    useEffect(() => {
+        searchBar.current.value = scanResult;
+    }, [scanResult]);
+
 
     function validateVin(vin) {
         return validate(vin);
 
         function transliterate(c) {
-          return '0123456789.ABCDEFGH..JKLMN.P.R..STUVWXYZ'.indexOf(c) % 10;
+            return '0123456789.ABCDEFGH..JKLMN.P.R..STUVWXYZ'.indexOf(c) % 10;
         }
-      
+
         function get_check_digit(vin) {
-          var map = '0123456789X';
-          var weights = '8765432X098765432';
-          var sum = 0;
-          for (var i = 0; i < 17; ++i)
-            sum += transliterate(vin[i]) * map.indexOf(weights[i]);
-          return map[sum % 11];
+            var map = '0123456789X';
+            var weights = '8765432X098765432';
+            var sum = 0;
+            for (var i = 0; i < 17; ++i)
+                sum += transliterate(vin[i]) * map.indexOf(weights[i]);
+            return map[sum % 11];
         }
-      
+
         function validate(vin) {
             if (vin.length !== 17) return false;
             return get_check_digit(vin) === vin[8];
-          }
+        }
     }
 
-    const filterFunc = async () => {
-        // if (allVehicles !== null) {
-        //     const filtered = await Promise.all(allVehicles?.filter(vehicle => {
-        //         return (vehicle.vehicle_vin)?.startsWith(searchText.toUpperCase()) || (vehicle.vehicle_stock)?.startsWith(searchText.toUpperCase());
-        //     }));
-        //     if (filtered.length === 1 && searchText.length === 17) {
-        //         disableSave(false);
-        //     }
-        //     return filtered;
-        // } else {
-        //     return null;
-        // }
-    }
 
-    const transformStringMatch = (string) => {
-        //if string starts with searchText, return the string with the searchText in bold
-        // if (searchText.length > 0) {
-        //     if (string?.startsWith(searchText.toUpperCase())) {
-        //         const stringArray = string.split(searchText.toUpperCase());
-        //         return <>{stringArray[0]}<span className="matched" data-highlight={string}>{searchText.toUpperCase()}</span>{stringArray[1]}</>
-        //     } else {
-        //         return string;
-        //     }
-        // } else {
-        //     return string;
-        // }
-    }
 
-    const searcFieldCompletionHandler = async (e) => {
-        // const target = e.target.closest('ion-item');
-        // const attribute = target.querySelector('.matched').getAttribute('data-highlight');
-        // setSearchText(attribute);
-    }
 
-    useEffect(() => {
-        disableSave(true);
-        (async () => {
-            // if (searchText.length > 0) {
-            //     const filteredList = await filterFunc();
-            //     if (filteredList !== null) {
-            //         setFilteredVehicles(filteredList);
-            //         newCar(searchText);
-            //     }
-            //     if (searchText.length === 17) {
-            //         disableSave(false);
-            //     }
-            // } else {
-            //     setFilteredVehicles(null);
-            // }
-        })()
-    }, [searchText]);
+
+    const searcFieldCompletionHandler = function (vin) {
+        searchBar.current.value = vin;
+    }
 
     useEffect(() => {
         setSearchText('');
@@ -106,7 +98,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
             <IonSearchbar
                 value={searchText}
                 ref={searchBar}
-                debounce={1300}
+                debounce={0}
                 onIonChange={e => setSearchText(e.target.value)}
                 setClearButton="focus"
             />
@@ -116,16 +108,27 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
                     <VehicleSearchItem
                         key={index}
                         vehicle={vehicle}
-                        match={transformStringMatch}
+                        match={searchText}
                         click={searcFieldCompletionHandler}
                     />
                 ))}
-                {(!spinnerOn && filteredVehicles?.length === 0) &&
+                {/* {(!spinnerOn && filteredVehicles?.length === 0) &&
                     <div className="ion-text-center">
                         <IonLabel>No results match this search</IonLabel>
                     </div>
-                }
+                } */}
             </IonList>
+            <IonInfiniteScroll
+                onIonInfinite={async (ev) => {
+                    if (searchText.length !== 0) {
+                        await getListOfVehicles(searchText);
+                    }
+                    setTimeout(() => ev.target.complete(), 500);
+
+                }}
+            >
+                <IonInfiniteScrollContent loadingText="Please wait..." loadingSpinner="bubbles"></IonInfiniteScrollContent>
+            </IonInfiniteScroll>
         </>
     )
 }

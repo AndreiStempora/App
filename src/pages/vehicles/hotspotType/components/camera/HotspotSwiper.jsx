@@ -27,8 +27,8 @@ const HotspotSwiper = () => {
             const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
             if (imageObj.length > 0) {
                 const img = await FS.showPicture(imageObj[0].image_data);
-                if (img === undefined){
-                    setImage(null);    
+                if (img === undefined) {
+                    setImage(null);
                 } else {
                     setImage(img);
                 }
@@ -50,7 +50,6 @@ const HotspotSwiper = () => {
         } else {
             swiper.slideNext();
         }
-
     }
 
     const selectInitialSlide = async (hotspots) => {
@@ -63,7 +62,6 @@ const HotspotSwiper = () => {
         (async () => {
             const hotspots = await hotspotHook.getCurrentHotspotsByType();
             setSlides(hotspots);
-            await getPicture();
         })();
     }, []);
 
@@ -72,6 +70,7 @@ const HotspotSwiper = () => {
             if (swiper !== null) {
                 const hotspots = await hotspotHook.getCurrentHotspotsByType();
                 await selectInitialSlide(hotspots);
+                await getPicture();
             }
         })();
     }, [swiper]);
@@ -89,10 +88,10 @@ const HotspotSwiper = () => {
                 <div className="img-container small-image" >
                     {
                         imageLoading ?
-                        // true ?
+                            // true ?
                             <IonSpinner name="lines-sharp"></IonSpinner> :
                             <IonImg src={image !== null ? image : '/assets/img/carPicPlaceholder.png'}
-                            onClick={image !== null ? pictureClickHandler:null}
+                                onClick={image !== null ? pictureClickHandler : null}
                             ></IonImg>
                     }
                 </div>
@@ -109,10 +108,11 @@ const HotspotSwiper = () => {
                     navigation
                     slidesPerView={1}
                     initialSlide={0}
-                    
-                    onSlideChangeTransitionEnd = {
+
+                    onSlideChange={
                         async swiper => {
                             const id = swiper.slides[swiper.activeIndex].getAttribute('data-id');
+                            console.log(swiper, swiper.slides[swiper.activeIndex], id);
                             editCurrentSelection({ hotspot_id: parseInt(id) });
                             await getPicture();
                         }
