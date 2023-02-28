@@ -8,12 +8,21 @@ import DealershipSelector from '../components/DealershipSelector';
 import { FS } from '../../../packages/filesystem';
 import "./dealershipsPage.scss";
 
+///////////////////////////////////////
+import { useLanguage } from '../../../packages/multiLanguage';
+///////////////////////////////////////
+
+
 const DealershipsPage = () => {
 	const pageRequest = usePageRequest();
 	const requestSetters = usePageSetters();
 	const [dealershipsURL] = useAtom(myUrl.dealership);
 	const [inventoryURL] = useAtom(myUrl.inventory);
 	const [requestInfo, setRequestInfo] = useState(null);
+
+	///////////////////////////////////////
+	const [translate, changeLanguage] = useLanguage();
+	///////////////////////////////////////
 
 	const requestTableContentDealerships = async () => {
 		requestSetters.setUrl(dealershipsURL);
@@ -46,15 +55,16 @@ const DealershipsPage = () => {
 			} else {
 				setRequestInfo(null);
 			}
-			
+
 			await FS.createDirectory('images')
-		})()
+			console.log(window.navigator.languages);
+		})();
 	}, []);
 
 	return (
 		<Page pageClass={'dealersipSelect'}>
 			<CustomHeader>
-				<IonTitle className='ion-text-center'>Dealerships</IonTitle>
+				<IonTitle className='ion-text-center'>{translate('Dealerships')}</IonTitle>
 			</CustomHeader>
 			<CustomContent
 				gridClassStr={"content-in-center vertical-centering"}

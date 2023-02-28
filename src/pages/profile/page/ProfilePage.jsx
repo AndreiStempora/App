@@ -31,10 +31,9 @@ const ProfilePage = () => {
                 'Cancel',
                 {
                     text: 'Ok', handler: async () => {
-                        requestSetters.setUrl("logoutUrl");
+                        requestSetters.setUrl(logoutUrl);
                         requestSetters.setRequestBody();
                         let response = await requestSetters.fetch();
-                        console.log(response)
                         if (response.status === "ok") {
                             history.push('/login');
                         }
