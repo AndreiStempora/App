@@ -1,10 +1,11 @@
 {
     "Dealerships": {
-        "fr": "Concessionnaires",
-        "de": "Händler"
+        "fr": "Concessionnaires"
     },
     "Franchised car dealerships are the front line for car manufacturers to get their products on the road.": {
-        "fr": "Les concessionnaires automobiles sont la première ligne pour les constructeurs automobiles pour mettre leurs produits sur la route.",
-        "de": "Die Autohändler sind die erste Linie für die Autohersteller, um ihre Produkte auf die Straße zu bringen."
+        "fr": "Les concessionnaires automobiles sont la première ligne pour les constructeurs automobiles pour mettre leurs produits sur la route."
+    },
+    "Vehicles Page": {
+        "fr": "Page des véhicules"
     }
 }

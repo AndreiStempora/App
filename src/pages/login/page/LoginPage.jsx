@@ -5,8 +5,10 @@ import { useEffect } from 'react';
 import { IonIcon } from '@ionic/react';
 import { CustomForm, formAtoms } from '../components/form';
 import "./loginPage.scss";
+import { LanguageSelector } from '../../../packages/multiLanguage';
 
 const LoginPage = () => {
+
     const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
     const [logInUrl] = useAtom(URL.login);
@@ -73,6 +75,7 @@ const LoginPage = () => {
                     autofocus={true}
                 />
             </CustomContent>
+            <LanguageSelector />
         </Page>
     )
 }

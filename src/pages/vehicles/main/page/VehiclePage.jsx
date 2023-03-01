@@ -1,4 +1,4 @@
-import { IonList, IonTitle, IonButtons, IonButton,  useIonAlert, IonIcon } from '@ionic/react';
+import { IonList, IonTitle, IonButtons, IonButton, useIonAlert, IonIcon } from '@ionic/react';
 import { Page, CustomHeader, CustomContent } from '../../../../components/page/Page';
 import { useAtom } from 'jotai';
 import { user } from '../../../../services/user/user';
@@ -11,6 +11,7 @@ import FooterDeleteUpload from '../../../../components/page/pageMainComponents/f
 import FileUploader from '../../../../components/uploader/FileUploader';
 import VehicleItem from '../components/VehicleItem';
 import './vehiclePage.scss';
+import { LanguageSelector, useLanguage } from '../../../../packages/multiLanguage';
 
 const VehiclePage = () => {
     const dbRequest = useDbRequest();
@@ -22,6 +23,7 @@ const VehiclePage = () => {
     const [uploading, setUploading] = useState(false);
     const [elementsForUpload, setElementsForUpload] = useState([]);
     const [presentAlert] = useIonAlert();
+    const [translate,] = useLanguage();
 
     useEffect(() => {
         (async () => {
@@ -188,7 +190,7 @@ const VehiclePage = () => {
                             }
                         </IonButtons>
 
-                        <IonTitle className='ion-text-center'>Vehicles Page</IonTitle>
+                        <IonTitle className='ion-text-center'>{translate('Vehicles Page')}</IonTitle>
                         <IonButtons slot="end" >
                             <IonButton onClick={showCheckbox ? setCheckValues : editVehicleHandler}>
                                 {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg' /> : <IonIcon icon='/assets/svgs/checklist.svg'></IonIcon>}
@@ -222,6 +224,7 @@ const VehiclePage = () => {
                     }
                 </>
             }
+
 
         </Page>
     )
