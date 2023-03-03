@@ -70,6 +70,7 @@ const LoginPage = () => {
                     className="logo"
                     icon="assets/svgs/logo.svg"
                 ></IonIcon>
+
                 <CustomForm
                     submitForm={submitLogin}
                     autofocus={true}

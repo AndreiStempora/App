@@ -441,7 +441,8 @@ const vehiclesRepository = {
                     }
                 );
         });
-    }
+    },
+
 }
 
 export { vehiclesRepository };

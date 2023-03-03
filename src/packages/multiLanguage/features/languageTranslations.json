@@ -7,5 +7,32 @@
     },
     "Vehicles Page": {
         "fr": "Page des véhicules"
+    },
+    "Email": {
+        "fr": "Courriel"
+    },
+    "Password": {
+        "fr": "Mot de passe"
+    },
+    "Sign In": {
+        "fr": "Se connecter"
+    },
+    "Two-Factor Authentication": {
+        "fr": "Authentification à deux facteurs"
+    },
+    "Choose your security method": {
+        "fr": "Choisissez votre méthode de sécurité"
+    },
+    "Choose the way you want to get the security code when we need to confirm that it’s you logging in.": {
+        "fr": "Choisissez la façon dont vous voulez obtenir le code de sécurité lorsque nous devons confirmer que c’est vous qui vous connectez."
+    },
+    "Email Authentification": {
+        "fr": "Authentification par courriel"
+    },
+    "SMS Authentification": {
+        "fr": "Authentification par SMS"
+    },
+    "Didn't get a code?": {
+        "fr": "Vous n'avez pas reçu de code?"
     }
 }
