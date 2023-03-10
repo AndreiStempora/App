@@ -27,6 +27,7 @@ const HotspotSwiper = () => {
             const imageObj = await hotspotHook.getCurrentHotspotPhoto(getCurrentSelection().hotspot_id);
             if (imageObj.length > 0) {
                 const img = await FS.showPicture(imageObj[0].image_data);
+                console.log('ffs ', img, ' ffs', imageObj[0])
                 if (img === undefined) {
                     setImage(null);
                 } else {
@@ -111,8 +112,9 @@ const HotspotSwiper = () => {
 
                     onSlideChange={
                         async swiper => {
-                            const id = swiper.slides[swiper.activeIndex].getAttribute('data-id');
-                            console.log(swiper, swiper.slides[swiper.activeIndex], id);
+                            const id = await swiper.slides[swiper.activeIndex].getAttribute('data-id');
+                            // console.log(swiper, swiper.slides[swiper.activeIndex], id);
+                            console.log('id ', id)
                             editCurrentSelection({ hotspot_id: parseInt(id) });
                             await getPicture();
                         }

@@ -1,19 +1,24 @@
-import { IonSearchbar, IonLabel, IonList, IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react";
+import { IonSearchbar, IonLabel, IonList, IonInfiniteScroll, IonInfiniteScrollContent, useIonAlert } from "@ionic/react";
 import { useState, useEffect, useRef } from "react";
 import { vehiclesService } from "../../../../../packages/database/features/services/vehiclesService";
 import { useRSelection } from "../../../../../packages/database/features/utils/utilityHooks";
 import useDbRequest from "../../../../../packages/database/features/utils/databaseOperationsHook";
 import VehicleSearchItem from "./VehicleSearchItem";
+import { useHistory } from "react-router";
 import './vehicleSearch.scss';
+import useSaveVehicleAlert from "../saveAlert/saveVehicleAlert";
 
 const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     const dbRequest = useDbRequest();
-    const [, getCurrentSelection] = useRSelection();
+    const history = useHistory();
+    const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [searchText, setSearchText] = useState('');
     const [filteredVehicles, setFilteredVehicles] = useState(null);
     // const [spinnerOn, setSpinnerOn] = useState(true);
     const searchBar = useRef();
     const refOffset = useRef(0);
+    const [ openAlert ] = useSaveVehicleAlert();
+
 
     //*get search input value
     //*get 10 vehicles from db based on input value
@@ -81,12 +86,9 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
         }
     }
 
-
-
-
-
-    const searcFieldCompletionHandler = function (vin) {
+    const searchFieldCompletionHandler =  async (vin) => {
         searchBar.current.value = vin;
+        await openAlert(vin);
     }
 
     useEffect(() => {
@@ -109,7 +111,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
                         key={index}
                         vehicle={vehicle}
                         match={searchText}
-                        click={searcFieldCompletionHandler}
+                        click={searchFieldCompletionHandler}
                     />
                 ))}
                 {/* {(!spinnerOn && filteredVehicles?.length === 0) &&

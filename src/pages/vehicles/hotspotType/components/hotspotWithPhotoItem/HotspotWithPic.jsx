@@ -9,6 +9,7 @@ const HotspotWithPic = ({ hotspotWithPhoto, openCamera, imageLoading }) => {
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
 
     const selectItemHandler = async () => {
+          console.log('hotspotWithPhoto[0] ', hotspotWithPhoto[0])
         editCurrentSelection({ hotspot_id: hotspotWithPhoto[0].hotspot_id });
         await openCamera();
     }

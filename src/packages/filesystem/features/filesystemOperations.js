@@ -1,11 +1,11 @@
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 const FS = {
     createDirectory: async (path) => {
         if (await FS.readDirectory(path) === null) {
             await Filesystem.mkdir({
                 path: path,
-                directory: Directory.Data,
+                directory: Directory.Documents,
                 recursive: true
             });
         }
@@ -14,7 +14,7 @@ const FS = {
         try {
             const result = await Filesystem.readdir({
                 path: path,
-                directory: Directory.Data
+                directory: Directory.Documents,
             });
             return result.files;
 
@@ -26,14 +26,14 @@ const FS = {
         await Filesystem.appendFile({
             path: path,
             data: data,
-            directory: Directory.Data,
+            directory: Directory.Documents,
         });
     },
     renameFile: async (path, newPath) => {
         await Filesystem.rename({
             path: path,
             newPath: newPath,
-            directory: Directory.Data,
+            directory: Directory.Documents,
         });
     },
     deleteFile: async (path) => {
@@ -53,24 +53,26 @@ const FS = {
             to: newPath,
         });
     },
+
     readFile: async (path) => {
+        const existingFiles = await FS.readDirectory('images');
+        const uri = (await existingFiles.find((file) => (file.name === path))).uri;
         const result = await Filesystem.readFile({
-            path: path,
-            // directory: Directory.Data,
+            path: uri,
         });
         return result;
     },
     deleteDirectory: async (path) => {
         await Filesystem.rmdir({
             path: path,
-            directory: Directory.Data,
+            directory: Directory.External,
             recursive: true
         });
     },
     showPicture: async (path) => {
         try {
             if (path !== null) {
-                const contents = await Filesystem.readFile({ path: path });
+                const contents = await FS.readFile(path);
                 const base64PictureData = "data:image/jpg;base64," + contents.data;
                 return base64PictureData;
             }

@@ -11,7 +11,7 @@ import CustomBackButton from "../../../../components/buttons/CustomBackButton";
 import { useHistory } from "react-router";
 import { FS } from "../../../../packages/filesystem";
 import "./hotspotTypePage.scss";
-
+import  useRefreshCurrentPage from "../../../../services/customHooks/RefreshCurrentPage";
 
 const VehiclePhotos = () => {
     const dbRequest = useDbRequest();
@@ -22,31 +22,56 @@ const VehiclePhotos = () => {
     const history = useHistory();
     const camera = useCamera();
     const [imageLoading, setImageLoading] = useState(true);
+    const { refreshPage } = useRefreshCurrentPage();
 
     const openCameraHandler = async () => {
         setHidePageContent(true);
         await camera.startCamera();
     };
 
-    useEffect(() => {
-        (async () => {
-            const hotspotsWithPhotoLocations = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
-            let newEl = Promise.all(hotspotsWithPhotoLocations.map(async (hotspotWithPhoto) => {
-                if (hotspotWithPhoto[1] !== undefined) {
-                    const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
-                    hotspotWithPhoto[1] = image;
-                } else {
-                    hotspotWithPhoto[1] = null;
-                }
-                return hotspotWithPhoto;
-            })); 
+    const getCurrentPhotos = async () => {
+        const hotspotsWithPhotoLocations = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+        let newEl = Promise.all(hotspotsWithPhotoLocations.map(async (hotspotWithPhoto) => {
+            if (hotspotWithPhoto[1] !== undefined) {
+                const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
+                hotspotWithPhoto[1] = image;
+            } else {
+                hotspotWithPhoto[1] = null;
+            }
+            return hotspotWithPhoto;
+        }));
 
-            setHotspotsWithPhotos(await newEl);
-            setImageLoading(false); 
-        })();
-    }, [
-        getCurrentSelection().refreshPage
+        setHotspotsWithPhotos(await newEl);
+        setImageLoading(false);
+    };
+
+    useEffect(() => {
+        refreshPage(history, '/vehicle-photos', getCurrentPhotos);
+    }, [history.location.pathname
+        // ,getCurrentSelection().refreshPage
     ]);
+
+    // useEffect(() => {
+    //     getCurrentPhotos();
+    // }, []);
+    //     (async () => {
+    //         const hotspotsWithPhotoLocations = await hotspotHook.getHotspotsWithPhotos(getCurrentSelection().hotspot_type);
+    //         let newEl = Promise.all(hotspotsWithPhotoLocations.map(async (hotspotWithPhoto) => {
+    //             if (hotspotWithPhoto[1] !== undefined) {
+    //                 const image = await FS.showPicture(hotspotWithPhoto[1]?.image_data)
+    //                 hotspotWithPhoto[1] = image;
+    //             } else {
+    //                 hotspotWithPhoto[1] = null;
+    //             }
+    //             return hotspotWithPhoto;
+    //         }));
+    //
+    //         setHotspotsWithPhotos(await newEl);
+    //         setImageLoading(false);
+    //     })();
+    // }, [
+    //     getCurrentSelection().refreshPage
+    // ]);
 
     const backButtonHandler = async () => {
         setCurrentSelection('refresh');

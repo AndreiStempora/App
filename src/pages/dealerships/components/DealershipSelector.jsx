@@ -1,9 +1,9 @@
 import { DB, useDbRequest, dealershipsService, vehiclesService, settingsService, hotspotsService, imagesService, logService } from "../../../packages/database";
 import { IonList, useIonAlert } from '@ionic/react';
 import { useState, useEffect } from 'react';
+import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import { useHistory } from 'react-router';
 import DealershipElement from './DealershipElement';
-import { useRSelection } from "../../../packages/database/features/utils/utilityHooks";
 import './dealershipSelector.scss'
 
 
@@ -167,7 +167,7 @@ const DealershipSelector = ({ info }) => {
 			console.log(`Database initial operations took ${end - start} milliseconds.`);
 
 
-			await skipPageIfOnlyOneDealership();
+			// await skipPageIfOnlyOneDealership();
 			setTimeout(() => {
 				dbRequest.setLoading(false);
 			}, 500);

@@ -1,4 +1,4 @@
-import { IonItem, IonImg, IonCheckbox, IonLabel, IonIcon } from "@ionic/react"
+import { IonItem, IonCheckbox, IonLabel } from "@ionic/react"
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useDbRequest, imagesService, hotspotsService } from "../../../../packages/database";
 import { useHistory } from "react-router";
@@ -25,10 +25,12 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
                 const hotspotsByType = await dbRequest.requestFunction(async () => await hotspotsService.getAllHotspotsByDealershipIdAndHotspotType([getCurrentSelection().dealership_id, 2]));
 
                 const matchingImageWithHotspot = vehicleImages.filter((image) => {
+
                     return hotspotsByType.some((hotspot) => {
                         return image.hotspot_id === hotspot.hotspot_id;
                     });
                 })
+
                 if (matchingImageWithHotspot.length > 0) {
                     matchingImageWithHotspot.sort((a, b) => a.hotspot_id - b.hotspot_id);
                     const actualImage = await FS.showPicture(matchingImageWithHotspot[0].image_data);

@@ -11,7 +11,11 @@ import FooterDeleteUpload from '../../../../components/page/pageMainComponents/f
 import FileUploader from '../../../../components/uploader/FileUploader';
 import VehicleItem from '../components/VehicleItem';
 import './vehiclePage.scss';
-import { LanguageSelector, useLanguage } from '../../../../packages/multiLanguage';
+import { useLanguage } from '../../../../packages/multiLanguage';
+import { useHistory } from 'react-router';
+import useRefreshCurrentPage from "../../../../services/customHooks/RefreshCurrentPage";
+
+
 
 const VehiclePage = () => {
     const dbRequest = useDbRequest();
@@ -24,18 +28,21 @@ const VehiclePage = () => {
     const [elementsForUpload, setElementsForUpload] = useState([]);
     const [presentAlert] = useIonAlert();
     const [translate,] = useLanguage();
+    const { refreshPage } = useRefreshCurrentPage();
+    const history = useHistory();
 
     useEffect(() => {
-        (async () => {
+        refreshPage(history,'/vehicle-search',(async () => {
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
+            console.log('cars', cars)
             setCars(cars);
-        })();
+            deselectAll();
+        }))
 
-        deselectAll();
         return () => {
             setCars([]);
         }
-    }, [getCurrentSelection().refreshPage]);
+    }, [history.location.pathname]);
 
     const alertSelectVehicles = () => {
         return presentAlert({

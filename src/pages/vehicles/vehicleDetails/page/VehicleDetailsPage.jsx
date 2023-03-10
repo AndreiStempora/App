@@ -8,6 +8,7 @@ import { useHotspot } from "../../../../packages/database/features/utils/utility
 import FooterAddVehicle from "../../../../components/page/pageMainComponents/footers/FooterAddVehicle";
 import CustomBackButton from "../../../../components/buttons/CustomBackButton";
 import './vehicleDetailsPage.scss';
+import useRefreshCurrentPage from "../../../../services/customHooks/RefreshCurrentPage";
 
 const VehicleDetailsPage = () => {
     const dbRequest = useDbRequest();
@@ -16,6 +17,7 @@ const VehicleDetailsPage = () => {
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [elements, setElements] = useState({});
     const [presentAlert] = useIonAlert();
+      const { refreshPage } = useRefreshCurrentPage();
 
     const getPictureCount = async (hotspots) => {
         let counter = 0;
@@ -28,8 +30,7 @@ const VehicleDetailsPage = () => {
     }
 
     useEffect(() => {
-        (async () => {
-            console.log('vehicle details page');
+        refreshPage(history,'/vehicle-details',(async () => {
             const interior = await hotspotHook.getHotspotsWithPhotos(1);
             const exterior = await hotspotHook.getHotspotsWithPhotos(2);
             const interiorPhotos = await getPictureCount(interior);
@@ -43,15 +44,37 @@ const VehicleDetailsPage = () => {
                 vehicle: vehicle
             };
             setElements(elements2);
-        })();
-    }, [getCurrentSelection().vehicle_id , 
-        getCurrentSelection().refreshPage
+        }))
+    }, [
+        getCurrentSelection().vehicle_id,
+        history.location.pathname
     ]);
 
-
+    // useEffect(() => {
+    //     (async () => {
+    //         console.log('vehicle details page');
+    //         const interior = await hotspotHook.getHotspotsWithPhotos(1);
+    //         const exterior = await hotspotHook.getHotspotsWithPhotos(2);
+    //         const interiorPhotos = await getPictureCount(interior);
+    //         const exteriorPhotos = await getPictureCount(exterior);
+    //         const vehicle = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id]));
+    //         const elements2 = {
+    //             interior: interior,
+    //             exterior: exterior,
+    //             interiorPhotos: interiorPhotos,
+    //             exteriorPhotos: exteriorPhotos,
+    //             vehicle: vehicle
+    //         };
+    //         setElements(elements2);
+    //     })();
+    // }, [getCurrentSelection().vehicle_id ,
+    //     getCurrentSelection().refreshPage
+    // ]);
 
     const goToPhotosHandler = (type) => {
-        setCurrentSelection({ hotspot_type: type, refreshPage: !getCurrentSelection().refreshPage });
+        setCurrentSelection({ hotspot_type: type,
+            // refreshPage: !getCurrentSelection().refreshPage
+        });
         history.push('/vehicle-photos');
     }
 

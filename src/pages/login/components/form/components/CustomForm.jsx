@@ -78,7 +78,7 @@ const CustomForm = ({ submitForm, autofocus }) => {
                                 type={field.type}
                                 placeholder={field.placeholder.length ? field.name : field.placeholder}
                                 name={field.name}
-                                autocomplete="on"
+                                autocomplete="email"
                             >
                                 {field.icon && (
                                     <IonIcon icon={field.icon}></IonIcon>

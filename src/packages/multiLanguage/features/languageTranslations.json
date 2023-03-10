@@ -34,5 +34,11 @@
     },
     "Didn't get a code?": {
         "fr": "Vous n'avez pas reçu de code?"
+    },
+    "Retry": {
+        "fr": "Réessayer"
+    },
+    "On your first login on this device you will need to have access to the Internet": {
+        "fr": "Lors de votre première connexion sur cet appareil, vous devrez avoir accès à Internet"
     }
 }

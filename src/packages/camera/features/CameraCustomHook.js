@@ -27,14 +27,16 @@ const useCamera = () => {
 
     useEffect(() => {
         (async () => {
-            await FS.createDirectory('images');
-            await FS.readDirectory('images');
-            const url = await Filesystem.getUri({ path: 'images', directory: Directory.Data });
+            // await FS.createDirectory('images');
+            let x = await FS.readDirectory('images');
+            const url = await Filesystem.getUri({ path: 'images', directory: Directory.External });
+            console.log(x, "readDirectory", url, "url");
             setFilesUrl(url.uri);
         })()
     }, [])
 
     const startCamera = async () => {
+        console.log("startCamera")
         window.screen.orientation.unlock();
         if (orientationListener.current === 0) {
             window.screen.orientation.addEventListener('change', async () => {
@@ -56,8 +58,8 @@ const useCamera = () => {
         await CameraPreview.stop();
         await window.screen.orientation.lock('portrait-primary');
         setCameraPreview(false);
-        setCurrentSelection({ cameraOn: false });
-        setCurrentSelection('refresh');
+        setCurrentSelection({ cameraOn: false, refreshPage:!getCurrentSelection().refreshPage });
+
         window.screen.orientation.removeEventListener('change');
     };
 
@@ -75,13 +77,14 @@ const useCamera = () => {
         let imgPath = await CameraPreview.capture({ quality: 100 });
         const pictureTakenPath = imgPath.value;
         console.log(pictureTakenPath, "pictureTakenPath");
-        let imgCopy = await FS.copyFile(pictureTakenPath, filesUrl + Date.now() + '.jpg');
+        const fileName =  Date.now() + '.jpg';
+        let imgCopy = await FS.copyFile(pictureTakenPath, filesUrl + fileName);
         const copiedPictureUri = imgCopy.uri;
-        console.log(copiedPictureUri, "copiedPictureUri");
+        console.log(copiedPictureUri, "copiedPictureUri", filesUrl, "filesUrl");
 
-        await dbRequest.requestFunction(async () => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, copiedPictureUri]));
+        await dbRequest.requestFunction(async () => await imagesService.insertImage([1, 1, hotspot_id, vehicle_id, fileName]));
+
         console.log(await dbRequest.requestFunction(async () => await imagesService.getAllImages()), "getAllImages");
-
     };
 
     return {
