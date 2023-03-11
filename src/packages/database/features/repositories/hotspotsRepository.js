@@ -9,8 +9,8 @@ const hotspotsRepository = {
             (await DB.dbInstance())
                 .transaction((tx)=>{
                     tx.executeSql(    
-                        `INSERT OR REPLACE INTO hotspots (dealership_id, hotspot_name, hotspot_type) VALUES (?, ?, ?)`,
-                        [dealership_id, hotspot_name, hotspot_type], 
+                        `INSERT OR REPLACE INTO hotspots (dealership_id, hotspot_name, hotspot_type,) VALUES (?, ?, ?)`,
+                        [dealership_id, hotspot_name, hotspot_type],
                         (tx, res)=>{
                             resolve(res);
                         }

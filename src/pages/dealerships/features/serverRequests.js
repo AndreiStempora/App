@@ -34,9 +34,9 @@ const useGetDealerships = () => {
 
       const callServer = async () => {
             if (await network.getCurrentNetworkStatus()) {
-                  const response = await pageRequest.requestFunction(requestDealerships);
-                  const vehicleArrays = await requestVehicles(response?.dealerships);
-                  return {dealerships: response?.dealerships, vehicles: vehicleArrays};
+                  const dealershipsArray = await pageRequest.requestFunction(requestDealerships);
+                  const vehicleArrays = await requestVehicles(dealershipsArray?.dealerships);
+                  return {serverDealerships: dealershipsArray?.dealerships, serverVehicles: vehicleArrays};
             } else {
                   return null;
 

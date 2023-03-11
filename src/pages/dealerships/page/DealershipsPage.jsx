@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useLanguage } from '../../../packages/multiLanguage';
 import { useHistory } from 'react-router';
 import { IonTitle } from '@ionic/react';
-import {useDbRequest} from "../../../packages/database";
+import {useDbRequest, DB} from "../../../packages/database";
 import DealershipSelector from '../components/DealershipSelector';
 import useGetDealerships from "../features/serverRequests";
 import useUpdateDatabase from "../features/databaseBulkModifications";
@@ -12,9 +12,9 @@ import useRefreshCurrentPage from "../../../services/customHooks/RefreshCurrentP
 const DealershipsPage = () => {
 	const dbRequest = useDbRequest();
 	const [translate, ] = useLanguage();
-	const getDealerships = useGetDealerships();
+	// const getDealerships = useGetDealerships();
 	const updateDatabase = useUpdateDatabase();
-	const [requestInfo, setRequestInfo] = useState({});
+	// const [requestInfo, setRequestInfo] = useState({});
 	const {refreshPage} = useRefreshCurrentPage();
 	const history = useHistory();
 
@@ -22,7 +22,12 @@ const DealershipsPage = () => {
 		refreshPage(history,'/dealerships',(async () => {
 			dbRequest.setLoading(true);
 			try {
+
 				await updateDatabase();
+
+
+					// await dbRequest.requestFunction(() => DB.dropAllTables());
+			//
 			} catch (e) {
 				console.log('error', e);
 			}
