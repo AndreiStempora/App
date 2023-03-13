@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
-import { user } from "../../../../services/user/user";
-import { useDbRequest, hotspotsService, vehiclesService, imagesService } from "../../index";
-import { FS } from "../../../filesystem";
-import { URL, usePageSetters, usePageRequest } from "../../../../services";
+import { user } from "../user/user";
+import { useDbRequest, hotspotsService, vehiclesService, imagesService } from "../../packages/database";
+import { FS } from "../../packages/filesystem";
+import { URL, usePageSetters, usePageRequest } from "../index";
 import { useState, useEffect, useRef } from "react";
 
 const useRSelection = () => {

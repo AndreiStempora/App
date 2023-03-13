@@ -1,4 +1,4 @@
-import { useHotspot, useRSelection, useDeleteUpload } from "../../../../packages/database/features/utils/utilityHooks";
+import { useHotspot, useRSelection, useDeleteUpload } from "../../../../services/customHooks/utilityHooks";
 import { IonButtons, IonImg, IonSpinner, IonContent, useIonAlert } from "@ionic/react";
 import { useState, useEffect } from "react";
 import { Page, CustomHeader } from "../../../../components/page/Page";

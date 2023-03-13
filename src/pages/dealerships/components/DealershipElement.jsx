@@ -1,16 +1,14 @@
 import { IonIcon, IonLabel, IonItem } from '@ionic/react';
 import { useHistory } from 'react-router';
-import { useRSelection } from '../../../packages/database/features/utils/utilityHooks';
+import { useRSelection } from '../../../services/customHooks/utilityHooks';
 import './dealershipElement.scss'
 
 const DealershipElement = ({ dealership }) => {
     const [editSelection, getSelection] = useRSelection();
     const history = useHistory();
-
     const clickHandler = () => {
         editSelection({...getSelection(), dealership_id: dealership.dealership_id });
         history.push("/vehicle-search");
-        // history.push({ pathname: `${history.location.pathname}/${dealership.dealership_id}`, state: { ...dealership } });
     }
 
     return (

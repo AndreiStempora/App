@@ -3,8 +3,8 @@ import { Page, CustomHeader, CustomContent } from "../../../../components/page/P
 import { useHistory } from "react-router";
 import { useDbRequest, vehiclesService } from "../../../../packages/database";
 import { useEffect, useState } from "react";
-import { useRSelection } from "../../../../packages/database/features/utils/utilityHooks";
-import { useHotspot } from "../../../../packages/database/features/utils/utilityHooks";
+import { useRSelection } from "../../../../services/customHooks/utilityHooks";
+import { useHotspot } from "../../../../services/customHooks/utilityHooks";
 import FooterAddVehicle from "../../../../components/page/pageMainComponents/footers/FooterAddVehicle";
 import CustomBackButton from "../../../../components/buttons/CustomBackButton";
 import './vehicleDetailsPage.scss';

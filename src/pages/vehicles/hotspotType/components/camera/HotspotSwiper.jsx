@@ -1,9 +1,9 @@
 import { IonCol, IonImg, IonButton, IonSpinner } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useRSelection } from '../../../../../packages/database/features/utils/utilityHooks';
+import { useRSelection } from '../../../../../services/customHooks/utilityHooks';
 import { Navigation } from 'swiper';
-import { useHotspot } from '../../../../../packages/database/features/utils/utilityHooks';
+import { useHotspot } from '../../../../../services/customHooks/utilityHooks';
 import { useHistory } from 'react-router';
 import { FS } from '../../../../../packages/filesystem';
 import useCamera from '../../../../../packages/camera/features/CameraCustomHook';

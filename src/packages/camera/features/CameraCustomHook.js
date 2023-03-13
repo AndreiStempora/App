@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FS } from '../../../packages/filesystem';
 import { useDbRequest, imagesService } from "../../../packages/database";
 import { Filesystem, Directory } from '@capacitor/filesystem';
-import { useRSelection } from '../../database/features/utils/utilityHooks';
+import { useRSelection } from '../../../services/customHooks/utilityHooks';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation';
 
 const useCamera = () => {

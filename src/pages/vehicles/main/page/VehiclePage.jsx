@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { user } from '../../../../services/user/user';
 import { useDbRequest, vehiclesService } from '../../../../packages/database';
 import { useEffect, useState, useRef } from 'react';
-import { useRSelection } from '../../../../packages/database/features/utils/utilityHooks';
+import { useRSelection } from '../../../../services/customHooks/utilityHooks';
 import { network } from '../../../../packages/network';
 import FooterAddVehicle from '../../../../components/page/pageMainComponents/footers/FooterAddVehicle';
 import FooterDeleteUpload from '../../../../components/page/pageMainComponents/footers/FooterDeleteUpload';
@@ -15,11 +15,8 @@ import { useLanguage } from '../../../../packages/multiLanguage';
 import { useHistory } from 'react-router';
 import useRefreshCurrentPage from "../../../../services/customHooks/RefreshCurrentPage";
 
-
-
 const VehiclePage = () => {
     const dbRequest = useDbRequest();
-    const userInfo = useAtom(user.userDetails);
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
     const [showCheckbox, setShowCheckbox] = useState(false);
     const [cars, setCars] = useState([]);
@@ -33,10 +30,10 @@ const VehiclePage = () => {
 
     useEffect(() => {
         refreshPage(history,'/vehicle-search',(async () => {
+            deselectAll();
             const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
             console.log('cars', cars)
             setCars(cars);
-            deselectAll();
         }))
 
         return () => {

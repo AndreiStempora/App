@@ -105,6 +105,7 @@ const DB = {
                 vehicle_interior	INTEGER,
                 vehicle_hotspots	INTEGER,
                 PRIMARY KEY(vehicle_id AUTOINCREMENT)
+                UNIQUE (vehicle_vin)
             )`);
         // }).then(()=>{
         await DB.createTable(db,"hotspots", `CREATE TABLE IF NOT EXISTS hotspots (

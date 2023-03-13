@@ -6,7 +6,7 @@ import './fileUploader.scss';
 import { useAtom } from 'jotai';
 import { URL } from '../../services/Requests/importantUrls';
 import axios from 'axios';
-import { useDeleteUpload, useRSelection } from '../../packages/database/features/utils/utilityHooks';
+import { useDeleteUpload, useRSelection } from '../../services/customHooks/utilityHooks';
 
 const FileUploader = ({ elements, setUploading, uploading, setRefresh }) => {
     const [uploadElements, setUploadElements] = useState([]);

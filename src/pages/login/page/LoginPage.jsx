@@ -4,11 +4,12 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { IonIcon } from '@ionic/react';
 import { CustomForm, formAtoms } from '../components/form';
-import "./loginPage.scss";
 import { LanguageSelector } from '../../../packages/multiLanguage';
+import { useHistory} from "react-router";
+import "./loginPage.scss";
 
 const LoginPage = () => {
-
+    const history = useHistory();
     const pageRequest = usePageRequest();
     const requestSetters = usePageSetters();
     const [logInUrl] = useAtom(URL.login);
@@ -52,10 +53,10 @@ const LoginPage = () => {
         if (response2?.status === "ok") {
             requestSetters.isLoggedIn(true);
             requestSetters.setUserDetails(response.profile);
-            requestSetters.push('/dealerships')
+            history.push('/dealerships')
         } else {
             if (response2?.module === "users-addon-2fa") {
-                requestSetters.push("/2fa");
+                history.push("/2fa");
             }
         }
     }

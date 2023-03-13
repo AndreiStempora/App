@@ -4,7 +4,7 @@ import { useDbRequest, imagesService, hotspotsService } from "../../../../packag
 import { useHistory } from "react-router";
 import { FS } from "../../../../packages/filesystem";
 import React from "react";
-import { useRSelection } from "../../../../packages/database/features/utils/utilityHooks";
+import { useRSelection } from "../../../../services/customHooks/utilityHooks";
 import ImageOrPlaceholderComponent from "../../../../components/image/ImageOrPlaceholderComponent";
 import './vehicleItem.scss'
 

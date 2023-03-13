@@ -10,7 +10,7 @@ import {
 import {useState} from "react";
 import {useLanguage} from "../../../packages/multiLanguage";
 import {useHistory} from "react-router";
-import {useRSelection} from "../../../packages/database/features/utils/utilityHooks";
+import {useRSelection} from "../../../services/customHooks/utilityHooks";
 import useGetDealerships from "./serverRequests";
 
 const useUpdateDatabase = () => {
@@ -30,9 +30,16 @@ const useUpdateDatabase = () => {
             // const d2 = await dbRequest.requestFunction(async () => settingsService.getAllSettingsByDealershipId([2]));
             const e = await dbRequest.requestFunction(async () => imagesService.getAllImages());
             const f = await dbRequest.requestFunction(async () => logService.getAllLogs());
-            const aaaaaaa = await dbRequest.requestFunction(async () => vehiclesService.getVehicleByVin(['Red market']));
+            const aaaaaaa = await dbRequest.requestFunction(async () => vehiclesService.getVehicleByVin(['++==++']));
             // console.log(a, b, c, d1, d2, e, f, "all");
-            console.log(a, b, c, d1, e, f, aaaaaaa, "aaaaaaa");
+            console.log(a,"all dealerships");
+            console.log(b,"all vehicles");
+            console.log(c,"all hotspots");
+            console.log(d1,"all settings");
+            // console.log(d2,"all settings");
+            console.log(e,"all images");
+            console.log(f,"all logs");
+            console.log(aaaaaaa,"vehicle by vin");
       }
 
       const compareDealerships = async (serverDealerships) => {
@@ -46,7 +53,7 @@ const useUpdateDatabase = () => {
             return {addDealerships: newDealerships, deleteDealerships: deletedDealerships};
       }
       const addVehiclesForEachNewDealership = async (newDealerships,serverVehicles) => {
-            console.log(newDealerships,serverVehicles, 'newDealerships,serverVehicles');
+            // console.log(newDealerships,serverVehicles, 'newDealerships,serverVehicles');
             await Promise.all(newDealerships.map(async dealership => {
                   const vehicles = await getVehiclesArrayThatMatchDealershipId(dealership, serverVehicles);
                   await dbRequest.requestFunction(async () => await vehiclesService.insertAllVehicles([vehicles, dealership.id]));
@@ -76,6 +83,7 @@ const useUpdateDatabase = () => {
                   await dbRequest.requestFunction(async () => hotspotsService.insertHotspot([dealership.id, hotspot.name, hotspotType]));
             })
       }
+
       const handleDealershipExistence = async (serverDealerships) =>{
             if(!serverDealerships){
                   const localDealerships = await dbRequest.requestFunction(async () => await dealershipsService.getAllDealerships());
@@ -103,7 +111,7 @@ const useUpdateDatabase = () => {
             }
             if(serverDealerships){
                   const dealershipComparison = await compareDealerships(serverDealerships);
-                  console.log(dealershipComparison, 'dealership comparison');
+                  // console.log(dealershipComparison, 'dealership comparison');
             }
       }
       const deleteOldDealerships = async (deletedDealerships) => {
@@ -122,32 +130,62 @@ const useUpdateDatabase = () => {
             }));
       }
 
+
       const deleteIrrelevantVehicles = async (serverDealerships, serverVehicles) => {
-            serverDealerships.map(async dealership => {
+            serverDealerships?.map(async dealership => {
+                  //see how long it takes to get all vehicles from server
                   const serverDealershipVehicles = await getVehiclesArrayThatMatchDealershipId(dealership, serverVehicles);
+                  // await dbRequest.requestFunction(async () => await vehiclesService.addVehicle([1,"????", 1,1]))
+                  // await dbRequest.requestFunction(async () => await vehiclesService.insertVehicle([1,"++=++=++", 1,2,3,4,5]));
                   const localDealershipVehicles = await dbRequest.requestFunction(async () => await vehiclesService.getAllVehiclesByDealershipId([parseInt(dealership.id)]));
-                  console.log(serverDealerships, serverVehicles, 'serverDealerships, serverVehicles');
-                  //find vehicles that are in local but not in server
-                  await dbRequest.requestFunction(async () => await vehiclesService.insertVehicle([1,"AAAAAAAAA", "stock","date","model", "trim", "interior", "exterior","hotspots"]));
-                  const vehiclesToDelete = localDealershipVehicles?.filter(localVehicle => !serverDealershipVehicles.some(serverVehicle => parseInt(serverVehicle.vin) === parseInt(localVehicle.vin)));
+
+                  let localVin = {}
+                  for(let vehicle of localDealershipVehicles){
+                        localVin[vehicle.vehicle_vin] = 0;
+                  }
+
+                  let serverVin = {}
+                  for (let vehicle of serverDealershipVehicles){
+                        serverVin[vehicle.vin] = 1;
+                  }
+
+                  let combined = {...localVin, ...serverVin};
+                  //this object contains both arrays with vin numbers
+                  // if they are on local they will have value 0,
+                  //if they are on server they will have value 1
+                  //if they are on both they will have value 1 = common items
+                  let vehiclesToDeleteArray = Object.keys(combined).filter(key => combined[key] === 0);
+                  // console.log(vehiclesToDeleteArray, 'vehiclesToDeleteArray');
+                  vehiclesToDeleteArray.map(async vehicle => {
+                        const dbVehicle = await dbRequest.requestFunction(async () => await vehiclesService.getVehicleByVin([vehicle]));
+                        // console.log(dbVehicle);
+                        if(dbVehicle.vehicle_exterior === null && dbVehicle.vehicle_hotspots === null){
+                              // console.log('this vehicle was deleted', dbVehicle)
+                              await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([dbVehicle.vehicle_id]));
+                        }
+                        // console.log('this vehicle was not deleted', dbVehicle)
+                  })
+                  const vehiclesWithPics = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([1]));
+                  // console.log(vehiclesWithPics, localDealershipVehicles, 'vehiclesWithPics');
+                  // console.log(vehiclesToDelete, 'vehiclesToDelete', localDealershipVehicles, serverDealershipVehicles);
 
             })
       }
-      //things coming from the server are the important ones
-      //get server dealerships and compare to local dealerships
-      //if server dealership is not in local, add it
-      //if server dealership is in local, update it
-      //if local dealership is not in server, delete it
-      const updateDatabase = async () => {
-            const {serverDealerships, serverVehicles} = await getDealerships();
+      const getDealershipsFromDb = async () => {
+            const dealerships = await dbRequest.requestFunction(async () => await dealershipsService.getAllDealerships());
+            return dealerships;
+      };
+      const updateDatabase = async ({serverDealerships, serverVehicles}) => {
+            // const {serverDealerships, serverVehicles} = await getDealerships();
             await handleDealershipExistence(serverDealerships);
             const {addDealerships, deleteDealerships} = await compareDealerships(serverDealerships);
             await deleteOldDealerships(deleteDealerships);
             await addNewDealerships(addDealerships);
             await addVehiclesForEachNewDealership(addDealerships, serverVehicles);
+            await deleteIrrelevantVehicles(serverDealerships, serverVehicles);
 
-            await getAllDBContents();
 
+            return await getDealershipsFromDb();
       }
 
       return updateDatabase;

@@ -1,5 +1,5 @@
 import { useIonAlert} from "@ionic/react";
-import {useRSelection} from "../../../../../packages/database/features/utils/utilityHooks";
+import {useRSelection} from "../../../../../services/customHooks/utilityHooks";
 import { useHistory } from "react-router-dom";
 import { useDbRequest, vehiclesService } from "../../../../../packages/database";
 const useSaveVehicleAlert = () => {

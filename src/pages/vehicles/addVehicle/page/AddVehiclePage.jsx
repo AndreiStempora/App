@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useDbRequest, vehiclesService } from "../../../../packages/database";
 import VehicleSearch from "../components/search/VehicleSearch";
 import "./addVehiclePage.scss"
-import { useRSelection } from "../../../../packages/database/features/utils/utilityHooks";
+import { useRSelection } from "../../../../services/customHooks/utilityHooks";
 import OpenedScanner from "../components/scanner/OpenedScanner";
 import useBarcodeScanner from "../../../../packages/barcodeScanner/features/barcodeScanner";
 import useSaveVehicleAlert from "../components/saveAlert/saveVehicleAlert";

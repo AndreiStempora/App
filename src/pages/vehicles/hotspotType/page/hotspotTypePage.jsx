@@ -2,7 +2,7 @@ import { Page, CustomHeader, CustomContent } from "../../../../components/page/P
 import { IonButtons, IonTitle, IonButton, IonLabel, IonList, IonIcon } from "@ionic/react";
 import { useState, useEffect } from "react";
 import { useDbRequest } from "../../../../packages/database";
-import { useRSelection, useHotspot } from "../../../../packages/database/features/utils/utilityHooks";
+import { useRSelection, useHotspot } from "../../../../services/customHooks/utilityHooks";
 import OpenedCameraTakePhoto from "../components/camera/OpenedCameraTakePhoto";
 import useCamera from "../../../../packages/camera/features/CameraCustomHook";
 import FooterAddVehicle from "../../../../components/page/pageMainComponents/footers/FooterAddVehicle";

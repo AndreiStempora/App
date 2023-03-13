@@ -1,5 +1,5 @@
 import { IonButtons, IonFooter, IonGrid, IonRow, IonButton, IonIcon, IonContent, IonLabel, IonImg } from "@ionic/react";
-import { useRSelection } from "../../../../../packages/database/features/utils/utilityHooks";
+import { useRSelection } from "../../../../../services/customHooks/utilityHooks";
 import { CustomContent, CustomHeader } from "../../../../../components/page/Page";
 import HotspotSwiper from "./HotspotSwiper";
 import useCamera from "../../../../../packages/camera/features/CameraCustomHook";

@@ -1,7 +1,7 @@
 import { IonSearchbar, IonLabel, IonList, IonInfiniteScroll, IonInfiniteScrollContent, useIonAlert } from "@ionic/react";
 import { useState, useEffect, useRef } from "react";
 import { vehiclesService } from "../../../../../packages/database/features/services/vehiclesService";
-import { useRSelection } from "../../../../../packages/database/features/utils/utilityHooks";
+import { useRSelection } from "../../../../../services/customHooks/utilityHooks";
 import useDbRequest from "../../../../../packages/database/features/utils/databaseOperationsHook";
 import VehicleSearchItem from "./VehicleSearchItem";
 import { useHistory } from "react-router";
