@@ -1,11 +1,13 @@
-import { useIonAlert} from "@ionic/react";
+import {useIonAlert} from "@ionic/react";
 import {useRSelection} from "../../../../../services/customHooks/utilityHooks";
-import { useHistory } from "react-router-dom";
-import { useDbRequest, vehiclesService } from "../../../../../packages/database";
+import {useHistory} from "react-router";
+import {useDbRequest, vehiclesService} from "../../../../../packages/database";
+import { useLanguage } from "../../../../../packages/multiLanguage";
 const useSaveVehicleAlert = () => {
-      const [presentAlert] = useIonAlert();
-      const [setCurrentSelection, getCurrentSelection] = useRSelection();
       const history = useHistory();
+      const [presentAlert] = useIonAlert();
+      const [translate] = useLanguage();
+      const [setCurrentSelection, getCurrentSelection] = useRSelection();
       const dbRequest = useDbRequest();
 
       const getVehicleAndSetId = async (vehicleVin) => {
@@ -19,7 +21,7 @@ const useSaveVehicleAlert = () => {
                   return await vehiclesService.getVehicleByVin([vehicleVin]);
             });
             console.log(vehicle, 'vehicle++');
-            if(vehicle){
+            if (vehicle) {
                   console.log('vehicle already exists');
                   await dbRequest.requestFunction(async () =>
                       await dbRequest.requestFunction(async () => await vehiclesService.updateVehicleById([vehicle.vehicle_id, 1, 1]))
@@ -34,23 +36,22 @@ const useSaveVehicleAlert = () => {
                       vehiclesService.addVehicle([getCurrentSelection().dealership_id, vehicleVin, 1, 1])
                   );
                   await getVehicleAndSetId(vehicleVin);
-                  return
             }
       }
-      const openAlert = async (vehicleVin) =>{
-             await presentAlert({
-                  header: 'Add Vehicle',
-                  message: 'Are you sure you want to add this vehicle?',
+      const openAlert = async (vehicleVin) => {
+            await presentAlert({
+                  header: translate('Add Vehicle'),
+                  message: translate('Are you sure you want to add this vehicle?'),
                   buttons: [
-                        'Cancel',
+                        translate('Cancel'),
                         {
-                              text: 'Add', handler: async () => {
+                              text: translate('Add'), handler: async () => {
                                     await searchForVehicleInDb(vehicleVin);
                                     let x = await dbRequest.requestFunction(async () => {
                                           return await vehiclesService.getVehicleByVin([vehicleVin]);
                                     });
                                     console.log(x, 'x', vehicleVin, 'vehicleVin');
-                                    // history.push("/vehicle-details");
+                                    history.push("/vehicle-details");
                               }
                         },
                   ],

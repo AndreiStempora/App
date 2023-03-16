@@ -1,7 +1,7 @@
 
 const DB = {
     //was the db initialized once or not
-    dbinitialized: false,
+    dbinitialied: false,
 
     //the db instance
     db: null,
@@ -35,8 +35,8 @@ const DB = {
         .then(async(db)=>{
             await DB.createTables(db);
             return db;
-        }).then((db)=>{
-            DB.createIndexes(db);
+        }).then(async(db)=>{
+            await DB.createIndexes(db);
             DB.db = db;
             DB.dbinitialized = true;
             return db;

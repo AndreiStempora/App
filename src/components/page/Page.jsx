@@ -1,7 +1,7 @@
 import { IonPage, useIonViewWillEnter, useIonViewWillLeave, useIonViewDidEnter } from "@ionic/react";
-import { ErrorComponent } from "../../packages/errors";
-import { PageLoaderComponent } from '../../packages/loaders';
 import { NetworkConnectionComponent } from "../../packages/network/index";
+import { PageLoaderComponent } from '../../packages/loaders';
+import { ErrorComponent } from "../../packages/errors";
 import CustomContent from "./pageMainComponents/CustomContent";
 import CustomFooter from "./pageMainComponents/CustomFooter";
 import CustomHeader from "./pageMainComponents/CustomHeader";

@@ -1,8 +1,8 @@
-import useGetDealerships from "./serverRequests";
 import {useDbRequest} from "../../../packages/database";
 import {useHistory} from "react-router";
-import useUpdateDatabase from "./databaseBulkModifications";
 import {useRSelection} from "../../../services/customHooks/utilityHooks";
+import useGetDealerships from "./serverRequests";
+import useUpdateDatabase from "./databaseBulkModifications";
 
 const useHandleDealershipsPage = () => {
       const history = useHistory();
@@ -13,15 +13,15 @@ const useHandleDealershipsPage = () => {
       const handleDealershipsPage = async () => {
             dbRequest.setLoading(true);
             try {
+
                   const dealerships = await getDealerships();
                   if (dealerships?.serverDealerships.length > 1) {
                         return await updateDatabase(dealerships);
-                  } else {
-                        console.log('you have only one dealership');
-                        console.log(history,dealerships);
-                        await editSelection({ dealership_id: dealerships.serverDealerships[0].id });
-                        history.push('/vehicle-search');
                   }
+
+                  await editSelection({dealership_id: dealerships.serverDealerships[0].id});
+                  history.push('/vehicle-search');
+
             } catch (e) {
                   console.log('error', e);
             } finally {

@@ -1,7 +1,7 @@
 import {IonContent, IonGrid, IonRow, IonCol} from '@ionic/react';
 import './customContent.scss'
 
-const CustomContent = ({children, colSizesArr, gridClassStr}) => {
+const CustomContent = ({children, colSizesArr, gridClassStr, scrollEvents,scrollHandler}) => {
 
     const renderCols = (colSizesArr,children) => {
         const arr = [];
@@ -24,7 +24,7 @@ const CustomContent = ({children, colSizesArr, gridClassStr}) => {
     }
 
     return (
-        <IonContent>
+        <IonContent scrollEvents={scrollEvents?true:false} onIonScroll={scrollHandler?scrollHandler:null}>
             <IonGrid className={gridClassStr}>
                 <IonRow>
                     {renderCols(colSizesArr,children)}

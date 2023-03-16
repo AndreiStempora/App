@@ -7,8 +7,10 @@ import VehicleSearchItem from "./VehicleSearchItem";
 import { useHistory } from "react-router";
 import './vehicleSearch.scss';
 import useSaveVehicleAlert from "../saveAlert/saveVehicleAlert";
+import {useLanguage} from "../../../../../packages/multiLanguage";
 
 const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
+    const [translate] = useLanguage();
     const dbRequest = useDbRequest();
     const history = useHistory();
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
@@ -34,6 +36,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
             refOffset.current]));
         setFilteredVehicles((prev) => [...prev, ...listOfVehicles]);
         refOffset.current += 10;
+        console.log("listOfVehicles", listOfVehicles);
     };
 
 
@@ -41,7 +44,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
         (async () => {
             if (searchText.length !== 0) {
                 console.log("searchText called", searchText, searchText.length);
-                getListOfVehicles(searchText);
+                await getListOfVehicles(searchText);
             }
 
             if (!validateVin(searchText)) {
@@ -88,6 +91,8 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
 
     const searchFieldCompletionHandler =  async (vin) => {
         searchBar.current.value = vin;
+        console.log("oldCar!!!", vin);
+        newCar(vin);
         await openAlert(vin);
     }
 
@@ -103,6 +108,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
                 debounce={0}
                 onIonChange={e => setSearchText(e.target.value)}
                 setClearButton="focus"
+                placeholder={translate("Search")}
             />
 
             <IonList >

@@ -46,7 +46,7 @@ const VehicleDetailsPage = () => {
             setElements(elements2);
         }))
     }, [
-        getCurrentSelection().vehicle_id,
+        // getCurrentSelection().vehicle_id,
         history.location.pathname
     ]);
 

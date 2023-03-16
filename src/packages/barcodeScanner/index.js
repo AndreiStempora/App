@@ -1,3 +1,3 @@
-import { BarcodeScanner } from "@capacitor-community/barcode-scanner";
+import useBarcodeScanner from "./features/barcodeScanner";
 
-export { BarcodeScanner };
+export { useBarcodeScanner };

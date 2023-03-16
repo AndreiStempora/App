@@ -1,6 +1,5 @@
 import languageTranslations from './languageTranslations';
 import { atom, useAtom } from 'jotai';
-import { useState } from 'react';
 
 const languageAtom = atom('fr', (get, set, lang) => {
     if (!lang) {
@@ -11,13 +10,8 @@ const languageAtom = atom('fr', (get, set, lang) => {
     }
 });
 
-const getLanguageAtom = atom(null, (get, set, lang) => {
-    return get(languageAtom)
-});
-
-
 const useLanguage = () => {
-    const [currentlanguage, language] = useAtom(languageAtom);
+    const [currentLanguage, language] = useAtom(languageAtom);
 
     const changeLanguage = (lang) => {
         language(lang)
@@ -28,10 +22,10 @@ const useLanguage = () => {
         if (!languageTranslations[key]) {
             return key;
         }
-        if (!languageTranslations[key][currentlanguage]) {
+        if (!languageTranslations[key][currentLanguage]) {
             return key;
         }
-        return languageTranslations[key][currentlanguage];
+        return languageTranslations[key][currentLanguage];
     }
 
     return [translate, changeLanguage];

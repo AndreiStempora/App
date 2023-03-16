@@ -16,11 +16,11 @@ import useGetDealerships from "./serverRequests";
 const useUpdateDatabase = () => {
       const dbRequest = useDbRequest();
       const [translate] = useLanguage();
-      const [dealershipElements, setDealershipElements] = useState([]);
+      // const [dealershipElements, setDealershipElements] = useState([]);
       const [presentAlert] = useIonAlert();
-      const [editSelection, getSelection] = useRSelection();
-      const history = useHistory();
-      const getDealerships = useGetDealerships();
+      // const [editSelection, getSelection] = useRSelection();
+      // const history = useHistory();
+      // const getDealerships = useGetDealerships();
 
       const getAllDBContents = async () => {
             const a = await dbRequest.requestFunction(async () => dealershipsService.getAllDealerships());
@@ -93,7 +93,7 @@ const useUpdateDatabase = () => {
                               cssClass: 'custom-alert',
                               buttons: [
                                     {
-                                          text: 'Ok',
+                                          text:  translate('Ok'),
                                           cssClass: 'alert-button-confirm',
                                     },
                                     {
@@ -176,15 +176,13 @@ const useUpdateDatabase = () => {
             return dealerships;
       };
       const updateDatabase = async ({serverDealerships, serverVehicles}) => {
-            // const {serverDealerships, serverVehicles} = await getDealerships();
             await handleDealershipExistence(serverDealerships);
             const {addDealerships, deleteDealerships} = await compareDealerships(serverDealerships);
             await deleteOldDealerships(deleteDealerships);
             await addNewDealerships(addDealerships);
             await addVehiclesForEachNewDealership(addDealerships, serverVehicles);
             await deleteIrrelevantVehicles(serverDealerships, serverVehicles);
-
-
+            // await getAllDBContents();
             return await getDealershipsFromDb();
       }
 

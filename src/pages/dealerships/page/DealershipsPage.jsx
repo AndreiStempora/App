@@ -16,7 +16,7 @@ const DealershipsPage = () => {
 	useEffect(() => {
 		refreshPage(history,'/dealerships',(async () => {
 			setDealerships(await handleDealershipsPage());
-			console.log(history)
+			console.log('dealerships page')
 		}))
 	}, [history.location.pathname]);
 

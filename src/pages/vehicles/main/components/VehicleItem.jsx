@@ -8,7 +8,7 @@ import { useRSelection } from "../../../../services/customHooks/utilityHooks";
 import ImageOrPlaceholderComponent from "../../../../components/image/ImageOrPlaceholderComponent";
 import './vehicleItem.scss'
 
-const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCheckbox }, ref) => {
+const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCheckbox, scrollTrackerRef }, ref) => {
     const dbRequest = useDbRequest();
     const [itemImage, setItemImage] = useState(null);
     const [setCurrentSelection, getCurrentSelection] = useRSelection();
@@ -43,6 +43,7 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
 
     const start = useCallback((e) => {
         thisRef.current = e.target;
+        scrollTrackerRef.current = false;
         timerRef.current = setTimeout(() => {
             setShowCheckbox(true);
             thisRef.current.closest('ion-item').querySelector('ion-checkbox').checked = true;
@@ -53,13 +54,16 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
     const stop = useCallback((e) => {
         clearTimeout(timerRef.current);
         if (thisRef.current.closest('ion-item').querySelector('ion-checkbox') === null) {
-            setCurrentSelection({ vehicle_id: item.vehicle_id });
-            history.push("/vehicle-details");
+            if(!scrollTrackerRef.current) {
+                setCurrentSelection({vehicle_id: item.vehicle_id});
+                history.push("/vehicle-details");
+            }
         }
     }, []);
 
     return (
         <IonItem
+            // button={true}
             onTouchStart={start}
             onTouchEnd={stop}
             lines='full'

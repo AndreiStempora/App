@@ -17,6 +17,7 @@ const useGetDealerships = () => {
       }
 
       const requestVehicles = async (dealerships) => {
+
             try {
                   return await Promise.all(
                       dealerships?.map(async dealership => {
@@ -39,7 +40,6 @@ const useGetDealerships = () => {
                   return {serverDealerships: dealershipsArray?.dealerships, serverVehicles: vehicleArrays};
             } else {
                   return null;
-
             }
       }
 

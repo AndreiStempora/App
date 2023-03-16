@@ -1,239 +1,110 @@
-import { IonList, IonTitle, IonButtons, IonButton, useIonAlert, IonIcon } from '@ionic/react';
-import { Page, CustomHeader, CustomContent } from '../../../../components/page/Page';
-import { useAtom } from 'jotai';
-import { user } from '../../../../services/user/user';
-import { useDbRequest, vehiclesService } from '../../../../packages/database';
-import { useEffect, useState, useRef } from 'react';
-import { useRSelection } from '../../../../services/customHooks/utilityHooks';
-import { network } from '../../../../packages/network';
-import FooterAddVehicle from '../../../../components/page/pageMainComponents/footers/FooterAddVehicle';
+import {IonList, IonTitle, IonButtons, IonButton, useIonAlert, IonIcon} from '@ionic/react';
+import {Page, CustomHeader, CustomContent} from '../../../../components/page/Page';
+import {useDbRequest, vehiclesService} from '../../../../packages/database';
+import {useEffect, useState, useRef} from 'react';
+import useUpdateDatabaseSingleDealership from "../features/updateDatabase";
 import FooterDeleteUpload from '../../../../components/page/pageMainComponents/footers/FooterDeleteUpload';
+import FooterAddVehicle from '../../../../components/page/pageMainComponents/footers/FooterAddVehicle';
+import useRefreshPage from '../../../../services/customHooks/refreshCurrentPageImproved';
+import useVehiclePage from "../features/handleVehiclePage";
 import FileUploader from '../../../../components/uploader/FileUploader';
 import VehicleItem from '../components/VehicleItem';
 import './vehiclePage.scss';
-import { useLanguage } from '../../../../packages/multiLanguage';
-import { useHistory } from 'react-router';
-import useRefreshCurrentPage from "../../../../services/customHooks/RefreshCurrentPage";
 
 const VehiclePage = () => {
-    const dbRequest = useDbRequest();
-    const [setCurrentSelection, getCurrentSelection] = useRSelection();
-    const [showCheckbox, setShowCheckbox] = useState(false);
-    const [cars, setCars] = useState([]);
-    const elementsRef = useRef([]);
-    const [uploading, setUploading] = useState(false);
-    const [elementsForUpload, setElementsForUpload] = useState([]);
-    const [presentAlert] = useIonAlert();
-    const [translate,] = useLanguage();
-    const { refreshPage } = useRefreshCurrentPage();
-    const history = useHistory();
+      const dbRequest = useDbRequest();
+      const [cars, setCars] = useState([]);
+      const {refreshPage, history} = useRefreshPage();
+      const updateDatabase = useUpdateDatabaseSingleDealership();
+      const scrollTrackerRef = useRef(false);
+      const {deselectAll,
+            setCheckValues,
+            editVehicleHandler,
+            deleteVehicleHandler,
+            uploadVehicleHandler,
+            elementsRef,
+            showCheckbox,
+            setShowCheckbox,
+            uploading,
+            setUploading,
+            elementsForUpload,
+            getCurrentSelection,
+            translate} = useVehiclePage();
 
-    useEffect(() => {
-        refreshPage(history,'/vehicle-search',(async () => {
-            deselectAll();
-            const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
-            console.log('cars', cars)
-            setCars(cars);
-        }))
+      useEffect(() => {
+            (async () => {
+                  await refreshPage('/vehicle-search', (async () => {
+                        await updateDatabase();
+                        deselectAll();
+                        const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
+                        setCars(cars);
+                  }));
+            })()
 
-        return () => {
-            setCars([]);
-        }
-    }, [history.location.pathname]);
-
-    const alertSelectVehicles = () => {
-        return presentAlert({
-            header: 'Please select at least one vehicle',
-            cssClass: 'custom-alert',
-            buttons: [
-                {
-                    text: 'Ok',
-                    cssClass: 'alert-button-confirm',
-                },
-            ],
-        })
-    }
-
-    const setCheckValues = () => {
-
-        let allChecked = true;
-        getCurrentRefs();
-        elementsRef.current?.forEach(element => {
-            if (!element.querySelector('ion-checkbox').checked) {
-                allChecked = false;
+            return () => {
+                  setCars([]);
             }
-        })
-        elementsRef.current?.forEach(element => {
-            element.querySelector('ion-checkbox').checked = !allChecked;
-        });
-    };
+      }, [history.location.pathname]);
 
-    const deselectAll = () => {
+      const scrollHandler = (e) => {
+            scrollTrackerRef.current = true;
+      }
 
-        if (showCheckbox) {
-            elementsRef.current = elementsRef.current?.filter(element => element !== null);
-            elementsRef.current?.forEach(element => {
-                element.querySelector('ion-checkbox').checked = false;
-            });
-        }
-    };
+      return (
+          <Page pageClass={'vehiclesSearch'}>
+                {uploading ?
+                    <FileUploader
+                        elements={elementsForUpload}
+                        setUploading={setUploading}
+                        uploading={uploading}
+                    /> :
+                    <>
+                          <CustomHeader>
+                                <IonButtons slot="start">
+                                      {showCheckbox ? <IonButton onClick={editVehicleHandler}><IonIcon
+                                          icon='/assets/svgs/cancel.svg'/></IonButton> : null
+                                      }
+                                </IonButtons>
 
-    const editVehicleHandler = () => {
+                                <IonTitle className='ion-text-center'>{translate('Vehicles')}</IonTitle>
+                                <IonButtons slot="end">
+                                      <IonButton onClick={showCheckbox ? setCheckValues : editVehicleHandler}>
+                                            {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg'/> :
+                                                <IonIcon icon='/assets/svgs/checklist.svg'></IonIcon>}
 
-        deselectAll();
-        setShowCheckbox(!showCheckbox);
-    };
+                                      </IonButton>
+                                </IonButtons>
+                          </CustomHeader>
+                          <CustomContent colSizesArr={[[12]]} scrollEvents={true} scrollHandler={scrollHandler}>
+                                <>
+                                      <IonList className='special-list'>
+                                            {cars?.map((car, index) =>
+                                                <VehicleItem
+                                                    ref={(element) => elementsRef.current[index] = element}
+                                                    key={index}
+                                                    item={car}
+                                                    id={car.vehicle_id}
+                                                    scrollTrackerRef={scrollTrackerRef}
+                                                    showCheckbox={showCheckbox}
+                                                    setShowCheckbox={setShowCheckbox}
+                                                />
+                                            )}
+                                      </IonList>
+                                </>
 
-    const deleteVehicleHandler = async () => {
-        const selectedVehicles = getCurrentRefs();
-        if (selectedVehicles.length) {
-            await presentAlert({
-                header: 'Are you sure you want to delete selected vehicle/s?',
-                cssClass: 'custom-alert',
-                buttons: [
-                    {
-                        text: 'No',
-                        cssClass: 'alert-button-cancel',
-                    },
-                    {
-                        text: 'Yes',
-                        cssClass: 'alert-button-confirm',
-                        handler: async () => {
-                            await Promise.all(
-                                elementsRef.current.map(async element => {
-                                    if (element.querySelector('ion-checkbox').checked) {
-                                        console.log(element);
-                                        return await dbRequest.requestFunction(async () => await vehiclesService.deleteVehicleById([element.id]));
-                                    }
-                                    return null;
-                                })
-                            )
-                            setCurrentSelection('refresh');
-                        }
-                    },
-                ],
-            })
-        } else {
-            await alertSelectVehicles();
-        }
-    };
-    const getCurrentRefs = () => {
-        elementsRef.current = elementsRef.current.filter(element => element !== null);
-        const selectedVehicles = elementsRef.current.filter(element => element.querySelector('ion-checkbox').checked);
-        return selectedVehicles;
-    }
-
-    const uploadVehicleHandler = async () => {
-        if (await network.getCurrentNetworkStatus()) {
-            const selectedVehicles = getCurrentRefs();
-            if (selectedVehicles.length) {
-                await presentAlert({
-                    header: 'Are you sure you want to upload pictures of selected vehicle/s?',
-                    cssClass: 'custom-alert',
-                    buttons: [
-                        {
-                            text: 'No',
-                            cssClass: 'alert-button-cancel',
-                        },
-                        {
-                            text: 'Yes',
-                            cssClass: 'alert-button-confirm',
-                            handler: async () => {
-                                let forUpload = [];
-                                selectedVehicles.forEach(element => {
-                                    if (element.querySelector('ion-checkbox').checked) {
-                                        forUpload.push(parseInt(element.id));
-                                    }
-                                });
-                                console.log(forUpload);
-                                setElementsForUpload(forUpload);
-                                setUploading(true);
-                            }
-                        },
-                    ],
-                })
-
-            } else {
-                await alertSelectVehicles();
-            }
-        } else {
-            return presentAlert({
-                header: 'No internet connection',
-                cssClass: 'custom-alert',
-                buttons: [
-                    {
-                        text: 'Ok',
-                        cssClass: 'alert-button-confirm',
-                    },
-                ],
-            })
-        }
-    };
-
-    useEffect(() => {
-        if (uploading === false) {
-            setElementsForUpload([]);
-        }
-    }, [uploading]);
-
-    return (
-        <Page pageClass={'vehiclesSearch'}>
-            {uploading ?
-                <FileUploader
-                    elements={elementsForUpload}
-                    setUploading={setUploading}
-                    uploading={uploading}
-                /> :
-                <>
-                    <CustomHeader>
-                        <IonButtons slot="start" >
-                            {showCheckbox ? <IonButton onClick={editVehicleHandler}><IonIcon icon='/assets/svgs/cancel.svg' /></IonButton> : null
-                                // <IonButton defaultHref="/profile" >
-                                //     {userInfo.avatar ? <img src={userInfo.avatar} alt="avatar" /> : <IonIcon icon='/assets/svgs/user.svg' />}
-                                // </IonButton>
-                            }
-                        </IonButtons>
-
-                        <IonTitle className='ion-text-center'>{translate('Vehicles Page')}</IonTitle>
-                        <IonButtons slot="end" >
-                            <IonButton onClick={showCheckbox ? setCheckValues : editVehicleHandler}>
-                                {showCheckbox ? <IonIcon icon='/assets/svgs/SelectAll.svg' /> : <IonIcon icon='/assets/svgs/checklist.svg'></IonIcon>}
-
-                            </IonButton>
-                        </IonButtons>
-                    </CustomHeader>
-                    <CustomContent colSizesArr={[[12]]}>
-                        <>
-                            <IonList className='special-list'>
-                                {cars?.map((car, index) =>
-                                    <VehicleItem
-                                        ref={(element) => elementsRef.current[index] = element}
-                                        key={index}
-                                        item={car}
-                                        id={car.vehicle_id}
-                                        showCheckbox={showCheckbox}
-                                        setShowCheckbox={setShowCheckbox}
-                                    />
-                                )}
-                            </IonList>
-                        </>
-
-                    </CustomContent>
-                    {!showCheckbox ? <FooterAddVehicle /> :
-                        <FooterDeleteUpload
-                            del={deleteVehicleHandler}
-                            retake={null}
-                            upload={uploadVehicleHandler}
-                        ></FooterDeleteUpload>
-                    }
-                </>
-            }
-
-
-        </Page>
-    )
+                          </CustomContent>
+                          {!showCheckbox ? <FooterAddVehicle/> :
+                              <FooterDeleteUpload
+                                  del={deleteVehicleHandler}
+                                  retake={null}
+                                  upload={uploadVehicleHandler}
+                              ></FooterDeleteUpload>
+                          }
+                    </>
+                }
+          </Page>
+      )
 }
-
 export default VehiclePage;
 
 

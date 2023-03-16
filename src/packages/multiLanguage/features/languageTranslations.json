@@ -5,8 +5,8 @@
     "Franchised car dealerships are the front line for car manufacturers to get their products on the road.": {
         "fr": "Les concessionnaires automobiles sont la première ligne pour les constructeurs automobiles pour mettre leurs produits sur la route."
     },
-    "Vehicles Page": {
-        "fr": "Page des véhicules"
+    "Vehicles": {
+        "fr": "Véhicules"
     },
     "Email": {
         "fr": "Courriel"
@@ -43,5 +43,54 @@
     },
     "Franchised car dealerships are the front line for car manufacturers to get their products on the road." : {
         "fr": "Les concessionnaires automobiles sont la première ligne pour les constructeurs automobiles pour mettre leurs produits sur la route."
+    },
+    "Please select at least one vehicle": {
+        "fr": "Veuillez sélectionner au moins un véhicule"
+    },
+    "Ok": {
+        "fr": "D'accord"
+    },
+    "Are you sure you want to delete selected vehicle/s?": {
+        "fr": "Êtes-vous sûr de vouloir supprimer le/les véhicule/s sélectionné/s?"
+    },
+    "No": {
+        "fr": "Non"
+    },
+    "Yes": {
+        "fr": "Oui"
+    },
+    "Are you sure you want to upload pictures of selected vehicle/s?": {
+        "fr": "Êtes-vous sûr de vouloir télécharger des photos du/du véhicule/s sélectionné/s?"
+    },
+    "No internet connection": {
+        "fr": "Pas de connexion Internet"
+    },
+    "You are not connected to the Internet": {
+        "fr": "Vous n'êtes pas connecté à Internet"
+    },
+    "Cancel": {
+        "fr": "Annuler"
+    },
+    "Add Vehicle": {
+        "fr": "Ajouter un véhicule"
+    },
+    "Are you sure you want to add this vehicle?": {
+        "fr": "Êtes-vous sûr de vouloir ajouter ce véhicule?"
+    },
+    "Add": {
+        "fr": "Ajouter"
+    },
+    "Add vehicle": {
+        "fr": "Ajouter un véhicule"
+    },
+    "VIN number": {
+        "fr": "Numéro de série du véhicule"
+    },
+    "Search": {
+        "fr": "Rechercher"
+    },
+    "Save": {
+        "fr": "Sauver"
     }
+
 }
