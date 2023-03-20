@@ -73,7 +73,7 @@ const VehicleItem = ({ item, image, showCheckbox, id, selectableItems, setShowCh
         >
             <ImageOrPlaceholderComponent img={img} />
             <IonLabel>
-                <h2>{item?.vehicle_make} {item?.vehicle_model} {item?.vehicle_trim}</h2>
+                {item?.vehicle_make? <h2>{item?.vehicle_make} {item?.vehicle_model} {item?.vehicle_trim}</h2> :null}
                 <h3>{item?.vehicle_vin}</h3>
             </IonLabel>
             {showCheckbox &&

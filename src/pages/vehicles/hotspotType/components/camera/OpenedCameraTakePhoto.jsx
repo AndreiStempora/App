@@ -4,8 +4,10 @@ import { CustomContent, CustomHeader } from "../../../../../components/page/Page
 import HotspotSwiper from "./HotspotSwiper";
 import useCamera from "../../../../../packages/camera/features/CameraCustomHook";
 import "./openedCameraTakePhoto.scss";
+import { useLanguage } from "../../../../../packages/multiLanguage";
 
 const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
+      const [translate] = useLanguage();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const camera = useCamera();
 
@@ -15,10 +17,8 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
         editCurrentSelection('refresh');
     }
 
- 
-
     const closePicHandler= () =>{
-        const x = document.querySelector('.vehiclePhotos').classList.remove("show");
+        document.querySelector('.vehiclePhotos').classList.remove("show");
     }
     return ( 
         <>
@@ -37,7 +37,7 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
                     <div className="forbidden-container">
                         <div className="forbidden-message">
                             <IonLabel>
-                                Please rotate your device to the left to take pictures
+                                  {translate("Please rotate your device to the left to take pictures")}
                             </IonLabel>
                             <IonIcon icon="/assets/svgs/screen-rotate.svg"></IonIcon>
 
@@ -47,7 +47,8 @@ const OpenedCameraTakePhoto = ({ setHidePageContent }) => {
                 <IonFooter className="opaque-bg camera-footer">
                     <IonGrid>
                         <IonRow className="ion-align-items-center">
-                            <HotspotSwiper setHidePageContent={setHidePageContent}></HotspotSwiper>
+                            <HotspotSwiper //setHidePageContent={setHidePageContent}
+                            ></HotspotSwiper>
                         </IonRow>
                     </IonGrid>
 

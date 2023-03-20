@@ -112,25 +112,21 @@ const useDeleteUpload = () => {
 
 
     const deleteImage = async (image) => {
-        // let x = await FS.deleteFile(image.image_data);
-        // // console.log(x);
-        // if(x){
-        return await dbRequest.requestFunction(async () => await imagesService.deleteImageById([image.image_id]));
-        // }
+        return await dbRequest.requestFunction(async () => await imagesService.deleteImageByImageData([image]));
     }
 
     const getBlobData = async (image) => {
-        let fileData = await FS.showPicture(image?.image_data);
+        let fileData = await FS.showPicture(image);
         const response = await fetch(fileData);
         const blob = await response.blob();
-        const fileName = image?.image_data.slice(image?.image_data.lastIndexOf('/') + 1);
+        const fileName = image
         blob.name = fileName;
         return blob;
     }
 
     const createFormData = async (image) => {
         const carVin = await dbRequest.requestFunction(async () => { return await vehiclesService.getVehicleById([getCurrentSelection().vehicle_id]) });
-        console.log(carVin, 'carVin')
+        // console.log(carVin, 'carVin')
         const objForUpload = {
             token: token,
             dealership: getCurrentSelection().dealership_id,
@@ -138,7 +134,7 @@ const useDeleteUpload = () => {
             image: await getBlobData(image),
             vin: carVin?.vehicle_vin
         };
-        console.log(objForUpload, 'objForUpload')
+        // console.log(objForUpload, 'objForUpload')
 
         const formData = new FormData();
         for (let item in objForUpload) {
@@ -154,7 +150,7 @@ const useDeleteUpload = () => {
     const uploadImage = async (image) => {
         // referanceImage.current = image;
         // setImage(image);
-        console.log(image, 'refImage');
+        // console.log(image, 'refImage');
         const data = await createFormData(image);
         // console.log(data, 'data');
         // const request = new XMLHttpRequest();

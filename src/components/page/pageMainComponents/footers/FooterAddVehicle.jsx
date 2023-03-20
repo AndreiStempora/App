@@ -3,9 +3,11 @@ import { useHistory } from 'react-router';
 import { CustomFooter } from '../../Page';
 import { useEffect, useState } from 'react';
 import { dealershipsService, useDbRequest } from '../../../../packages/database';
+import {useLanguage} from "../../../../packages/multiLanguage";
 import "./footerAddVehicle.scss";
 
 const FooterAddVehicle = ({ photoBtn }) => {
+    const [translate] = useLanguage();
     const dbRequest = useDbRequest();
     const history = useHistory();
     const [showDealershipBtn, setShowDealershipBtn] = useState(false);
@@ -42,13 +44,13 @@ const FooterAddVehicle = ({ photoBtn }) => {
                     <IonButton onClick={takePhotoHandler} className='icon-over-text'>
                         <div className="container">
                             <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
-                            <IonLabel>Photo</IonLabel>
+                            <IonLabel>{translate("Photo")}</IonLabel>
                         </div>
                     </IonButton> :
                     <IonButton onClick={addVehicleHandler} className='icon-over-text'>
                         <div className="container">
                             <IonIcon icon='/assets/svgs/add.svg'></IonIcon>
-                            <IonLabel>Vehicle</IonLabel>
+                            <IonLabel>{translate("Vehicle")}</IonLabel>
                         </div>
                     </IonButton>
                 }
@@ -56,14 +58,14 @@ const FooterAddVehicle = ({ photoBtn }) => {
                 <IonButton onClick={toDealershipsHandler} className={`icon-over-text ${showDealershipBtn ? "dealerships-btn" : "vehicles-btn"}`} href="/dealerships">
                     <div className="container">
                         <IonIcon icon='/assets/svgs/car.svg'></IonIcon>
-                        <IonLabel>{showDealershipBtn ? "Dealerships" : "Vehicles"}</IonLabel>
+                        <IonLabel>{showDealershipBtn ? translate("Dealerships") : translate("Vehicles")}</IonLabel>
                     </div>
                 </IonButton>
 
                 <IonButton onClick={goToProfileHandler} className='icon-over-text'>
                     <div className="container">
                         <IonIcon icon='/assets/svgs/user.svg' />
-                        <IonLabel>Profile</IonLabel>
+                        <IonLabel>{translate("Profile")}</IonLabel>
                     </div>
                 </IonButton>
             </IonButtons>

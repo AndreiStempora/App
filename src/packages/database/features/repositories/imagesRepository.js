@@ -237,7 +237,32 @@ const imagesRepository = {
                 );
         });
     },
-
+      //delete image by image_data
+      deleteImageByImageData: async ([image_data]) => {
+            return new Promise(async (resolve, reject) => {
+                  (await DB.dbInstance())
+                  .transaction((tx) => {
+                        tx.executeSql(
+                              `DELETE FROM images WHERE image_data = ?`,
+                              [image_data],
+                              (tx, res) => {
+                              resolve(res);
+                              }
+                        );
+                  },
+                        //transaction error
+                        (error) => {
+                              // console.log(error, 'deleteImageByImageData error');
+                              logService.insertLog([new Date().getTime(), [image_data], error]);
+                              reject(error);
+                        },
+                        //transaction success
+                        () => {
+                              logService.insertLog([new Date().getTime(), [image_data], "Image deleted successfully"]);
+                        }
+                  );
+            });
+      }
 
 
 }

@@ -32,9 +32,11 @@ const FileUploader = ({ elements, setUploading, uploading, setRefresh }) => {
                 })
                 )
                 allPictures = allPictures.flat();
+
                 setUploadElements(allPictures);
                 let array = [];
                 console.log(allPictures, 'allPictures')
+
                 while (currentFile.current < allPictures.length) {
                     let data = await delUpload.uploadImage(allPictures[currentFile.current]);
                     const serverResponse = await axios.post(uploadURL, data, {

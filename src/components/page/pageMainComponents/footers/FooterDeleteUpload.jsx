@@ -1,8 +1,11 @@
 import { IonButtons, IonButton, IonIcon, IonLabel } from '@ionic/react'
 import CustomFooter from '../CustomFooter';
 import './footerDeleteUpload.scss'
+import { useLanguage } from '../../../../packages/multiLanguage';
 
 const FooterDeleteUpload = ({ del, retake, upload }) => {
+      const [translate] = useLanguage();
+
     return (
         <CustomFooter>
             <IonButtons>
@@ -10,7 +13,7 @@ const FooterDeleteUpload = ({ del, retake, upload }) => {
                     <IonButton onClick={del} className='icon-over-text'>
                         <div className="container delete">
                             <IonIcon icon='/assets/svgs/delete.svg'></IonIcon>
-                            <IonLabel>delete</IonLabel>
+                            <IonLabel>{translate("Delete")}</IonLabel>
                         </div>
                     </IonButton>
                 }
@@ -18,7 +21,7 @@ const FooterDeleteUpload = ({ del, retake, upload }) => {
                     <IonButton onClick={retake} className='icon-over-text'>
                         <div className="container">
                             <IonIcon icon='/assets/svgs/retake.svg'></IonIcon>
-                            <IonLabel>retake</IonLabel>
+                            <IonLabel>{translate("Retake")}</IonLabel>
                         </div>
                     </IonButton>
                 }
@@ -26,7 +29,7 @@ const FooterDeleteUpload = ({ del, retake, upload }) => {
                     <IonButton onClick={upload} className='icon-over-text'>
                         <div className="container">
                             <IonIcon icon='/assets/svgs/upload.svg'></IonIcon>
-                            <IonLabel>upload</IonLabel>
+                            <IonLabel>{translate("Upload")}</IonLabel>
                         </div>
                     </IonButton>
                 }

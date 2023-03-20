@@ -49,6 +49,9 @@ const imagesService = {
     getImageByVehicleIdAndHotspotId: async ([vehicle_id, hotspot_id]) => {
         return await imagesRepository.getImageByVehicleIdAndHotspotId([vehicle_id, hotspot_id]);
     },
+    deleteImageByImageData: async ([image_data]) => {
+        return await imagesRepository.deleteImageByImageData([image_data]);
+    }
 }
 
 export { imagesService };

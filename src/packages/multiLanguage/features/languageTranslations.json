@@ -91,6 +91,87 @@
     },
     "Save": {
         "fr": "Sauver"
+    },
+    "Add Car Name": {
+        "fr": "Ajouter le nom de la voiture"
+    },
+    "Maker name": {
+        "fr": "Nom du fabricant"
+    },
+    "Car model": {
+        "fr": "Modèle de voiture"
+    },
+    "Vehicle Details": {
+        "fr": "Détails du véhicule"
+    },
+    "Vehicle:": {
+        "fr": "Véhicule:"
+    },
+    "Exterior": {
+        "fr": "Extérieur"
+    },
+    "Interior": {
+        "fr": "Intérieur"
+    },
+    "Individual": {
+        "fr": "Individuel"
+    },
+    "Vehicle Photos": {
+        "fr": "Photos du véhicule"
+    },
+    "Wheel": {
+        "fr": "Roue"
+    },
+    "Driver Seat": {
+        "fr": "Siège du conducteur"
+    },
+    "Front Right": {
+        "fr": "Devant à droite"
+    },
+    "Right": {
+        "fr": "Droite"
+    },
+    "Rear Right": {
+        "fr": "Arrière à droite"
+    },
+    "Rear": {
+        "fr": "Arrière"
+    },
+    "Rear Left": {
+        "fr": "Arrière à gauche"
+    },
+    "Left": {
+        "fr": "Gauche"
+    },
+    "Front Left": {
+        "fr": "Devant à gauche"
+    },
+    "Front": {
+        "fr": "Devant"
+    },
+    "Dealerships": {
+        "fr": "Concessionnaires"
+    },
+    "Vehicles": {
+        "fr": "Véhicules"
+    },
+    "Delete": {
+        "fr": "Effacer"
+    },
+    "Retake": {
+        "fr": "Reprendre"
+    },
+    "Upload": {
+        "fr": "Télécharger"
+    },
+    "Profile": {
+        "fr": "Profil"
+    },
+    "Photo": {
+        "fr": "Photo"
+    },
+    "Please rotate your device to the left to take pictures": {
+        "fr": "Veuillez faire pivoter votre appareil vers la gauche pour prendre des photos"
     }
 
 }

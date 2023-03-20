@@ -98,6 +98,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
 
     useEffect(() => {
         setSearchText('');
+        console.log('setting search text to empty string');
     }, [getCurrentSelection().refreshPage]);
 
     return (

@@ -10,6 +10,7 @@ import useVehiclePage from "../features/handleVehiclePage";
 import FileUploader from '../../../../components/uploader/FileUploader';
 import VehicleItem from '../components/VehicleItem';
 import './vehiclePage.scss';
+import FileUploaderTurbo from "../../../../components/uploader/components/FileUploaderTurbo";
 
 const VehiclePage = () => {
       const dbRequest = useDbRequest();
@@ -31,9 +32,13 @@ const VehiclePage = () => {
             getCurrentSelection,
             translate} = useVehiclePage();
 
+
       useEffect(() => {
             (async () => {
                   await refreshPage('/vehicle-search', (async () => {
+      /////////////////////////
+      // setUploading(true)
+      //////////
                         await updateDatabase();
                         deselectAll();
                         const cars = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesWithPics([getCurrentSelection().dealership_id]));
@@ -44,7 +49,7 @@ const VehiclePage = () => {
             return () => {
                   setCars([]);
             }
-      }, [history.location.pathname]);
+      }, [history.location.pathname,getCurrentSelection().refreshPage]);
 
       const scrollHandler = (e) => {
             scrollTrackerRef.current = true;
@@ -53,11 +58,15 @@ const VehiclePage = () => {
       return (
           <Page pageClass={'vehiclesSearch'}>
                 {uploading ?
-                    <FileUploader
+                    // <FileUploader
+                    //     elements={elementsForUpload}
+                    //     setUploading={setUploading}
+                    //     uploading={uploading}
+                    // /> :
+                    <FileUploaderTurbo
                         elements={elementsForUpload}
                         setUploading={setUploading}
-                        uploading={uploading}
-                    /> :
+                    />:
                     <>
                           <CustomHeader>
                                 <IonButtons slot="start">

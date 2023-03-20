@@ -10,14 +10,15 @@ import useCamera from '../../../../../packages/camera/features/CameraCustomHook'
 import './hotspotSwiper.scss';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { useLanguage } from '../../../../../packages/multiLanguage';
 
 const HotspotSwiper = () => {
+    const [translate] = useLanguage();
     const hotspotHook = useHotspot();
     const [editCurrentSelection, getCurrentSelection] = useRSelection();
     const [slides, setSlides] = useState(null);
     const [swiper, setSwiper] = useState(null);
     const [image, setImage] = useState(null);
-    const history = useHistory();
     const [imageLoading, setImageLoading] = useState(true);
     const camera = useCamera();
 
@@ -112,11 +113,16 @@ const HotspotSwiper = () => {
 
                     onSlideChange={
                         async swiper => {
-                            const id = await swiper.slides[swiper.activeIndex].getAttribute('data-id');
+                            try{
+                                const id = await swiper.slides[swiper.activeIndex].getAttribute('data-id');
+                                editCurrentSelection({ hotspot_id: parseInt(id)});
+                                await getPicture();
+
+                            } catch (err) {
+                                    console.log(err);
+                            }
                             // console.log(swiper, swiper.slides[swiper.activeIndex], id);
-                            console.log('id ', id)
-                            editCurrentSelection({ hotspot_id: parseInt(id) });
-                            await getPicture();
+                            // console.log('id ', id)
                         }
                     }
                     onInit={(swiper) => {
@@ -129,7 +135,7 @@ const HotspotSwiper = () => {
                             data-id={hotspot.hotspot_id}
                             key={hotspot.hotspot_id}
                         >
-                            {hotspot.hotspot_name}
+                            {translate(`${hotspot.hotspot_name}`)}
                         </SwiperSlide>)}
                 </Swiper>
             </IonCol>
