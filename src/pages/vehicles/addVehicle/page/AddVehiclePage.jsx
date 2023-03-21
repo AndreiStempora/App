@@ -27,8 +27,8 @@ const AddVehicle = () => {
       useEffect(() => {
             (async () => {
                   await refreshPage('/vehicle-search', async () => {
-                        console.log('setting scan result to empty string');
-                        setScanResult('');
+                        // console.log('setting scan result to empty string');
+                        // setScanResult('');
                   })
             })()
       }, [history.location.pathname])

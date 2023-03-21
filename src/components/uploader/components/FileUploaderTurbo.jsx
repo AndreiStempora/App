@@ -14,6 +14,9 @@ const FileUploaderTurbo = ({elements, setUploading}) => {
       const dbRequest = useDbRequest();
       const delUpload = useDeleteUpload();
       const [uploadURL,] = useAtom(URL.upload);
+      const { CancelToken } = axios;
+      const source = CancelToken.source();
+      let cancel;
 
       const getPics = async () => {
             let allPictures = await Promise.all(elements.map(async (element) => {
@@ -46,14 +49,23 @@ const FileUploaderTurbo = ({elements, setUploading}) => {
                                         headers: {
                                               'Content-Type': 'multipart/form-data'
                                         },
-                                        // signal:AbortSignal.abort("timeout"),
-                                        timeout:6000,
+
                                         onUploadProgress: function (axiosProgressEvent) {
                                               // const progress = (Math.ceil(axiosProgressEvent.loaded / axiosProgressEvent.total) / allPictures.length);
                                               // currentLoadTotal.current = currentLoadTotal.current + progress;
                                               // setUploadPercent(currentLoadTotal.current);
                                               // console.log(currentLoadTotal.current, 'currentLoadTotal.current', progress, 'progress', currentFile.current, 'currentFile.current', allPictures.length, 'allPictures.length')
+                                              clearTimeout(cancelTimer);
+                                              // set new cancel timer
+                                              const cancelTimer = setTimeout(() => {
+                                                    cancel('Upload timeout'); // cancel the request
+                                              }, 5000); // 5 seconds
                                         },
+                                        cancelToken: new CancelToken(function executor(c) {
+                                              // An executor function receives a cancel function as a parameter
+                                              cancel = c;
+                                        }),
+
                                   }).then(async (response) => {
                                     console.log(response, 'response');
                                     if (response.status === 200) {
@@ -98,3 +110,4 @@ const FileUploaderTurbo = ({elements, setUploading}) => {
 }
 
 export default FileUploaderTurbo;
+
