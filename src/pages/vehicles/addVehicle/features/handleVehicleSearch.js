@@ -4,15 +4,14 @@ import useSaveVehicleAlert from '../components/saveAlert/saveVehicleAlert';
 import { useRSelection } from '../../../../services/customHooks/utilityHooks';
 import {vehiclesService} from "../../../../packages/database";
 
-const useVehicleSearch = (disableSave, newCar) => {
+const useVehicleSearch = (disableSave, searchBarRef) => {
       const [ setCurrentSelection, getCurrentSelection ] = useRSelection();
       const [filteredVehicles, setFilteredVehicles] = useState(null);
       const [searchText, setSearchText] = useState('');
       const [openAlert] = useSaveVehicleAlert();
-      const searchBarRef = useRef(null);
       const refOffset = useRef(0);
       const dbRequest = useDbRequest();
-      const searchBar = useRef();
+      // const searchBar = useRef();
       const getListOfVehicles = async (string) => {
             const listOfVehicles = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesByDealershipIdAndString([
                   getCurrentSelection().dealership_id,
@@ -46,33 +45,32 @@ const useVehicleSearch = (disableSave, newCar) => {
       }
 
       const validateVinHandler = async() => {
-            if (searchText.length !== 0) {
-                  console.log("searchText called", searchText, searchText.length);
-                  await getListOfVehicles(searchText);
-            }
-
-            if (!validateVin(searchText)) {
-                  // console.log("invalid vin", searchText);
-                  return
-            }
-            disableSave(false);
+            console.log(searchBarRef.current.value(),'aa')
+            // if (searchBarRef.current.value().length !== 0) {
+            //       console.log("searchText called", searchText, searchText.length);
+            //       await getListOfVehicles(searchText);
+            // }
+            //
+            // if (!validateVin(searchText)) {
+            //       // console.log("invalid vin", searchText);
+            //       return
+            // }
+            // disableSave(false);
       }
 
       const searchFieldCompletionHandler =  async (vin) => {
-            searchBar.current.value = vin;
+            // searchBar.current.value = vin;
             console.log("oldCar!!!", vin);
-            newCar(vin);
+            // newCar(vin);
             await openAlert(vin);
       }
 
       return{
-            searchBarRef,
             filteredVehicles,
             setSearchText,
             searchText,
             validateVinHandler,
             searchFieldCompletionHandler,
-            searchBar,
             getListOfVehicles
       }
 }
