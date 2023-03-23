@@ -1,12 +1,12 @@
-import { useState, useRef } from 'react';
-import { useDbRequest } from "../../../../packages/database";
+import {useState, useRef, useEffect} from 'react';
+import {useDbRequest} from "../../../../packages/database";
 import useSaveVehicleAlert from '../components/saveAlert/saveVehicleAlert';
-import { useRSelection } from '../../../../services/customHooks/utilityHooks';
+import {useRSelection} from '../../../../services/customHooks/utilityHooks';
 import {vehiclesService} from "../../../../packages/database";
 
-const useVehicleSearch = (disableSave, searchBarRef) => {
-      const [ setCurrentSelection, getCurrentSelection ] = useRSelection();
-      const [filteredVehicles, setFilteredVehicles] = useState(null);
+const useVehicleSearch = (disableSave) => {
+      const [setCurrentSelection, getCurrentSelection] = useRSelection();
+      const [filteredVehicles, setFilteredVehicles] = useState([]);
       const [searchText, setSearchText] = useState('');
       const [openAlert] = useSaveVehicleAlert();
       const refOffset = useRef(0);
@@ -16,10 +16,12 @@ const useVehicleSearch = (disableSave, searchBarRef) => {
             const listOfVehicles = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesByDealershipIdAndString([
                   getCurrentSelection().dealership_id,
                   string,
-                  refOffset.current]));
+                  refOffset.current
+            ]));
+
             setFilteredVehicles((prev) => [...prev, ...listOfVehicles]);
             refOffset.current += 10;
-            console.log("listOfVehicles", listOfVehicles);
+            // console.log("listOfVehicles", listOfVehicles, refOffset.current, filteredVehicles);
       };
 
       function validateVin(vin) {
@@ -44,28 +46,36 @@ const useVehicleSearch = (disableSave, searchBarRef) => {
             }
       }
 
-      const validateVinHandler = async() => {
-            console.log(searchBarRef.current.value(),'aa')
-            // if (searchBarRef.current.value().length !== 0) {
-            //       console.log("searchText called", searchText, searchText.length);
-            //       await getListOfVehicles(searchText);
-            // }
-            //
-            // if (!validateVin(searchText)) {
-            //       // console.log("invalid vin", searchText);
-            //       return
-            // }
-            // disableSave(false);
+      const validateVinHandler = async () => {
+            if (searchText.length !== 0) {
+                  await getListOfVehicles(searchText);
+            }
+            if (validateVin(searchText)) {
+                  disableSave(false);
+            }
       }
 
-      const searchFieldCompletionHandler =  async (vin) => {
+      const searchFieldCompletionHandler = async (vin) => {
+            setSearchText(vin);
             // searchBar.current.value = vin;
-            console.log("oldCar!!!", vin);
+            // console.log("oldCar!!!", vin);
             // newCar(vin);
             await openAlert(vin);
       }
 
-      return{
+      useEffect(() => {
+
+            (async () => {
+                  await validateVinHandler();
+            })();
+            return () => {
+                  refOffset.current = 0;
+                  setFilteredVehicles([]);
+            }
+
+      }, [searchText]);
+
+      return {
             filteredVehicles,
             setSearchText,
             searchText,

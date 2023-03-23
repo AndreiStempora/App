@@ -19,26 +19,6 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     } = useVehicleSearch(disableSave);
 
     // useEffect(() => {
-    //     (async () => {
-    //         await validateVinHandler();
-    //     })();
-    //     // console.log(searchText, searchText.length);
-    //
-    //     return () => {
-    //         // refOffset.current = 0;
-    //         // setFilteredVehicles([]);
-    //     }
-    // }, [searchText]);
-
-
-    useEffect(() => {
-        // searchBar.current.value = scanResult;
-    }, [searchText]);
-
-
-
-
-    // useEffect(() => {
     //     setSearchText('');
     //     console.log('setting search text to empty string');
     // }, [getCurrentSelection().refreshPage]);
@@ -46,7 +26,7 @@ const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
     return (
         <>
             <IonSearchbar
-                debounce={0}
+                value={searchText}
                 onIonChange={e => {
                       setSearchText(e.target.value);
                 }}

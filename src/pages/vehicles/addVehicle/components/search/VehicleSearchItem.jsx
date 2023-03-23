@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 const VehicleSearchItem = ({ vehicle, match, click }) => {
     const [vin, setVin] = useState(vehicle.vehicle_vin)
     const [stock, setStock] = useState(vehicle.vehicle_stock)
-
     const emboldMatchingString = (string) => {
         if (string?.toUpperCase().startsWith(match.toUpperCase())) {
             const stringArray = string.toUpperCase().split(match.toUpperCase());
