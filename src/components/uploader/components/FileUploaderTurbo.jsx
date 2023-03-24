@@ -4,7 +4,6 @@ import React, {useEffect, useState} from "react";
 import {IonItem, IonLabel, IonProgressBar, useIonAlert} from "@ionic/react";
 import {useDbRequest, imagesService} from "../../../packages/database";
 import './fileUploaderTurbo.scss';
-import { FS} from "../../../packages/filesystem";
 import {useDeleteUpload} from "../../../services/customHooks/utilityHooks";
 import {useAtom} from "jotai";
 import {URL} from "../../../services";
@@ -15,7 +14,6 @@ const FileUploaderTurbo = ({elements, setUploading}) => {
       const delUpload = useDeleteUpload();
       const [uploadURL,] = useAtom(URL.upload);
       const { CancelToken } = axios;
-      const source = CancelToken.source();
       let cancel;
 
       const getPics = async () => {
@@ -33,7 +31,7 @@ const FileUploaderTurbo = ({elements, setUploading}) => {
 
                   pics.map(async pic => {
                         let data = await delUpload.uploadImage(pic.image_data);
-                  //       // console.log(x, 'x')
+                        console.log(data, 'x')
                         //simulate a timeout
                         // const AbortSignal = axios.CancelToken.source();
                         // setTimeout(() => {

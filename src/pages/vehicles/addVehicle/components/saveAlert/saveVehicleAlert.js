@@ -38,7 +38,7 @@ const useSaveVehicleAlert = () => {
                   await getVehicleAndSetId(vehicleVin);
             }
       }
-      const openAlert = async (vehicleVin) => {
+      const openAlert = async (vehicleVin,setSearchText,setDisabledSave) => {
             await presentAlert({
                   header: translate('Add Vehicle'),
                   message: translate('Are you sure you want to add this vehicle?'),
@@ -47,10 +47,12 @@ const useSaveVehicleAlert = () => {
                         {
                               text: translate('Add'), handler: async () => {
                                     await searchForVehicleInDb(vehicleVin);
-                                    let x = await dbRequest.requestFunction(async () => {
+                                    await dbRequest.requestFunction(async () => {
                                           return await vehiclesService.getVehicleByVin([vehicleVin]);
                                     });
-                                    console.log(x, 'x', vehicleVin, 'vehicleVin');
+                                    // console.log(x, 'x', vehicleVin, 'vehicleVin');
+                                    setSearchText('');
+                                    setDisabledSave(true);
                                     history.push("/vehicle-details");
                               }
                         },
@@ -58,7 +60,7 @@ const useSaveVehicleAlert = () => {
             })
       }
 
-      return [openAlert];
+      return {openAlert};
 }
 
 export default useSaveVehicleAlert;

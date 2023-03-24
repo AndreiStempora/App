@@ -6,8 +6,17 @@ const VehicleSearchItem = ({ vehicle, match, click }) => {
     const [stock, setStock] = useState(vehicle.vehicle_stock)
     const emboldMatchingString = (string) => {
         if (string?.toUpperCase().startsWith(match.toUpperCase())) {
-            const stringArray = string.toUpperCase().split(match.toUpperCase());
-            return <>{stringArray[0]}<span className="matched" data-highlight={string}>{match.toUpperCase()}</span>{stringArray[1]}</>
+
+            let stringArray = [];
+            const regex = new RegExp(`^\\s?${match}`, "i");
+            if (match){
+
+                const match2 = string.match(regex);
+                const restOfString = string.slice(match2[0].length).trim();
+                stringArray.push(match);
+                stringArray.push(restOfString);
+            }
+            return <><span className="matched" data-highlight={string}>{match.toUpperCase()}</span>{stringArray[1]}</>
         }
         return string;
     }

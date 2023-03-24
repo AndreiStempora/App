@@ -49,7 +49,9 @@ const VehiclePage = () => {
             return () => {
                   setCars([]);
             }
-      }, [history.location.pathname,getCurrentSelection().refreshPage]);
+      }, [history.location.pathname
+            ,getCurrentSelection().refreshPage
+      ]);
 
       const scrollHandler = (e) => {
             scrollTrackerRef.current = true;

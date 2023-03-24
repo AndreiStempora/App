@@ -11,6 +11,7 @@ import "./addVehiclePage.scss"
 const AddVehicle = () => {
       const {refreshPage, history} = useRefreshPage();
       const [translate] = useLanguage();
+
       const {
             setScanResult,
             hidePageContent,
@@ -18,20 +19,21 @@ const AddVehicle = () => {
             disabledSave,
             saveVehicleHandler,
             openScannerHandler,
-            setNewCar,
             setDisabledSave,
             scanResult,
+            searchText,
+            setSearchText,
             closeScannerHandler
       } = useAddVehiclePage();
 
-      useEffect(() => {
-            (async () => {
-                  await refreshPage('/vehicle-search', async () => {
-                        // console.log('setting scan result to empty string');
-                        // setScanResult('');
-                  })
-            })()
-      }, [history.location.pathname])
+      // useEffect(() => {
+      //       (async () => {
+      //             await refreshPage('/vehicle-search', async () => {
+      //                   // console.log('setting scan result to empty string');
+      //                   // setScanResult('');
+      //             })
+      //       })()
+      // }, [history.location.pathname])
 
       return (
           <Page pageClass={`addVehicle ${hidePageContent ? 'camera-open' : ''}`}>
@@ -67,10 +69,12 @@ const AddVehicle = () => {
                                                 </IonButton>
                                           </IonButtons>
                                           <VehicleSearch
-                                              newCar={setNewCar}
                                               disableSave={setDisabledSave}
-                                              scanResult={scanResult}>
-                                          </VehicleSearch>
+                                              scanResult={scanResult}
+                                              searchText={searchText}
+                                              setSearchText={setSearchText}
+                                          />
+
                                     </>
                                     <IonButtons className="ion-justify-content-center">
 

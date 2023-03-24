@@ -11,15 +11,17 @@ const useAddVehiclePage = () => {
       const scanResultRef = useRef('');
       const [disabledSave, setDisabledSave] = useState(true);
       // const [newCar, setNewCar] = useState('');
-      const [openAlert] = useSaveVehicleAlert();
+      const {openAlert} = useSaveVehicleAlert();
+      const [searchText, setSearchText] = useState('');
 
       const backToSelectVehiclesHandler = () => {
+            setSearchText('');
+            setDisabledSave(true);
             history.push("/vehicle-search");
       }
 
       const saveVehicleHandler = async () => {
-            // console.log('newCar!!!', newCar)
-            // await openAlert(newCar);
+            await openAlert(searchText,setSearchText,setDisabledSave);
       }
       const openScannerHandler = async () => {
             setHidePageContent(true);
@@ -30,6 +32,7 @@ const useAddVehiclePage = () => {
             }
             scanResultRef.current = result;
             // setNewCar(result);
+            setSearchText(result);
             setDisabledSave(false);
             setHidePageContent(false);
       }
@@ -55,6 +58,8 @@ const useAddVehiclePage = () => {
             // setNewCar,
             setDisabledSave,
             // scanResult,
+            searchText,
+            setSearchText,
             closeScannerHandler
       }
 }

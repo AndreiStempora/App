@@ -1,22 +1,20 @@
 import { IonSearchbar, IonList, IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/react";
 import {useLanguage} from "../../../../../packages/multiLanguage";
-import { useRef, useEffect } from "react";
 import VehicleSearchItem from "./VehicleSearchItem";
 import useVehicleSearch from "../../features/handleVehicleSearch";
-import useRefreshPage from "../../../../../services/customHooks/refreshCurrentPageImproved";
+
 import './vehicleSearch.scss';
 
-const VehicleSearch = ({ disableSave, newCar, scanResult }) => {
-    const { refreshPage } = useRefreshPage();
+const VehicleSearch = ({ disableSave,scanResult, searchText, setSearchText }) => {
+
+    // const { refreshPage } = useRefreshPage();
     const [translate] = useLanguage();
     const {
         filteredVehicles,
-        setSearchText,
-        searchText,
         validateVinHandler,
         searchFieldCompletionHandler,
         getListOfVehicles
-    } = useVehicleSearch(disableSave);
+    } = useVehicleSearch(disableSave, searchText, setSearchText);
 
     // useEffect(() => {
     //     setSearchText('');

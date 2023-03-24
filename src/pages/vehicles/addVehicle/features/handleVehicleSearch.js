@@ -4,14 +4,13 @@ import useSaveVehicleAlert from '../components/saveAlert/saveVehicleAlert';
 import {useRSelection} from '../../../../services/customHooks/utilityHooks';
 import {vehiclesService} from "../../../../packages/database";
 
-const useVehicleSearch = (disableSave) => {
+const useVehicleSearch = (disableSave,searchText, setSearchText) => {
       const [setCurrentSelection, getCurrentSelection] = useRSelection();
       const [filteredVehicles, setFilteredVehicles] = useState([]);
-      const [searchText, setSearchText] = useState('');
-      const [openAlert] = useSaveVehicleAlert();
+      const {openAlert} = useSaveVehicleAlert();
       const refOffset = useRef(0);
       const dbRequest = useDbRequest();
-      // const searchBar = useRef();
+
       const getListOfVehicles = async (string) => {
             const listOfVehicles = await dbRequest.requestFunction(async () => await vehiclesService.getVehiclesByDealershipIdAndString([
                   getCurrentSelection().dealership_id,
@@ -21,7 +20,7 @@ const useVehicleSearch = (disableSave) => {
 
             setFilteredVehicles((prev) => [...prev, ...listOfVehicles]);
             refOffset.current += 10;
-            // console.log("listOfVehicles", listOfVehicles, refOffset.current, filteredVehicles);
+            console.log("listOfVehicles", listOfVehicles, refOffset.current, filteredVehicles);
       };
 
       function validateVin(vin) {
@@ -47,26 +46,26 @@ const useVehicleSearch = (disableSave) => {
       }
 
       const validateVinHandler = async () => {
-            if (searchText.length !== 0) {
+            if (searchText?.length !== 0) {
                   await getListOfVehicles(searchText);
             }
             if (validateVin(searchText)) {
                   disableSave(false);
+            } else {
+                  disableSave(true);
             }
       }
 
       const searchFieldCompletionHandler = async (vin) => {
             setSearchText(vin);
-            // searchBar.current.value = vin;
-            // console.log("oldCar!!!", vin);
-            // newCar(vin);
-            await openAlert(vin);
+            await openAlert(vin,setSearchText);
       }
 
       useEffect(() => {
 
             (async () => {
                   await validateVinHandler();
+                  console.log("useEffect called");
             })();
             return () => {
                   refOffset.current = 0;
